@@ -1,0 +1,135 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   Linked list implementation of a Queue
+ *
+ * @author: V. Adamchik
+ ******************************************************************************/
+ /*****************************************************************************
+               Do not modify this file.
+ *****************************************************************************/
+
+#use "stack.c0"
+
+/* Interface to queues */
+
+struct queue;
+typedef struct queue* queue;
+
+struct q_node;
+typedef struct q_node* listOfStacks;
+
+bool queue_empty(queue Q);      /* O(1) */
+queue queue_new();                  /* O(1) */
+void enqueue(stack e, queue Q);  /* O(1) */
+stack dequeue(queue Q);            /* O(1) */
+void print_queue(queue Q);         /* O(n) */
+
+/* IMPLEMENTATION */
+                                        /*      LINKED LIST     of stacks      */
+struct q_node
+{
+  stack data;
+  struct q_node* next;
+};
+
+bool isSegment(listOfStacks start, listOfStacks end)
+{
+	listOfStacks p = start;
+	while (p != end)
+	{
+		if (p == NULL) return false;
+		p = p->next;
+	}
+	return true;
+}
+                                        /*      QUEUE         */
+
+struct queue
+{
+	listOfStacks front;
+	listOfStacks back;
+};
+
+bool is_queue(queue Q)
+{
+	return Q->front != NULL && Q->back != NULL  && isSegment(Q->front, Q->back);
+}
+
+bool queue_empty(queue Q)
+//@requires is_queue(Q);
+{
+	return Q->front == Q->back;
+}
+
+
+queue queue_new()
+//@ensures is_queue(\result);
+//@ensures queue_empty(\result);
+{
+	queue Q = alloc(struct queue);
+	listOfStacks L = alloc(struct q_node);
+	Q->front = L;
+	Q->back = L;
+	return Q;
+}
+
+stack dequeue(queue Q)
+//@requires is_queue(Q);
+//@requires !queue_empty(Q);
+//@ensures is_queue(Q);
+//@ensures is_stack(\result);
+{
+	assert(!queue_empty(Q));
+	stack e = Q->front->data;
+	Q->front = Q->front->next;
+	return e;
+}
+
+void enqueue(stack e, queue Q)
+//@requires is_queue(Q);
+//@ensures is_queue(Q);
+{
+	listOfStacks L = alloc(struct q_node);
+	Q->back->data = e;
+	Q->back->next = L;
+	Q->back = L;
+}
+
+// prints this queue from front to back
+void print_queue(queue Q)
+//@requires is_queue(Q);
+{
+	listOfStacks p = Q->front;
+	while (p != Q->back)
+	{
+		print_stack(p->data);
+		p = p->next;
+	}
+	print ("\n");
+}
+/*
+int main()
+{
+	stack s1 = stack_new();
+	push("a",s1);
+	push("b",s1);
+	push("c",s1);
+    print_stack(s1);
+
+	stack s2 = stack_new();
+	push("1",s2);
+	push("2",s2);
+	push("3",s2);
+    print_stack(s2);
+
+	queue q = queue_new();
+	enqueue(s1,q);
+	enqueue(s2,q);
+    print("    queue:  \n"); print_queue(q);
+    printbool(queue_empty(q));
+
+	return 1;
+}
+*/

@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+%%%%%%%%%%%%%%%%% Identifying Information %%%%%%%%%%%%%%%%%
+%% This is here, so that you can make your homework look %%
+%% pretty when you compile it.                           %%
+%%     DO NOT PUT YOUR NAME ANYWHERE ELSE!!!!            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Assignment 3}
+\newcommand{\myrecitation}{E}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+{\Large \myhwname} \\
+\myname \\
+\myandrew \\
+\myrecitation \\
+\today
+\end{center}
+\begin{question}{The World is Ending}
+The proof consists of a winning strategy for mother nature that will always result in mother nature winning, or the earth being so torn up that no more moves are possible.\\
+\\
+First, we say a move "threatens the triangle" when the move will prevent the potential formation of a triangle.\\
+Define a "winning triangle" to be a triangle of an area of $\frac{1}{2}.$
+The winning strategy for mother nature is as follows:\\
+\\
+Mother nature makes the first move, diagonally.\\
+\\
+The humans move either as to threaten her triangle or to not threaten her triangle. This can not be done so diagonally, due to the rule of crossing, so it must be done horizontally.\\
+\\
+\begin{quote}
+If the humans move to threaten the triangle, Mother nature strikes opposite to where the humans struck, in that 1 by 1 box.\\
+\\
+If the humans did not move to threaten the triangle, mother nature can move anywhere adjacent to her original strike so that the triangle is 1 step closer to being a winning triangle (something like \verb+ /| +).\\
+\\
+\end{quote}
+Then, humans strike again, either to threaten the triangle or not.\\
+\\
+\begin{quote}
+If not, mother nature can complete the triangle and win the game.\\
+\\
+If the humans threaten the triangle, Mother nature can strike opposite to the humans strike.\\
+\\
+\end{quote}
+At this point, the grid is surrounded by beams and earthquakes. The humans cannot make another move in that 1 by 1 box because of the crossing rules. They will be forced to make the move elsewhere.\\
+\\
+Mother nature only needs to move diagonally accross her original diagonal earthquake to complete a winning triangle.\\
+\\
+This technique is valid for boards where $m$ and $n$ are greater than 3. For smaller boards, within the range $1\leq m \leq 3$ and $1 \leq n \leq 3$, the Earth may be saturated with beams and earthquakes. In either case, the claim holds true. Therefore the claim holds true for all m and n greater than or equal to one.
+\end{question}
+\begin{question}{The Warlords Appear}
+
+Consider a $1 \times m$ game as an array with indeces from 0 to $m-1$. Let i and j be the indeces of the two soldiers in the array. Suppose that the soldier i is trying to win. Here is a strategy:\\
+i can move as close to j as possible, namely to index (j-1).\\
+\\
+j will be forced to move to some index $j_2$ such that $j<j_2\leq m-1$.\\
+Again, i can move as close to $j_2$ as possible, and this cycle repeats. It is clear that eventually, j will be forced to the rightmost index $m-1$, since everytime i moves next to j, the only move j can make is to move at least 1 position to the right. The result will be that on the last move, i will move next to j, such that $j = m-1$ and $i = j-1 = m-2$. It is j's turn with nowhere to go. i wins because i has forced j to surrender.\\
+\\
+Simple enough. Now consider a sum of $n$ such games. Each game is independent of the other. \\
+\\
+EXPLAIN WHY HERE. \\
+\\
+They can be stacked on top of each other to resemble an $n \times m$ board. Since each $1\times m$ game can be won, all of the games can be won, although possibly by different generals. In the end, there will be a last general to win. That general will win the entire game, and force the other to surrender. \\
+\\
+Consider a $1 \times m$ game. The position where 2 soldiers are adjacent to each other is a P position. Any other position is an N position, because the next player will be able to move his soldier into the P position, which is to put his soldier adjacent to the opponent's soldier.\\
+
+
+
+When A and B are adjacent, the game is at a P position. In all other cases, the game is at an N position. It is always possible to go from an N position to a P position because all the next player has to do is to close the gap between him and the other player. P-positions always go to N positions unless it is the terminal position. When two pieces are adjacent, any move will cause them to separate, causing an N position.
+
+\end{question}
+\begin{question}{Civilian Life}
+%%Put your answer here
+\end{question}
+\begin{question}{Decay of Knowledge}
+%%Put your answer here
+\end{question}
+\begin{question}{Crime Wave}
+%%Put your answer here
+\end{question}
+\begin{question}{Endgame}
+%%Put your answer here
+\end{question}
+\end{document}

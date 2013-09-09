@@ -1,0 +1,6 @@
+group is
+$/basis.cm
+../../../src/sequence/sources.cm
+../code/datastructures.sig
+../code/datastructures.sml
+gmapred.sml

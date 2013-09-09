@@ -1,0 +1,25 @@
+/******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *   Bitstrings are represented in as ordinary strings composed
+ *    only of characters "0"and "1".
+ *
+ ******************************************************************************/
+ /*****************************************************************************
+               Do not submit this file.
+ *****************************************************************************/
+
+#use <string>
+
+typedef string bitstring;
+
+bool is_bitstring(string s)
+{
+	for (int i = 0; i < string_length(s); i++)
+	{
+		char c = string_charat(s, i);
+		if (c != '0' && c != '1') return false;
+	}
+	return true;
+}
+

@@ -1,0 +1,59 @@
+#use <conio>
+#use <string>
+#use "duplicates.c0"
+
+string[] init_arr(string[] A)
+    //@requires \length(A) == 17;
+    //@ensures  \length(A) == 17;
+{
+    int i=0; //counter for array
+    while(i<4)
+    {
+        //@loop_invariant i >= 0 && i <= 4;
+        A[i] = "aaaio"; //sets the first four elements as "aasio"
+        i++;
+    }
+    
+    //@assert i == 4;
+
+    A[i] = "bam"; i++; //fifth element is set to "bam"
+
+    //@assert i == 4;
+    
+    while(i<17) //sets elements 6 through 17
+        //@loop_invariant i >= 5 && i <= 17;
+    {
+        A[i] = "ccc"; //to "ccc"
+        i++;
+    }
+
+    return A; //return the inited array
+}
+
+void print_arr(string[] A, int n)
+{
+    //requires n <= \length(A);
+
+    for(int i=0; i<n; i++)
+    //@loop_invariant i >= 0 && i <= n;
+    {
+        print(A[i]);
+        print("\n");
+    }
+}
+
+int main()
+{
+    int length = 17;    //  DO NOT EDIT length. THIS IS AN UNOFFICIAL CONSTANT
+    string[] test = alloc_array(string,length);  //the array to be tested
+    test = init_arr(test);  //initialized as per the function above
+    print_arr(test,length); //print to test init function 
+    print("\n\n Array initialized ");
+    if(!is_unique(test,length))
+        print("\n\n Array not unique "); //if this is printed, is_unique function is working
+    print("\n\n Unique words "); printint(count_unique(test,length));
+    print("\n\n Begin unique list: \n\n");
+    test = remove_duplicates(test,length);
+    print_arr(test,3);
+    return 0;
+}

@@ -1,0 +1,21 @@
+Suppose N is a fixed non-negative integer.
+
+How many subsets, S, of the natural numbers are there such that:
+(1) 0 \in S
+(2) If i \in S, then i + N \in S and i + N + 1 \in S?
+
+The "Secret Society of Art Majors" who we believe took the elements of 
+math has set up a way for you to correspond with them.  If you are 
+running the shell you used to download the problems, you can use the 
+command
+
+	submit_normal 09
+
+to submit your solution.  You will be challenged three times to make 
+sure that your answer is actually correct.  Be careful---a single
+wrong answer will cause your whole solution to be incorrect.
+Also, we've heard that art majors don't like forgeries...so, don't
+try to submit too often.
+
+Good luck, godspeed, and remember...
+The power is yours!

@@ -1,0 +1,109 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   					Word Ladder
+ *
+ * @author: ksikka 
+ ******************************************************************************/
+
+#use <conio>
+#use <string>
+#use "queue.c0"
+#use "readfile.c0"
+#use "path-util.c0"
+
+/* INTERFACE  */
+
+string_bundle words_same_length(string_bundle dictionary, int wordLength);
+stack find_path(string start, string end, string_bundle dictionary);
+stack one_away_words(string word, string_bundle dictionary, bool[]* usedwords);
+
+/* IMPLEMENTATION  */
+stack find_path(string start, string end, string_bundle dictionary)
+//@requires dictionary != NULL;
+//@requires string_length(start) == string_length(end);
+//@ensures \result != NULL;
+/*@ensures stack_empty(\result) || 
+    ( stack_contain(start, \result)  && stack_contain(end,\result)); @*/ 
+{
+    //begin initialize
+    stack startnode = stack_new();
+    push(start, startnode);
+    //now narrow the dictionary down to only those words with same length
+    dictionary = words_same_length(dictionary, string_length(start));
+    queue q = queue_new();
+    enqueue(startnode, q);
+    //create a pointer to an array to be used for lazy deletion
+    bool[]* usedwords = alloc(bool[]);
+    *usedwords = alloc_array(bool, dictionary->length);
+    //end initialize, begin doing stuff
+    while(!queue_empty(q))
+    {
+        stack root = dequeue(q);
+        //assert !stack_empty(root);
+        string topword = pop(root);
+        if(string_equal(topword, end)) {
+            push(topword,root);
+            return root;
+        }
+        stack sim_words = one_away_words(topword, dictionary,usedwords);
+        push(topword, root);
+        while(!stack_empty(sim_words))
+        {
+            stack clone = clone(root);
+            //@assert !stack_empty(sim_words);
+            push(pop(sim_words), clone);
+            enqueue(clone, q);
+        }
+    }
+    return stack_new();
+}
+string_bundle words_same_length(string_bundle dictionary, int wordLength)
+//@requires dictionary != NULL;
+//@requires 0 <= wordLength && 0 <= dictionary->length;
+//@requires dictionary->length == \length(dictionary->array);
+//@ensures \result != NULL;
+//@ensures \result->length == \length(\result->array);
+{
+    int length = count_words(dictionary, wordLength);
+    int dlength = dictionary->length;
+    string_bundle wrapper = alloc(struct fat_string_array);
+    //@assert wrapper != NULL;
+    wrapper->array = alloc_array(string, length);
+    wrapper->length = length;
+    int index = 0;
+    for(int i = 0; i < dlength; i++)
+    //@loop_invariant 0 <= i && i <= dlength;
+    //@loop_invariant 0 <= index && index <= length;
+    {
+        if(string_length(dictionary->array[i]) == wordLength)
+        {
+            wrapper->array[index] = dictionary->array[i];
+            index++;
+        }
+    }
+    return wrapper;
+}
+stack one_away_words(string word, string_bundle dictionary, bool[]* usedwords)
+//@requires dictionary != NULL;
+//@requires 0 <= dictionary->length;
+//@requires dictionary->length == \length(dictionary->array);
+//@requires usedwords != NULL;
+//@requires \length(dictionary->array) == \length(*usedwords);
+//@ensures \result != NULL;
+{
+    stack s = stack_new();
+    int length = dictionary->length;
+    for(int i = 0; i < length; i++)
+    //@loop_invariant 0 <= i && i <= length;
+    {
+        if(!(*usedwords)[i] && 
+            word_distance(dictionary->array[i], word) == 1)
+        {
+            push(dictionary->array[i],s);
+            (*usedwords)[i] = true;
+        }
+    }
+    return s;
+}

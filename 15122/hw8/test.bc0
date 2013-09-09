@@ -1,0 +1,72 @@
+C0 C0 FF EE       # magic number
+00 03             # version 3
+
+00 01             # int pool count
+# int pool
+DE AD BE EF
+
+00 0C             # string pool total size
+# string pool
+4B 61 72 61 6E 20 53 69 6B 6B 61 00  # "Karan Sikka"
+
+00 01             # function count
+# function_pool
+
+#<main>
+00 00             # number of arguments = 0
+00 02             # number of local variables = 2
+00 55             # code length = 85 bytes
+BB 18    # new 24          # alloc(struct testingstruct)
+36 00    # vstore 0        # test = alloc(struct testingstruct);
+15 00    # vload 0         # test
+62 00    # aaddf 0         # &(*(test)).x
+10 01    # bipush 1        # 1
+4E       # imstore         # (*(test)).x = 1;
+15 00    # vload 0         # test
+62 04    # aaddf 4         # &(*(test)).y
+13 00 00 # ildc 0          # c[0] = -559038737
+4E       # imstore         # (*(test)).y = -559038737;
+15 00    # vload 0         # test
+62 08    # aaddf 8         # &(*(test)).xy
+14 00 00 # aldc 0          # s[0] = "Karan Sikka"
+4F       # amstore         # (*(test)).xy = "Karan Sikka";
+15 00    # vload 0         # test
+62 10    # aaddf 16        # &(*(test)).crazykiyare
+10 01    # bipush 1        # true
+55       # cmstore         # (*(test)).crazykiyare = true;
+10 00    # bipush 0        # 
+10 01    # bipush 1        # 1
+64       # isub            # -(1)
+36 01    # vstore 1        # fantastic = -(1);
+15 00    # vload 0         # test
+62 10    # aaddf 16        # &(*(test)).crazykiyare
+34       # cmload          # (*(test)).crazykiyare
+10 00    # bipush 0        # 
+9F 00 13 # if_cmpeq 19     # if (*(test)).crazykiyare goto <00:else>
+15 00    # vload 0         # test
+62 00    # aaddf 0         # &(*(test)).x
+2E       # imload          # (*(test)).x
+15 00    # vload 0         # test
+62 04    # aaddf 4         # &(*(test)).y
+2E       # imload          # (*(test)).y
+68       # imul            # ((*(test)).x * (*(test)).y)
+36 01    # vstore 1        # fantastic = ((*(test)).x * (*(test)).y);
+A7 00 03 # goto 3          # goto <01:endif>
+# <00:else>
+# <01:endif>
+15 00    # vload 0         # test
+62 08    # aaddf 8         # &(*(test)).xy
+2F       # amload          # (*(test)).xy
+B7 00 00 # invokenative 0  # println((*(test)).xy)
+57       # pop             # (ignore result)
+15 01    # vload 1         # fantastic
+B7 00 01 # invokenative 1  # printint(fantastic)
+57       # pop             # (ignore result)
+10 00    # bipush 0        # 0
+B0       # return          # 
+
+00 02             # native count
+# native pool
+00 01 00 09       # println
+00 01 00 08       # printint
+

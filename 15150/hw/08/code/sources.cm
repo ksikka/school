@@ -1,0 +1,30 @@
+group is
+	$/basis.cm
+
+	(* Question 2 *)
+	../../../src/sequence/sources.cm
+	(*ratplane.sml
+	realplane.sml*)
+	scalar.sig
+	space.sig
+        bhrefactor.sml
+
+
+	(* Question 3 *)
+	queues.sml
+
+
+	(* Question 4 *)
+	../../../src/ordered/sources.cm
+	dict.sig
+	fundict.sml
+
+
+	(* Question 5 *)
+	util.sig
+	util.sml
+	serializable.sig
+	serializablepair.sig
+	serializebool.sml
+	serializable.sml
+

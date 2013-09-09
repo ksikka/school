@@ -1,0 +1,27 @@
+Art Majors love the golden ratio because it is believed to be "pleasing to
+the eye" (much unlike some of their paintings).  Write us a program using
+the ∈MATH language which when run takes a single number N as input,
+calculates and outputs the Nth Fibonacci Number followed by a newline
+character, and terminates.
+
+(If N=0, your program should output 0; if N=1, your program should output 1)
+
+(Note: If you try to be sneaky and not write your program in ∈MATH, you
+       will regret it later.)
+
+We have set up a way for you to submit your program to help us plead with
+the Secret Society of Art Majors. If you are running the shell you used 
+to download the problems, you can use the command
+
+	submit_programming 03 "YOUR_INTERPRETER YOUR_PROGRAM_FILE"
+
+to submit your solution.  So, if your interpreter is ./interpret
+and your program is fib.em, then you would use the command
+
+	submit_programming 03 "./interpret fib.em"
+
+You will be given a single response that tells you if your program
+works or not.
+
+Good luck, godspeed, and remember...
+We're /counting/ on you!

@@ -1,0 +1,10 @@
+group is
+  $/basis.cm
+  ../../../hw/09/code/sources.cm (* Game *)
+
+  game-imperative.sml
+  ephdict.sml
+
+  set.sml
+  monad.sml
+  dfs.sml

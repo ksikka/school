@@ -1,0 +1,24 @@
+/* make pixel a type alias for int */
+typedef int pixel;
+
+pixel[] remove_red (pixel[] A, int width, int height)
+//@requires \length(A) >= width*height;
+//@ensures \length(\result) == width*height;
+{
+  int i;
+  int j;
+  pixel[] B = alloc_array(pixel, width*height);
+
+  for (j = 0; j < height; j++)
+    //@loop_invariant 0 <= j && j <= height;
+    {
+      for (i = 0; i < width; i++)
+	//@loop_invariant 0 <= i && i <= width;
+	{
+	  // Clear the bits corresponding to the red component
+	  B[j*width+i] = A[j*width+i] & 0xFF00FFFF;
+	}
+    }
+
+  return B;
+}

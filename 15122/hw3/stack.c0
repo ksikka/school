@@ -1,0 +1,203 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   Linked list implementation of a Stack
+ *
+ * @author: V. Adamchik
+ ******************************************************************************/
+ /*****************************************************************************
+               Do not modify this file.
+ *****************************************************************************/
+
+#use <conio>
+#use <string>
+
+// type elem must be defined
+typedef string elem;
+
+/* Interface section for stacks */
+
+struct stack;
+typedef struct stack* stack;
+
+struct list_node;
+typedef struct list_node* list;
+
+bool stack_empty(stack S);	/* O(1) */
+bool is_stack (stack S);       	/* O(n) */
+stack stack_new();			    /* O(1) */
+void push(elem x, stack S);	/* O(1) */
+elem pop(stack S);		        /* O(1) */
+elem peek(stack S);		    /* O(1) */
+stack clone(stack S);		    /* O(n) */
+void print_stack(stack S);	    /* O(n) */
+bool stack_contain(elem x, stack S);	/* O(n) */
+int stack_size(stack S);	/* O(n) */
+
+/* IMPLEMENTATION */
+                                        /*      LINKED LIST           */
+struct list_node
+{
+  elem data;
+  struct list_node* next;
+};
+
+bool is_segment(list start, list end)
+{
+	list p = start;
+	while (p != end)
+	{
+		if (p == NULL) return false;
+		p = p->next;
+	}
+	return true;
+}
+                                        /*      STACK         */
+
+struct stack
+{
+	list top;
+};
+
+bool is_stack (stack S)
+{
+	return is_segment(S->top, NULL);
+}
+
+bool stack_empty(stack S)
+//@requires is_stack(S);
+{
+	return S->top == NULL;
+}
+
+stack stack_new()
+//@ensures is_stack(\result);
+//@ensures stack_empty(\result);
+{
+	stack S = alloc(struct stack);
+	S->top = NULL;
+	return S;
+}
+
+elem peek(stack S)
+//@requires is_stack(S);
+//@requires !stack_empty(S);
+//@ensures is_stack(S);
+{
+	assert( !stack_empty(S) );
+	return S->top->data;
+}
+
+elem pop(stack S)
+//@requires is_stack(S);
+//@requires !stack_empty(S);
+//@ensures is_stack(S);
+{
+	assert( !stack_empty(S) );
+	elem x = S->top->data;
+	S->top = S->top->next;
+	return x;
+}
+
+void push(elem x, stack S)
+//@requires is_stack(S);
+//@ensures !stack_empty(S);
+{
+	list first = alloc(struct list_node);
+	first->data = x;
+	first->next = S->top;
+	S->top = first;
+}
+
+int stack_size(stack S)
+//@requires is_stack(S);
+{
+	list p = S->top;
+	int size = 0;
+	while (p != NULL)
+	{
+		size++;
+		p = p->next;
+	}
+	return size;
+}
+
+list list_clone(list L)
+{
+	if( L == NULL ) return NULL;
+	else
+	{
+		list p = alloc(struct list_node);
+		p->data = L->data;
+		p->next = list_clone(L->next);
+		return p;
+	}
+}
+
+bool list_contain(elem x, list L)
+{
+	list tmp = L;
+	while (tmp != NULL)
+	{
+		if(string_equal(x, tmp->data)) return true;
+		tmp = tmp->next;
+	}
+
+	return false;
+}
+
+
+stack clone(stack S)
+//@requires is_stack(S);
+//@ensures is_stack(\result);
+{
+	stack twin = stack_new();
+	twin->top = list_clone(S->top);
+	return twin;
+}
+
+bool stack_contain(elem x, stack S)
+//@requires is_stack(S);
+{
+	return list_contain(x, S->top);
+}
+
+
+// prints this stack from the top
+void print_stack(stack S)
+//@requires is_stack(S);
+{
+	list p = S->top;
+	while (p != NULL)
+	{
+		print (p->data); print(" ");
+		p = p->next;
+	}
+	print ("\n");
+}
+
+/*
+int main()
+{
+	stack s = stack_new();
+	push("a",s);
+	push("b",s);
+	push("c",s);
+    print_stack(s);
+    printbool(stack_empty(s));
+    printbool(stack_contain("b", s));
+    printbool(stack_contain("c", s));
+    printbool(stack_contain("a", s));
+    printbool(stack_contain("e", s));
+
+
+	print("     clone\n");
+    stack twin = clone(s);
+    print_stack(twin);
+    print_stack(s);
+
+	return 1;
+}
+
+*/

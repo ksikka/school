@@ -1,0 +1,82 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   					Word Ladder
+ *
+ * @author: ksikka
+ ******************************************************************************/
+
+#use <string>
+#use "readfile.c0"
+
+/* INTERFACE   */
+
+int word_distance(string s1, string s2);
+int count_words(string_bundle dictionary, int wordLength);
+bool check_dictionary(string_bundle dictionary, int wordLength);
+bool contains(string str, string_bundle dictionary);
+
+
+/* IMPLEMENTATION   */
+
+int word_distance(string s1, string s2)
+//@requires string_length(s1) == string_length(s2);
+//@ensures 0 <= \result && \result <= string_length(s1);
+{
+    int length = string_length(s1);
+    int difference = 0;
+    for(int i = 0; i < length; i++)
+    //@loop_invariant 0 <= difference && difference <= i && i <= length;
+    {
+        if(string_charat(s1, i) != string_charat(s2, i))
+            difference++;
+    }
+    return difference;
+}
+
+int count_words(string_bundle dictionary, int wordLength)
+//@requires dictionary != NULL; 
+//@requires 0 <= wordLength && 0 <= dictionary->length;
+//@requires dictionary->length == \length(dictionary->array);
+//@ensures 0 <= \result && \result <= dictionary->length;
+{
+    int length = dictionary->length;
+    int counter = 0;
+    for(int i = 0; i < length; i++)
+    //@loop_invariant 0 <= counter && counter <= i && i <= length;
+    {
+        if(wordLength == string_length(dictionary->array[i]))
+            counter++;
+    }
+    return counter;
+}
+
+bool check_dictionary(string_bundle dictionary, int wordLength)
+//@requires dictionary != NULL;
+//@requires 0 <= wordLength && 0 <= dictionary->length;
+//@requires dictionary->length == \length(dictionary->array);
+{
+    int length = dictionary -> length;
+    for(int i = 0; i < length; i++)
+    //@loop_invariant 0 <= length;
+    {
+        if(wordLength != string_length(dictionary->array[i]))
+            return false;
+    }
+    return true;
+}
+
+bool contains(string str, string_bundle dictionary)
+//@requires dictionary != NULL;
+//@requires dictionary->length == \length(dictionary->array);
+{
+    int length = dictionary -> length;
+    for(int i = 0; i < length; i++)
+    //@loop_invariant 0 <= i && i <= length;
+    {
+        if(string_equal(str, dictionary->array[i])) return true;
+    }
+    return false;
+}
+

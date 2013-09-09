@@ -1,0 +1,273 @@
+/**
+ ******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *     Dynamic hash _map_ with separate chaining:
+                                      array[h(key)] = value
+ *     Default value of the load factor is 2.
+ *     The table size is doubled up if LF>=2;
+ *     The table is never resized on deletion.
+ *
+ * Victor Adamchik
+ ******************************************************************************/
+
+/*****************************************************************************
+		   Do not submit this file.
+*****************************************************************************/
+
+#use <conio>
+#use "hash-maps.h0"
+
+
+/********************************
+                 HASH MAP:      array[h(key)] = value
+
+      library side interface
+ ********************************/
+
+typedef struct list_node* list;
+struct list_node
+{
+	ktype key;
+	vtype value;
+	list next;
+};
+
+typedef struct hmap_record* hmap;
+struct hmap_record
+{
+	int size;    // the number of inserted items
+	int length;  // the table length
+	list[] table;
+};
+
+
+int hash(ktype key, int length);
+bool is_chain(list L, int hash, int length);
+bool is_hmap(hmap H);
+hmap hmap_new(int m);
+bool hmap_contains_key(ktype key, hmap H);       /* O(1) avg. */
+bool hmap_contains_value(vtype value, hmap H);    /* O(n)  */
+bool hmap_insert(ktype key, vtype value, hmap H);           /* O(1) avg. */
+vtype hmap_remove(ktype key, hmap H);      /* O(1) avg. */
+vtype hmap_get(ktype key, hmap H);      /* O(1) avg. */
+int hmap_size(hmap H);
+void print_hmap(hmap H);
+void print_list(list L);
+
+/*******************************
+                 HASH MAP:      array[h(key)] = value
+
+   library-side implementation
+ *******************************/
+
+// Creates a new node and appends it to tail
+list list_new(ktype key, vtype value, list tail)
+{
+	list lnew = alloc(struct list_node);
+	lnew->key = key;
+	lnew->value = value;
+	lnew->next = tail;
+	return lnew;
+}
+
+// Returns a hash code for the key modulo a table size
+int hash(ktype key, int table_size)
+//@ensures 0 <= \result && \result < table_size;
+{
+	int h = hash_function(key);
+	h = h % table_size;           /* reduce to range */
+	if (h < 0) h += table_size;  /* make positive, if necessary */
+	return h;
+}
+
+// Checks if all keyes in the chain have the same hash code
+bool is_chain(list L, int index, int table_size)
+{
+	while (L != NULL)
+	{
+		if (hash(L -> key, table_size) != index) return false;
+		L = L->next;
+	}
+	return true;
+}
+
+//hashmap invariants
+bool is_hmap(hmap H)
+{
+	if (H == NULL) return false;
+	if (H->length == 0) return false;
+
+	for (int k = 0; k < H->length; k++)
+    //@loop_invariant 0 <= k && k <= H->length;
+    	if (!is_chain(H->table[k], k, H->length)) return false;
+
+	return true;
+}
+
+// Creates an empty hashmap of length m
+hmap hmap_new(int m)
+//@requires m > 0;
+//@ensures is_hmap(\result);
+{
+	hmap H = alloc(struct hmap_record);
+	H->table = alloc_array(list, m);
+	H->size = 0;
+	H->length = m;
+	return H;
+}
+
+// Returns the current table size
+int hmap_size(hmap H)
+//@requires is_hmap(H);
+//@ensures \result <= 2*H->length;
+{
+	return H->size;
+}
+
+// Returns true if the key is in the map
+bool hmap_contains_key(ktype key, hmap H)
+//@requires is_hmap(H);
+//@ensures is_hmap(H);
+{
+	int h = hash(key, H->length);
+	list L = H->table[h];
+	while (L != NULL)
+	//@loop_invariant is_chain(L, h, H->length);
+	{
+		if (key_equal(L->key, key)) return true;
+		L = L -> next;
+	}
+	return false;
+}
+
+// Removes the specified ktypeent from this map
+// Returns the value, or NULL otherwise
+vtype hmap_remove(ktype key, hmap H)
+//@requires is_hmap(H);
+//@ensures is_hmap(H);
+//ensures \result==NULL || H->size < \old(H->size);
+//@ensures H->length == \old(H->length);
+{
+	int h = hash(key, H->length);
+	list cur = H->table[h];
+	list prev = NULL;
+	while (cur != NULL && !key_equal(cur->key, key))
+	//@loop_invariant is_chain(cur, h, H->length);
+	{
+		prev = cur;
+		cur = cur -> next;
+	}
+	//delete cur node
+	if(cur == NULL) return NULL;
+
+	H->size--;
+	if(prev == NULL)
+		H->table[h] = cur->next;
+	else
+		prev->next = cur->next;
+	return cur->value;
+}
+
+
+// Returns the load factor
+int load_factor(hmap H)
+//@requires is_hmap(H);
+//@ensures 0 <= \result;
+{
+	return H->size/H->length;
+}
+
+
+void hmap_resize(hmap H, int len)
+//@requires is_hmap(H);
+//@requires H->length < len;
+//@ensures is_hmap(H);
+//@ensures H->length == len && H->size == \old(H->size);
+//@ensures load_factor(H) <= 2;
+{
+	hmap newmap = hmap_new(len);
+	for(int k = 0; k < H->length; k++)
+	//@loop_invariant 0 <= k && k <= H->length;
+	//@loop_invariant load_factor(newmap) <= 2;
+	{
+		list L = H->table[k];
+		while(L != NULL)
+		{
+			hmap_insert(L->key, L->value, newmap);
+			L = L->next;
+		}
+	}
+	H->table = newmap->table;
+	H->length = len;
+}
+
+
+// Inserts the key into the table
+// If this map already contains the ktypeent, returns false, otherwise - true.
+bool hmap_insert(ktype key, vtype value, hmap H)
+//@requires is_hmap(H);
+//@requires is_hmap(H);
+//@ensures load_factor(H) <= 2;
+//@ensures \old(H->length) <= H->length;
+//@ensures !\result || \old(H->size) < H->size;
+{
+	if(2 <= load_factor(H) ) hmap_resize(H, 2*H->length);
+	int h = hash(key, H->length);
+	list L = H->table[h];
+	while (L != NULL)
+	//@loop_invariant is_chain(L, h, H->length);
+	{
+		if (key_equal(L -> key, key))
+		{
+			L->value = value;     /* modify in place if key is already there */
+			return false;
+		}
+		L = L -> next;
+	}
+	/* key is not in the hash table */
+	/* insert it into the chain at A[h] */
+	H->size++;
+	H->table[h] = list_new(key, value, H->table[h]);
+
+	return true;
+}
+
+vtype hmap_get(ktype key, hmap H)
+{
+	int h = hash(key, H->length);
+	list L = H->table[h];
+	while (L != NULL && !key_equal(L -> key, key)) { L = L -> next;}
+
+	if (L == NULL)
+		return NULL;
+	else
+		return L->value;
+}
+
+void print_list(list L)
+{
+	if (L == NULL) return;
+	print("[");
+	while (L->next != NULL)
+	{
+		print_key(L->key); print("->"); print_value(L->value); print(",");
+		L = L->next;
+	}
+		print_key(L->key); print("->"); print_value(L->value);
+	print("]");
+}
+
+void print_hmap(hmap H)
+//@requires is_hmap(H);
+{
+	print("[");
+	for (int k = 0; k < H->length-1; k++)
+	{
+		if (H->table[k] == NULL) continue;
+
+		print_list(H->table[k]);print(", ");
+	}
+	print_list(H->table[H->length-1]);
+	print("]\n");
+}

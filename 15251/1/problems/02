@@ -1,0 +1,43 @@
+The art majors have trapped one of our undercover operatives in an intricate
+maze of rooms and passageways. Each room in the maze has a message, and each
+passageway has a color. He starts at room 0 (the first checkpoint), and must
+make his way from checkpoint to checkpoint to uncover the password to escape.
+
+Each room's message contains a sequence of five colors. To help him make his
+way from one checkpoint to the next, find a path with that exact color 
+sequence. Be careful, though! Although some of the rooms' messages are useful, 
+most are simply there to throw attention away from the important ones.
+
+You are given a text file (02.graph) describing the maze, which has the
+following format:
+
+-The first line is the number of rooms, n.
+-The next n lines each describe one room. The rooms are given in order of their
+number. A line starts with the room's number, and the remainder of the line has
+the room's message.
+-The next line is the number of passageways, k.
+-The next k lines each describe one passageway. Each passageway connects exactly
+two rooms and has a particular color. The line has the following format:
+[room1] [room2] [color]
+
+Note: Although it's possible to go through the clues manually, it will likely
+take a very long time. It is strongly recommended that you do some programming
+for this problem.
+
+
+The "Secret Society of Art Majors" who we believe took the elements of
+math has set up a way for you to correspond with them.  If you are
+running the shell you used to download the problems, you can use the
+command
+
+  submit_normal 02
+
+to submit your solution.  You will be challenged three times to make
+sure that your answer is actually correct.  Be careful---a single
+wrong answer will cause your whole solution to be incorrect.
+Also, we've heard that art majors don't like forgeries...so, don't
+try to submit too often.
+
+Good luck, godspeed, and remember...
+There many be many paths of truth, but they will always have a unique
+destination.

@@ -1,0 +1,73 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	A client-side implementation required to use with the hash map
+ *
+ *
+ * @author:
+ ******************************************************************************/
+#use "types.h0"
+#use "board.c0"
+
+
+typedef struct move* move;
+struct move {
+    int x;
+    int y;
+};
+
+// Creates a current state
+move move_new(int x, int y)
+//@requires 0 <= x;
+//@requires 0 <= y;
+  ;
+
+// Returns an integer, not necessarily  positive
+int hmap_hash (ktype key);
+
+// Returns true if these two moves are to the same position
+bool hmap_ktype_equal(ktype key1, ktype key2);
+
+
+/************ IMPLEMENTATION *************************************************/
+
+// Creates a current state
+move move_new(int x, int y)
+//@requires 0 <= x;
+//@requires 0 <= y;
+{
+  move new = alloc(struct move);
+  new->x = x;
+  new->y = y;
+  return new;
+}
+
+
+// Returns an integer, not necessarily  positive
+int hmap_hash (ktype key)
+//@requires is_board(key);
+{
+  int a = 1664525;
+  int b = 1013904223;
+  int seed = 0xE2B8A8AC;
+  int hash = 0;
+  //iterate through the bits
+  for (int i = 0; i < key->width; i++)
+    for(int j = 0; j < key->height; j++)
+    {
+      int x = 0; if(board_get(key, i, j)) x = 1; //1 if true, 0 if false
+      hash = seed*hash + x; 
+      seed = seed*a + b;  /* meant to overflow so it is mod 32 */
+    }
+  return hash; 
+}
+
+// Returns true if these two moves are to the same position
+bool hmap_ktype_equal(ktype key1, ktype key2)
+//@requires is_board(key1);
+//@requires is_board(key2);
+{
+  return key1->lights == key2->lights;
+}
+

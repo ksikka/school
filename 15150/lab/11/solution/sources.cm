@@ -1,0 +1,11 @@
+group is
+	$/basis.cm
+ 	../../../src/ordered/sources.cm
+
+        ../code/dict.sig
+        ../code/set.sig
+        ../code/treedict.sml
+        dictset-sol.sml     (* code for section 3 goes here *)
+
+	../code/types.sml
+        order-sol.sml       (* code for section 4/5 goes here *)

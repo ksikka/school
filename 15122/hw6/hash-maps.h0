@@ -1,0 +1,88 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	A client-side implementation required to use with the hash map
+ *
+ *Victor Adamchik
+ ******************************************************************************/
+/*****************************************************************************
+		   Do not submit this file.
+*****************************************************************************/
+#use "bitstring.c0"
+
+/********************************
+      client-side interface
+ ********************************/
+typedef struct character* character;  //this is a key type
+struct character
+{
+	char ch;
+};
+
+character Character(char ch)
+{
+	character c = alloc(struct character);
+	c->ch = ch;
+	return c;
+}
+
+typedef struct encoded* encoded;
+struct encoded
+{
+	bitstring codeword;
+};
+
+encoded Encoded(string str)
+{
+	encoded b = alloc(struct encoded);
+	b->codeword = str;
+	return b;
+}
+
+
+typedef character ktype;  //this is a key type
+typedef encoded vtype;  //this is a value type
+
+
+/*   This is a map from a board (bitarray) to a coordinate of the light which was toggled on this board
+In case of collision, the previous coordinate will be replaced.
+*/
+
+int hash_function(ktype key);
+
+bool key_equal(ktype key1, ktype key2);
+
+void print_key(ktype key);
+
+void print_value(vtype val);
+
+/****************************************************************
+         client-side implementation
+ ****************************************************************/
+
+// Returns an integer, not necessarily  positive
+int hash_function (ktype key)
+{
+    int a = 1664525; int b = 1013904223;  /* inlined random number generator */
+    int k = a * char_ord(key->ch)  + b;        /* smear k uniformly */
+    return k;
+}
+
+// Returns true if these two moves are to the same position
+bool key_equal (ktype key1, ktype key2)
+{
+	return key1->ch == key2->ch;
+}
+
+// Prints a string representation for the bitarray
+void print_key (ktype key)
+{
+	printchar (key->ch);
+}
+
+// Prints a string representation for the cordinates
+void print_value(vtype val)
+{
+	print(val->codeword);
+}

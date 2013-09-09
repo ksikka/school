@@ -1,0 +1,24 @@
+#use "readfile.c0"
+int common_test()
+//@ensures \result >= 0;
+{
+    //parse the files
+    string_bundle d_bundle = read_words("texts/scrabble.txt");
+    string_bundle w_bundle = read_words("texts/shakespeare.txt");
+    
+    //get the lengths from string_bundles
+    int d = string_bundle_length(d_bundle);
+    int w = string_bundle_length(w_bundle);
+    //@assert d > 0;
+    //@assert w > 0;
+
+    //allocate arrays
+    string[] dictionary = alloc_array(string, d);
+    string[] wordlist = alloc_array(string, w);
+    dictionary = string_bundle_array(d_bundle);
+    wordlist = string_bundle_array(w_bundle);
+    
+    //run the function and return the answer
+    int common = common_unsorted(dictionary, d, wordlist, w);
+    return common;
+} 

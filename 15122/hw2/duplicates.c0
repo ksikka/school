@@ -1,0 +1,54 @@
+#use <string>
+
+bool is_unique(string[] A, int n)
+    //@requires 0 <= n && n <= \length(A);
+    //@requires is_sorted(A, 0, n);
+{
+    for(int i = 1; i < n; i++) 
+        //@loop_invariant 1 <= i && i <= n;
+    {
+        if(string_equal(A[i-1], A[i]))  return false; 
+        //returns false because a duplicate is detected
+    }
+    //no duplicates detected, returns true
+    return true;
+}
+
+int count_unique(string[] A, int n)
+    //@requires 0 <= n && n <= \length(A);
+    //@requires is_sorted(A, 0, n);
+    //@ensures 0 <= \result && \result <= n;
+{
+    int duplicates = 0;
+    //loop iterates through and checks for duplicates
+    for(int i = 1; i < n; i++)
+        //@loop_invariant 1 <= i && i <= n;
+        if(string_equal(A[i-1],A[i]))
+            duplicates++; //counts num. of duplicates
+    return n - duplicates;
+}
+
+string[] remove_duplicates(string[] A, int n)
+    //@requires 0 <= n && n <= \length(A);
+    //@requires is_sorted(A, 0, n);
+    //@ensures \length(\result) == count_unique(A, n);
+    //@ensures is_sorted(\result, 0, \length(\result));
+    //@ensures is_unique(\result, \length(\result));
+{
+    int uniq_length = count_unique(A, n);
+    int uniq_counter = 0;
+    string[] uniq_A = alloc_array(string, uniq_length);
+    //loop iterates through and checks for duplicates
+    for(int i = 1; i < n; i++)
+        //@loop_invariant 1 <= i && i <= n;
+        //@loop_invariant 0 <= uniq_counter && uniq_counter <= uniq_length;
+        if( !string_equal( A[i-1], A[i]) )
+        {
+            uniq_A[uniq_counter] = A[i-1];
+            uniq_counter++;
+        }
+    uniq_A[uniq_counter] = A[n-1];
+    uniq_counter++;
+    //@assert uniq_counter == uniq_length;
+    return uniq_A;
+}

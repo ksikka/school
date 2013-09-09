@@ -1,0 +1,15 @@
+Group is
+$/basis.cm
+
+../../../src/ordered/sources.cm
+dict.sig
+treedict.sml
+dna.sml
+
+fibo.sig
+memo.sig
+memo.sml
+memo_reference.sml
+
+../../09/code/sources.cm
+minimax-counting.sml

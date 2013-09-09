@@ -1,0 +1,211 @@
+/******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *   This implements the Huffman encoding  algorithm
+ *
+ * @author
+ ******************************************************************************/
+#use <conio>
+#use <string>
+#use "bitstring.c0"
+#use "heaps.c0"
+#use "hash-maps.c0"
+
+ /*********************************************************************
+              Interface
+ **********************************************************************/
+
+/* Task 1. */
+// Returns true if a tree is a Huffman treef; false - otherwise
+bool is_htree(htree H);
+
+// Returns true if a node is a leaf; false - otherwise
+bool is_htree_leaf(htree H)
+//@requires H != NULL;
+;
+
+// Returns true if a node is an internal node; false - otherwise
+bool is_htree_node(htree H)
+//@requires H != NULL;
+;
+
+/* Task 2. */
+// Returns the total number of nodes in the Huffman tree H
+int htree_size(htree H)
+//@requires is_htree(H);
+//@ensures \result > 0;
+;
+
+// Returns the number of leaves in the Huffman tree H
+int htree_count_leaves(htree H)
+//@requires is_htree(H);
+//@ensures \result > 0;
+;
+
+/* Task 3. */
+// Constructs an optimal encoding using Huffman's algorithm.
+htree build_htree(char[] chars, int[] freqs, int n)
+//@requires 1 < n && n <= \length(chars) && \length(chars) == \length(freqs);
+//@ensures is_htree(\result);
+//@ensures htree_count_leaves(\result) == n;
+;
+
+/* Task 4. */
+//Creates a map: char->bitstring from the given Huffman tree H
+hmap htree_to_map(htree H)
+//@requires is_htree(H);
+//@ensures is_hmap(\result);
+;
+
+/* Task 5. */
+// Encodes the input string using the Huffman tree H and the above mapping
+bitstring encode (htree H, string input)
+//@requires is_htree(H);
+//@ensures is_bitstring(\result);
+;
+
+/* my own helpers*/
+htree new_htree(char value, int freq, htree left, htree right)
+//@ensures is_htree(\result);
+;
+
+//recursive helper for htree_to_map
+void htree_mapper(htree H, hmap hashmap, bitstring bstr)
+//@requires is_htree(H);
+//@requires is_hmap(hashmap);
+;
+ /*********************************************************************
+              Your implementation
+ **********************************************************************/
+//Constructor for htree node
+htree new_htree(char value, int freq, htree left, htree right)
+//@ensures is_htree(\result);
+{
+  htree H = alloc(struct htree_node);
+  H->value = value; H->frequency = freq;
+  H->left = left; H->right = right;
+  return H;
+}
+
+// Returns true if a tree is a Huffman treef; false - otherwise
+bool is_htree(htree H)
+{
+  //return false if H is null, invalid freq, or invalid node type
+  return H != NULL && H->frequency > 0 &&
+       (is_htree_node(H) || is_htree_leaf(H));
+  //we do not need to check XOR because we can reason
+  //that if the OR statement here is true, the XOR must be true.
+}
+
+
+// Returns true if a node is a leaf; false - otherwise
+bool is_htree_leaf(htree H)
+//@requires H != NULL;
+{
+ //return false if value is not initialized, or left/right not null
+ return H->value!='\0' && H->left == NULL && H->right == NULL
+  && H->frequency > 0;
+}
+
+// Returns true if a node is an internal node; false - otherwise
+bool is_htree_node(htree H)
+//@requires H != NULL;
+{
+  //return false if left or right branch is not valid
+  return H->value == '\0' && is_htree(H->right) && is_htree(H->left)
+          && H->frequency == H->left->frequency + H->right->frequency;
+}
+
+// Returns the total number of nodes in the Huffman tree H
+int htree_size(htree H)
+//@requires is_htree(H);
+//@ensures \result > 0;
+{
+  if(is_htree_leaf(H)) return 1;
+  else 
+    //@assert is_htree_node(H);
+    return 1 + htree_size(H->left) + htree_size(H->right);
+}
+
+// Returns the number of leaves in the Huffman tree H
+int htree_count_leaves(htree H)
+//@requires is_htree(H);
+//@ensures \result > 0;
+{
+  if(is_htree_leaf(H)) return 1;
+  else return htree_count_leaves(H->left) + htree_count_leaves(H->right);
+}
+
+// Constructs an optimal encoding using Huffman's algorithm.
+htree build_htree(char[] chars, int[] freqs, int n)
+//@requires 1 < n && n <= \length(chars) && \length(chars) == \length(freqs);
+//@ensures is_htree(\result);
+//@ensures htree_count_leaves(\result) == n;
+{
+  heap H = heap_new(n + 1); //limit is n+1 so that heap is never full
+  for(int i = 0; i < n; i++)
+  //@loop_invariant 0 <= i && i <= n;
+  //@loop_invariant is_heap(H);
+  //@loop_invariant heap_size(H) >= i;
+  {
+    htree node = new_htree(chars[i], freqs[i], NULL, NULL);
+    heap_insert(node, H);
+  }
+  while(heap_size(H) > 1)
+  //@loop_invariant is_htree(heap_min(H));
+  {
+    htree elem1 = heap_delmin(H);
+    htree elem2 = heap_delmin(H);
+    htree node = new_htree('\0', elem1->frequency + elem2->frequency, elem1, elem2);
+    //@assert is_htree_node(node);
+    heap_insert(node,H);
+  }
+  //@assert heap_size(H) == 1;
+return heap_delmin(H);
+}
+
+//Creates a map: char->bitstring from the given Huffman tree H
+hmap htree_to_map(htree H)
+//@requires is_htree(H);
+//@ensures is_hmap(\result);
+{
+  hmap hashmap = hmap_new(2 * htree_size(H)); //ensures low load factor
+  htree_mapper(H, hashmap, "");
+  return hashmap;
+}
+
+//recursive helper for htree_to_map
+void htree_mapper(htree H, hmap hashmap, bitstring bstr)
+//@requires is_htree(H);
+//@requires is_hmap(hashmap);
+{
+  if(is_htree_node(H)) 
+  {
+    htree_mapper(H->left, hashmap, string_join(bstr, "0"));
+    htree_mapper(H->right, hashmap, string_join(bstr, "1"));
+    return;
+  }
+  else 
+  {
+    hmap_insert(Character(H->value), Encoded(bstr), hashmap);
+    return;
+  }
+}
+
+
+// Encodes the input string using the Huffman tree H and the above mapping
+bitstring encode (htree H, string input)
+//@requires is_htree(H);
+//@ensures is_bitstring(\result);
+{
+  string bstr ="";
+  int strlen = string_length(input);
+  hmap hashmap = htree_to_map(H);
+  for(int i = 0; i < strlen; i++)
+  {
+    char cur_char = string_charat(input,i);
+    string huffcode = hmap_get(Character(cur_char), hashmap)->codeword;
+    bstr = string_join(bstr, huffcode);
+  }
+  return bstr;
+}

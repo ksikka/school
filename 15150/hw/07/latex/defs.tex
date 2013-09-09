@@ -1,0 +1,61 @@
+%% cost graph constants
+\newcommand{\costzero}{\mathbf{0}}
+\newcommand{\costunit}{\mathbf{1}}
+
+\newcommand{\maximum}[2]{\mathrm{max}(#1, #2)}
+
+%% Evaluation and step judgements
+\newcommand{\eval}[2]{{#1} \Longrightarrow {#2}}
+\newcommand{\stepseq}[2]{{#1} \longmapsto {#2}}
+\newcommand{\nstepseq}[2]{{#1} \longmapsto^* {#2}}
+
+%% SML Syntax
+\newcommand{\sml}[1]{\texttt{#1}}
+\newcommand{\msml}[1]{\mathtt{#1}}
+
+\newcommand{\mexp}{\msml{e}}
+\newcommand{\mexps}[1]{\msml{e_{#1}}}
+\newcommand{\mval}{\msml{v}}
+\newcommand{\mvals}[1]{\msml{v_{#1}}}
+\newcommand{\mcase}[5]{\msml{case}~{#1}~\msml{of}~{#2} => {#3}~|~{#4} => {#5}}
+\newcommand{\mapp}[2]{{#1}~{#2}}
+\newcommand{\mtrue}{\msml{true}}
+\newcommand{\mfalse}{\msml{false}}
+\newcommand{\mlist}{\msml{l}}
+\newcommand{\mlists}[1]{\msml{l_{#1}}}
+\newcommand{\mappend}[2]{{#1} @ {#2}}
+\newcommand{\mnat}{\msml{n}}
+\newcommand{\mnats}[1]{\msml{n_{#1}}}
+\newcommand{\mvar}{\msml{x}}
+\newcommand{\mvars}[1]{\msml{x_{#1}}}
+\newcommand{\mnil}{\msml{nil}}
+\newcommand{\mcons}[2]{{#1}::{#2}}
+\newcommand{\mzero}{\msml{0}}
+\newcommand{\mpair}[2]{({#1}, {#2})}
+\newcommand{\mraise}[1]{\msml{raise}~{#1}}
+\newcommand{\mraiseFail}[1]{\mraise{(\msml{Fail}~{#1})}}
+\newcommand{\tint}{\msml{int}}
+\newcommand{\tlist}[1]{{#1}~\msml{list}}
+\newcommand{\talpha}{\msml{'a}}
+\newcommand{\tarr}[2]{{#1} \to {#2}}
+\newcommand{\tprod}[2]{{#1} * {#2}}
+\newcommand{\oftp}[2]{{#1}\ :\ {#2}}
+
+%% Fitted parentheses
+\newcommand{\fp}[1]{\left ( {#1} \right )}
+\newcommand{\fcp}[1]{\left \{ {#1} \right \}}
+\newcommand{\fpfrac}[2]{\fp{\frac{#1}{#2}}}
+
+
+%% Cost
+\newcommand{\work}[2]{W_{\text{#1}}\fp {#2}}
+\newcommand{\depth}[2]{D_{\text{#1}}\fp {#2}}
+\newcommand{\spce}[2]{S_{\text{#1}}\fp {#2}}
+
+\renewcommand{\O}[1]{O \fp{#1}}
+
+\newcommand{\seq}[1]{\left \langle {#1} \right \rangle}
+\renewcommand{\mlist}[1]{\left [ {#1} \right ]}
+
+%% Formatting type ascription properly in text mode
+\newcommand{\asc}[2]{{#1}\ :\ {#2}}

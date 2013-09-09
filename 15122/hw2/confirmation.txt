@@ -1,0 +1,26 @@
+Submitting for hw2: duplicates.c0 common-unsorted.c0 common-test.c0 README ...
+Completing submission ...
+Verifying submission ...
+=== Task 1: duplicates.c0 verification tests ===
+ - Testing is_unique correctness (1):  okay!
+ - Testing is_unique annotations (1):  okay!
+ - Testing count_unique correctness (1):  okay!
+ - Testing count_unique annotations (1):  okay!
+ - Testing count_unique annotations (2):  okay!
+ - Testing count_unique annotations (3):  okay!
+ - Testing remove_duplicates correctness (1):  okay!
+ - Testing remove_duplicates annotations (1):  okay!
+ - Testing remove_duplicates annotations (2):  okay!
+>>> Failed 0 tests <<<
+=== Task 2: common-unsorted.c0 verification tests ===
+ - Testing common_unsorted correctness (1):  okay!
+ - Testing common_unsorted annotations (1):  okay!
+ - Testing common_unsorted correctness (2):  okay!
+ - Testing common_unsorted annotations (2):  okay!
+ - Testing common_unsorted correctness (3):  okay!
+ - Testing common_unsorted annotations (3):  okay!
+ - Testing common_unsorted correctness (4):  okay!
+ - Testing common_unsorted annotations (4):  okay!
+>>> Failed 0 tests <<<
+>>> Failed 0 tests in total <<<
+Submission successful!

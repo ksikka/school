@@ -1,0 +1,17 @@
+Group is
+      $/basis.cm
+      $/smlnj-lib.cm
+      array.cm
+      EQKEY.sig
+      TABLE.sig
+      SET.sig
+      BST.sig
+      BINARY_TREE.sig
+      ORDERED.sig
+      HASHKEY.sig
+      Treap.sml
+      BSTTable.sml
+      LeftistHeap.sml	
+      PRIORITY_QUEUE.sig
+      defaults.sml
+      

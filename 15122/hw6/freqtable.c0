@@ -1,0 +1,99 @@
+/**
+******************************************************************************
+*                    HOMEWORK  15-122
+******************************************************************************
+*   function to read in a frequency table from a file
+*
+******************************************************************************/
+/*****************************************************************************
+		   Do not submit this file.
+*****************************************************************************/
+
+
+// Function to read in a frequency table from a file
+#use <string>
+#use <parse>
+#use <conio>
+#use "readfile.c0"
+
+/* Interface */
+
+typedef struct freqtable* freqtable;
+
+struct freqtable {
+    int length;
+    char[] characters;
+    int[] frequencies;
+};
+
+bool is_freqtable(freqtable table); // invariant
+freqtable read_freqtable(string filename); //create a table of requencies
+
+
+/* Implementation */
+
+bool all_non_NUL(char[] chars, int n)
+//@requires n <= \length(chars);
+{
+	for (int i = 0; i < n; i++) if (chars[i] == '\0') return false;
+	return true;
+}
+
+bool all_strictly_positive(int[] freqs, int n)
+//@requires n <= \length(freqs);
+{
+	int i;
+	for (i = 0; i < n; i++) if (freqs[i] <= 0) return false;
+	return true;
+}
+
+bool is_freqtable(freqtable table)
+//@requires table != NULL;
+//@requires table->length == \length(table->characters);
+//@requires table->length == \length(table->frequencies);
+{
+	return all_non_NUL(table->characters, table->length)
+		&& all_strictly_positive(table->frequencies, table->length);
+}
+
+
+int theint(string s)
+//@ensures \result > 0;
+{
+  int* pint = parse_int(s,10);
+  assert(pint != NULL); //, "invalid frequency");
+  assert(*pint > 0); //, "frequency must be > 0");
+  return *pint;
+}
+
+char thechar(string s)
+//@ensures \result != '\0';
+{
+  char c;
+  assert(string_length(s) == 1); //, "not a single character");
+  c = string_charat(s, 0);
+  assert(c != '\0'); //, "NUL characters not allowed");
+  return c;
+}
+
+freqtable read_freqtable(string filename)
+//@ensures is_freqtable(\result);
+{
+	string_bundle sb = read_words(filename);
+	assert(sb->length % 2 == 0);
+
+	freqtable table = alloc(struct freqtable);
+	table->length = sb->length / 2;
+	table->characters = alloc_array(char, table->length);
+	table->frequencies = alloc_array(int, table->length);
+	for (int i = 0; i < table->length; i++)
+	//@loop_invariant 0 <= i && i <= table->length;
+	//@loop_invariant all_non_NUL(table->characters, i);
+	//@loop_invariant all_strictly_positive(table->frequencies, i);
+	{
+		table->characters[i] = thechar(sb->array[2*i]);
+		table->frequencies[i] = theint(sb->array[2*i+1]);
+	}
+
+	return table;
+}

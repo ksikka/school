@@ -1,0 +1,35 @@
+Art Majors are bad with large numbers, but make many strokes with their
+pencils when drawing.  We're wondering how many characters an ∈MATH program
+with N instructions can output (assuming the ∈MATH program halts).
+
+Write a program that takes a number N as standard input and outputs the
+concatenation of all valid ∈MATH program with N instructions which
+output the most number of characters possible before halting followed by
+a newline character.
+
+You should sort your list of programs by the number of \rhd instructions 
+they contain before concatenating them. If there is a tie in the number
+of \rhd instructions, sort alphabetically.
+
+We are only considering ∈MATH programs which do not take any input and do
+not output integers. This means that the programs do not contain \lhd,
+\unlhd, \unrhd.
+
+We will also only test your program on small inputs (N < 9).
+
+We have set up a way for you to submit your program to help us plead with
+the Secret Society of Art Majors. If you are running the shell you used 
+to download the problems, you can use the command
+
+	submit_programming 04 "A_WAY_TO_RUN_YOUR_PROGRAM_ON_THE_COMMAND_LINE"
+
+to submit your solution.  So, if you wrote your program in python,
+and you called it progs.py, then you would use the command
+
+	submit_programming 04 "python progs.py"
+
+You will be given a single response that tells you if your program
+works or not.
+
+Good luck, godspeed, and remember...
+Do...or halt.

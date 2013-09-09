@@ -1,0 +1,38 @@
+15-122, Fall 2010, Homework 8: C0VM
+
+
+Compiling:
+
+Use the provided Makefile to compile your code.  It expects your
+implementation to be in a file called c0vm.c, for which we've given
+a starter incomplete implementation.  Make your changes to c0vm.c
+and then compile as below.
+
+To compile using make without debugging turned on:
+
+    make c0vm
+
+To compile using make with debugging turned on:
+
+    make c0vmd
+
+Running:
+
+The included Makefile builds a binary c0vm which you can run using
+./c0vm.  Here is the program's usage information:
+
+    usage: ./c0vm <bc0_file> [args...]
+
+Submitting:
+
+The handout asks you to submit several checkpoint implementations
+with different names -- you can just make a copy of c0vm.c when
+you're ready to submit a checkpoint and submit in the usual way, e.g.:
+
+    cp c0vm.c c0vm-functions.c
+
+    handin -a hw8 c0vm-functions.c
+
+
+Contact the course staff if you have any trouble compiling or
+submitting your code.

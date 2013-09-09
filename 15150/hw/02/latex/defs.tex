@@ -1,0 +1,52 @@
+%% SML font
+\newcommand{\sml}[1]{\texttt{#1}}
+
+%% Evaluation and step judgements
+\newcommand{\eval}[2]{{#1} \Longrightarrow {#2}}
+\newcommand{\evalto}{\ensuremath{\Longrightarrow}}
+\newcommand{\stepseq}[2]{{#1} \longmapsto {#2}}
+\newcommand{\nstepseq}[2]{{#1} \longmapsto^* {#2}}
+
+%% SML Syntax in math mode
+\newcommand{\msml}[1]{\mathtt{#1}}
+
+\newcommand{\mval}{\msml{v}}
+\newcommand{\mvalp}{\msml{v'}}
+\newcommand{\mvalpp}{\msml{v''}}
+\newcommand{\mconst}{\msml{c}}
+\newcommand{\mconsts}[1]{\msml{c_{#1}}}
+\newcommand{\mvals}[1]{\msml{v_{#1}}}
+\newcommand{\mcase}[5]{\msml{case}~{#1}~\msml{of}~{#2} => {#3}~|~{#4} => {#5}}
+\newcommand{\mapp}[2]{{#1}~{#2}}
+\newcommand{\mpair}[2]{({#1}, {#2})}
+\newcommand{\mtriple}[3]{({#1}, {#2}, {#3})}
+\newcommand{\mnil}{\msml{nil}}
+\newcommand{\mcons}[2]{{#1}::{#2}}
+\newcommand{\mnat}[1]{\msml{\overline{#1}}}
+\newcommand{\mrtimes}[2]{{#1} ** {#2}}
+\newcommand{\mrfrac}[2]{{#1} // {#2}}
+\newcommand{\asc}[2]{{#1}\ :\ {#2}}
+\newcommand{\smlarr}[2]{{#1}\ ->\ {#2}}
+\newcommand{\econs}[2]{{#1}\ ::\ {#2}}
+\newcommand{\tint}{\msml{int}}
+\newcommand{\tstr}{\msml{string}}
+\newcommand{\tchr}{\msml{char}}
+\newcommand{\tbool}{\msml{bool}}
+\newcommand{\tfso}{\msml{fsobject}}
+\newcommand{\tlst}[1]{{#1}~\msml{list}}
+\newcommand{\ttree}[1]{{#1}~\msml{tree}}
+\newcommand{\tarr}[2]{{#1} \to {#2}}
+\newcommand{\tprod}[2]{{#1} * {#2}}
+\newcommand{\tnf}{\msml{nf}}
+\newcommand{\oftp}[2]{{#1}\ :\ {#2}}
+
+\newcommand{\oftpm}[2]{\msml{{#1}}\ :\ {#2}}
+\newcommand{\ce}[2]{{#1} \cong {#2}}
+\newcommand{\mappm}[2]{{\msml{#1}}~{\msml{#2}}}
+\newcommand{\vnil}{\texttt{[]}}
+
+%% Propositional calculus
+\newcommand{\pand}{\wedge}
+\newcommand{\por}{\vee}
+\newcommand{\pimp}{\supset}
+

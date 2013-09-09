@@ -1,0 +1,16 @@
+/* return the width of the result image, given the input image's dimensions */
+int result_width(int width, int height) {
+  /* TODO: fill in */
+}
+
+/* return the height of the result image, given the input image's dimensions */
+int result_height(int width, int height) {
+  /* TODO: fill in */
+}
+
+int[] manipulate(int[] pixels, int width, int height)
+//@requires width*height <= \length(pixels);
+//@ensures \length(\result) == result_width(width, height) * result_height(width, height);
+{
+  /* TODO: fill in */
+}

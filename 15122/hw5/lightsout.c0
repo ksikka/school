@@ -1,0 +1,143 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	A game solver
+ *
+ *
+ * @author:
+ ******************************************************************************/
+#use "client.c0"
+#use "hash-map.c0"
+#use "queue.c0"
+
+typedef struct list_of_moves* movelist;
+//recursivly defined linked list
+struct list_of_moves {
+    int x;
+    int y;
+    movelist next;
+};
+
+
+//****************************** INTERFACE ***************************//
+
+//creates linked list node
+movelist movelist_new(int x, int y, movelist m)
+{
+    movelist res = alloc(struct list_of_moves);
+    res->x = x;
+    res->y = y;
+    res->next = m;
+    return res;
+}
+
+/* find a solution to board B, returning a movelist that results in all lights
+ * being off if one exists, and returning NULL if no solution exists.
+ */
+movelist solve(board B)
+//@requires is_board(B);
+;
+
+//returns the list of moves from start to dest
+movelist roadmap(hmap H, ktype start, ktype dest)
+//@requires is_hmap(H);
+//@requires is_board(start);
+//@requires is_board(dest);
+;
+
+//returns true if every element in the queue is a key in the hash
+bool queue_in_hash(queue Q, hmap H)
+//@requires is_queue(Q);
+//@requires is_hmap(H);
+;
+
+//****************************** IMPLEMENTATION ***************************//
+
+movelist solve(board B)
+//@requires is_board(B);
+{
+  //make instances of the data structures to be used
+  hmap move_map = hmap_new(100);
+  queue board_q = queue_new();
+  //enqueue and hash the initial board
+  enqueue(B,board_q);
+  hmap_insert(B, move_new(0,0), move_map); //chose 0,0 but any move is ok
+  //construct a board that is lightsoff
+  board lightsOff = alloc(struct board);
+        lightsOff->width = B->width;
+        lightsOff->height = B->height;
+        lightsOff->lights = 0;
+  //loop while board_queue not empty
+  board current = alloc(struct board);
+  while(!queue_empty(board_q))
+  //@loop_invariant queue_in_hash(board_q, move_map); 
+    //every element in the queue should also be in the hmap
+  {
+    //dequeue a board
+    current = dequeue(board_q);
+    //perform all the possible moves and store results in hashmap
+    for(int i = 0; i < current->width; i++)
+    //@loop_invariant 0 <= i && i <= current->width;
+      for(int j = 0; j< current->height; j++)
+      //@loop_invariant 0 <= j && j <= current->height;
+      {
+        board board_copy = copy_board(current);
+        toggle_board(board_copy, i, j);
+        if(!hmap_contains_key(board_copy, move_map))
+        {
+          hmap_insert(board_copy, move_new(i, j), move_map);
+          enqueue(board_copy, board_q);
+          //ensures that all boards in the queue are also in the hashmap
+        }
+      }
+    if(hmap_contains_key(lightsOff, move_map)) return roadmap(move_map, lightsOff, B);
+  }
+  return NULL;
+}
+
+movelist roadmap(hmap H, ktype start, ktype dest)
+//@requires is_hmap(H);
+//@requires is_board(start);
+//@requires is_board(dest);
+{
+  //base case
+  if(start->lights == dest->lights) return NULL;
+  //get the move associated with the board
+  move m = hmap_get(start, H);
+  //make start point to a deep copy, and toggle it
+  start = copy_board(start);
+  toggle_board(start, m->x, m->y);
+  //create the rest of the mlist
+  movelist mlist = alloc(struct list_of_moves);
+  mlist->x = m->x;
+  mlist->y = m->y;
+  //recursivly link the list from the toggled start to dest
+  mlist->next = roadmap(H, start, dest);
+  return mlist;
+} 
+
+bool queue_in_hash(queue Q, hmap H)
+//@requires is_queue(Q);
+//@requires is_hmap(H);
+{
+  //if q is the null set, then true bc nullset is a subset of every set
+  if(queue_empty(Q)) return true;
+  int length = Q->size; 
+  board current;
+  queue Q2 = queue_new();
+  bool failed = false; //give benefit of the doubt
+  for(int i = 0; i < length; i++)
+  //@loop_invariant 0 <= i && i <= length;
+  //@loop_invariant Q->size + Q2->size == length;
+    //because Q is the complement of Q2
+  {
+    current = dequeue(Q);
+    enqueue(current, Q2); //need to store elements somewhere temporarily
+    if(!hmap_contains_key(current, H)) failed = true;
+  }
+  //push all elements back on queue to maintain that Q == Q2
+  while(!queue_empty(Q2)) { enqueue(dequeue(Q2), Q); }
+  //if an element exists in the queue wihtout being in the hashmap, returns false
+  return !failed;
+}

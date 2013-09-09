@@ -1,0 +1,2 @@
+Skeleton 5
+d5Cf1d"IntInf"ad"Fibo"jh0çğ±ã¢FIBO"aå¢PoorMemoizer"i1aä¢D"gp1c"DICT"jh1aÿ6gp1ÿ6gp1c"POORMEMOIZER"ad"TreeMemoFibo"jêçğ±ä¢IntInfLt"çğ±å¢TreeDict"gp1e"MemoedFibo"ad"PoorAutoMemoFibo"jh1ad"TreeIntInfMemoizer"jÿ2gp1ÿ$ÿN

@@ -1,0 +1,2 @@
+Skeleton 5
+d7f3d"Math"d"Real"d"StringCvt"aгўPLANE_ARGS"h1aдўScalar"gp1c"SCALAR"CaеўMakePlane"i2aдўP"зр±яf1яЃjh1aя/gp2яЃя/зр±гўSPACE"aдўRealPlaneArg"jh1aя/h0яЃaдўRatPlaneArg"jh1aя/h2egp±дўIntInf"fя‚1яЃad"RealPlane"jjgp1я‚зр±яЃяЃ1ad"RatPlane"jjgp1яЃ=яѓяЃ1N

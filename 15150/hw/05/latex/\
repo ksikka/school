@@ -1,0 +1,62 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{5}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+2/25/12 \\
+\end{center}
+
+
+\question{1}{Task 2.2}
+\textbf{Claim:} For all \texttt{l1: $\alpha$ list} and all \texttt{l2: 
+$\alpha$ list list}, 
+  \begin{center}
+    \texttt{ap(l1, concatap l2) $\cong$ concatap(l1 :: l2)}
+  \end{center}
+
+\textbf{Proof:} Consider:
+\begin{align*}
+     & \mathtt{ap(l1, concatap l2)}&\\
+\cong& \texttt{(l1, case l2 of [] => [] | (x::xs) => ap(x, concatap xs)} &\\
+\end{align*}
+
+
+\question{2}{Task 2.3}
+
+
+\end{document}
+

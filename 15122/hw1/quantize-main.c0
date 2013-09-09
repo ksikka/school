@@ -1,0 +1,75 @@
+#use <conio>
+#use <string>
+#use <args>
+#use <parse>
+#use <img>
+
+int main() {
+    image_t source;
+    image_t dest;
+    int width;
+    int height;
+    pixel[] inpixels;
+    pixel[] outpixels;
+    pixel[] resultpixels;
+    int *q_level = alloc(int);
+    string *quant = alloc(string);
+    string *output = alloc(string);
+    string *input = alloc(string);
+    string type = "quantize";
+    string[] args;
+    int i;
+  
+    args_string("-o", output);
+    args_string("-q", quant);
+    args_string("-i", input);
+    args = args_parse()->argv;
+    
+    if (string_equal("", *quant) || string_equal("", *input)) {
+        println("Usage: quantize -i <input image> -q <quantization level> [-o <output image>]");
+        return 1;
+    }
+    
+    q_level = parse_int(*quant, 10);
+    if (q_level == NULL) {
+      println("Invalid quantization level (must be an integer)");
+      return 1;
+    }
+
+    if (string_equal("", *output))
+        *output = string_join(type, string_join("_", *input));
+  
+    print("Input image:  ");
+    println(*input);
+    print("Quantization level:  ");
+    printint(*q_level);
+    println("");
+    print("Output image: ");
+    println(*output);
+  
+    source = image_load(*input);
+    width = image_width(source);
+    height = image_height(source);
+
+    print("Loaded image.  Dimensions are ");
+    printint(width);
+    print(" by ");
+    printint(height);
+    println(".");
+  
+    dest = image_create(width, height);
+    inpixels = image_data(source);
+    outpixels = image_data(dest);
+    print("Running quantization transform...");
+    resultpixels = quantize(inpixels, width, height, *q_level);
+    println("");
+    for (i = 0; i < width*height; i++)
+        outpixels[i] = resultpixels[i];
+    print("Saving output...");
+    image_save(dest, *output);
+    println("");
+    image_destroy(dest);
+    image_destroy(source);
+    return 0;
+}
+

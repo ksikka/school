@@ -1,0 +1,15 @@
+group is
+	$/basis.cm
+
+        ../../../../src/sequence/sources.cm
+
+        ../code/space.sig
+        ../code/ratplane.sml
+        ../code/plane-rat.sml
+	../code/mechanics.sml
+        ../code/naiveNBody.sml
+        ../code/bbox.sig
+        ../code/bbox.sml
+	barnes-hut-sol.sml 
+	../code/simulation.sml
+        ../code/solars.sml

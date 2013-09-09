@@ -1,0 +1,33 @@
+/**
+ ******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *     client-side implementation for a priority queue
+ *
+ * Frank Pfenning, Victor Adamchik
+ ******************************************************************************/
+
+ /*****************************************************************************
+               Do not submit this file.
+ *****************************************************************************/
+
+typedef struct htree_node* htree;
+typedef htree elem;
+
+struct htree_node
+{
+    char value;  // '\0' except at leaves
+    int frequency;
+    htree left;
+    htree right;
+};
+
+int compare(elem T1, elem T2)
+{
+	return T1->frequency - T2->frequency; //no overflow!
+}
+
+void print_data(elem T)
+{
+	print("("); printint(T->frequency); print(","); printchar(T->value); print(")");
+}

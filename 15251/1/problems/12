@@ -1,0 +1,28 @@
+Some of the recently graduated Art majors challenged us to a game of
+our choosing.  We are considering proposing the following game:
+
+The game begins with N stacks of K coins.  Each turn, the current team
+chooses a stack and takes a non-zero number of coins from that stack.
+The two groups (Art Majors and Us) alternate turns, and the game ends
+when all the stacks are empty.  The last team to pick up coins wins.
+
+Unlike the Art Major team, we're really busy; so, we want to know
+how many turns on average a game would take us before agreeing to it.
+For "simplicity", assume that every time each team moves, they choose
+a coin at random and remove that coin and everything above it.
+
+The "Secret Society of Art Majors" who we believe took the elements of 
+math has set up a way for you to correspond with them.  If you are 
+running the shell you used to download the problems, you can use the 
+command
+
+	submit_normal 12
+
+to submit your solution.  You will be challenged three times to make 
+sure that your answer is actually correct.  Be careful---a single
+wrong answer will cause your whole solution to be incorrect.
+Also, we've heard that art majors don't like forgeries...so, don't
+try to submit too often.
+
+Good luck, godspeed, and remember...
+We're ready to go; the stacks are all in a row!

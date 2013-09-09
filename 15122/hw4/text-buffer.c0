@@ -1,0 +1,119 @@
+/*
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	A text buffer is a Doubly Linked List of gap buffers
+ *
+ *     The list is terminated with "dummy" nodes whose contents is never inspected.
+ *
+ * @author:
+ ******************************************************************************/
+
+#use "gap-buffer.c0"
+
+/* this tbuf implementation uses fixed-size gapbufs of 16 bytes */
+typedef gapbuf elem;
+//typedef int elem;
+
+typedef struct list_node* dll;
+struct list_node
+{
+    elem data;   // this is a gap buffer (fixed-size of 16 bytes)
+    dll next;
+    dll prev;
+};
+
+typedef struct text_buffer * tbuf;
+struct text_buffer
+{
+    dll start;     // the fist node of the list
+    dll point;    // the current node
+    dll end;     // the last node
+};
+
+/* INTERFACE */
+
+bool is_linked(tbuf B);            // Checks if the list is a well-formed doubly-linked list
+bool tbuf_at_left(tbuf B);        // Returns true if the point is the first node of the list
+bool tbuf_at_right(tbuf B);      // Returns true if the point is the last node of the list
+void tbuf_forward(tbuf B);      // Moves the point forward, to the right
+void tbuf_backward(tbuf B);    // Moves the point backward, to the left
+
+
+//Deletes the point node and moves the point to the left
+// (if that is not the start node, otherwise - to the right
+//  start <--> point <--> end
+void tbuf_delete_point(tbuf B);
+
+
+/* IMPLEMENTATION */
+bool is_linked(tbuf B)
+//uses only a single if statement *showing off*
+{
+  bool nonnull_ptr = B              != NULL && 
+                      B->start       != NULL &&
+                       B->start->next != NULL &&
+                        B->end         != NULL &&
+                         B->end->prev   != NULL &&
+                          B->point       != NULL ;
+  if(!nonnull_ptr) return false;
+  dll current = (B->start)->next;
+  bool point_present = false;
+  bool invariants = true;
+  while(invariants && current != B->end) 
+  //exit if list isnt properly linked or end is reached
+  {
+    //first checks if point has been detected or the current node is point
+    point_present = point_present || current == B->point;
+    invariants = current->prev          != NULL    && 
+                  current->next          != NULL    &&
+                   (current->next)-> prev == current &&
+                    (current->prev)-> next == current ; 
+    current = current->next;  //advance current to next node
+  }
+  return point_present && invariants;
+}
+bool tbuf_at_left(tbuf B)
+//@requires is_linked(B);
+//@ensures is_linked(B);
+{
+  return B->start->next == B->point;
+}
+bool tbuf_at_right(tbuf B)
+//@requires is_linked(B);
+//@ensures is_linked(B);
+{
+  return B->end->prev == B->point;
+}
+void tbuf_forward(tbuf B)
+//@requires is_linked(B);
+//@ensures is_linked(B);
+{
+  if(tbuf_at_right(B)) return;
+  B->point = (B->point)-> next;
+}
+void tbuf_backward(tbuf B)
+//@requires is_linked(B);
+//@ensures is_linked(B);
+{
+  if(tbuf_at_left(B)) return;
+  B->point = (B->point)-> prev;
+}
+//Deletes the point node and moves the point to the left
+// (if that is not the start node, otherwise - to the right
+//  start <--> point <--> end
+void tbuf_delete_point(tbuf B)
+//@requires is_linked(B);
+//@ensures is_linked(B);
+{
+  if(tbuf_at_right(B) && tbuf_at_left(B)) return;
+  (B->point->prev)-> next = B->point->next;
+  (B->point->next)-> prev = B->point->prev;
+  //need to account for case of beginning of list
+  if(B->point->prev == B->start)
+  {
+    B->point = B->point->next;
+    return;
+  }
+  B->point = B->point->prev;
+}

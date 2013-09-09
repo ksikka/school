@@ -1,0 +1,29 @@
+We had another idea of how we could offer an olive branch to the Art
+Majors.  We've decided to make macaroni and bead necklaces.  If we
+have N+1 macaronis on the necklace, then there must be N beads to
+make it look pretty.
+
+Write a program that takes a number N as standard input and outputs
+the number of UNIQUE necklaces we can make with N beads followed by
+a newline character.
+
+Two necklaces are considered "the same" if and only if one can be 
+rotated to match the other.  If a necklace must be flipped to match 
+another necklace, those two are considered different.
+
+We have set up a way for you to submit your program to help us plead with
+the Secret Society of Art Majors. If you are running the shell you used 
+to download the problems, you can use the command
+
+	submit_programming 08 "A_WAY_TO_RUN_YOUR_PROGRAM_ON_THE_COMMAND_LINE"
+
+to submit your solution.  So, if you wrote your program in python,
+and you called it macaroni.py, then you would use the command
+
+	submit_programming 08 "python macaroni.py"
+
+You will be given a single response that tells you if your program
+works or not.
+
+Good luck, godspeed, and remember...
+We chose you!

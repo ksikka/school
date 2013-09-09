@@ -1,0 +1,66 @@
+#use "imageutil.c0"
+
+pixel get_overlay(pixel[] pixels, int height, int width, pixel[] mask, int maskwidth, int row0, int col0);
+
+pixel[] blur(pixel[] pixels, int width, int height, int[] mask, int maskwidth)
+//@requires (maskwidth > 0) && (height > 0) && (width > 0); //all non-negative
+//@requires (maskwidth % 2) != 0; //odd width
+//@requires maskwidth * maskwidth == \length(mask);
+//@requires mask[maskwidth*maskwidth/2] != 0; //center pos of mask not 0
+//@requires height*width == \length(pixels);
+{
+    int length = width*height; //length of the array
+    int masklength = maskwidth*maskwidth;
+
+    pixel[] blurredpic = alloc_array(pixel,length);
+
+    //iteraes through pixels in original pic
+    int i = 0;
+    for(int row = 0; row < height; row++)
+    {
+        for(int col = 0; col < width; col++)
+        {
+            i = get_index(row,col,width,height);
+            blurredpic[i] = get_overlay( pixels, height, width, mask, maskwidth, row, col);
+        }
+    }
+    return blurredpic;
+}
+
+pixel get_overlay(pixel[] pixels, int height, int width, pixel[] mask, int maskwidth, int row0, int col0)
+{
+    int summask = 0;
+
+    int sumred = 0;
+    int sumblue = 0;
+    int sumgreen = 0;
+    
+    int index = 0;
+    int bigpicindex = 0;
+
+    int ioffset = maskwidth/2;
+    for(int i = -ioffset; i <= ioffset; i++)
+    {
+        for(int j = -ioffset; j <= ioffset; j++)
+        {
+            if(is_valid_pixel(row0 + i, col0 + j, width, height))
+            {
+                summask += mask[index];
+   
+                bigpicindex = get_index(row0+i,col0+j,width,height);
+                 
+                sumred += get_red(pixels[bigpicindex]) * mask[index]; 
+                sumgreen += get_green(pixels[bigpicindex]) * mask[index];
+                sumblue += get_blue(pixels[bigpicindex]) * mask[index];
+            }
+            index++;
+
+        }
+    }
+    sumred /= summask;
+    sumblue /= summask;
+    sumgreen /= summask;
+    int alpha = get_alpha(pixels[get_index(row0,col0,height,width)]);
+    return make_pixel(alpha,sumred,sumgreen,sumblue);
+}
+

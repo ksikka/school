@@ -1,0 +1,338 @@
+\documentclass{article}
+\parindent=0pt
+\newcommand{\op}[1]{\textbf{#1}}
+\newcommand{\lcalc}[1]{\begin{center}\ensuremath{#1}\end{center}}
+\newcommand{\error}[1]{Something went wrong.}
+\newcommand{\begintodo}[1]{\begin{center}define the function \op{#1} here\end{center}}
+\newcommand{\begindone}[1]{\begin{center}\op{#1} was defined here\end{center}}
+\newcommand{\finishtodo}[1]{}
+\newcommand{\finishdone}[1]{}
+\newcommand{\test}[2]{#1 = #2\par}
+\newcommand{\begintests}[1]{\begin{center}tests for the function(s) \op{#1} here\\}
+\newcommand{\finishtests}[1]{\end{center}}
+\renewcommand{\c}[2]{\texttt{cons}\{#1\}\{#2\}}
+
+\begin{document}
+\begin{center}
+    {\large Lambda\LaTeX: Implementing the Lambda Calculus in \LaTeX}
+\end{center}
+\section{Introduction}
+In this question, you will build up an implementation of the lambda calculus using only
+built-in \LaTeX$\;$(macro) features.  Keep in mind that a lot of the lambda expressions
+were given to you in the lecture, and it would be a good idea to refer to it periodically.
+Before you begin, here's a guide to how \LaTeX macros work.  To create a new macro
+called ``foobar'', you write the following line of \LaTeX$\;$code:
+\begin{center}
+\verb+\newcommand{\foobar}[X]{WHAT_YOU_WANT_IT_TO_DO}+
+\end{center}
+
+\verb+\foobar+ is the name of the command; \verb+X+ is the number of arguments it takes 
+(this parameter is optional and you can omit the square brackets entirely); \verb+WHAT_YOU_WANT_IT_TO_DO+ is the body
+of the macro (the part where you actually tell it what to do.  To reference arguments in your function use \verb+#1+, \verb+#2+, etc.
+
+\textbf{You will want to follow along in the tex source as well as the pdf, because you will implement macros
+in this tex file.}
+
+
+The first function we will define is the identity function \op{id}:
+
+\lcalc{\op{id} \equiv \lambda x.x}
+
+\begindone{id}
+\newcommand{\id}[1]{#1}
+\finishdone{id}
+
+Please put all definitions that you write in this file and expect to be graded between the \verb+begintodo+ and \verb+finishtodo+ macros.
+These will be used to slurp pieces of your file out for grading.  Please don't delete them or you risk getting a zero on this problem.
+
+\begintests{id}
+\test{\id{10}}{10}
+\test{\id{1337}}{1337}
+\finishtests{id}
+
+Most functions will have tests pre-written for you (like the above).  They will start commented out so that the tex file compiles, but you should feel free to
+uncomment them to test your code.
+
+The last piece of \LaTeX$\;$syntax that we need to describe is macro (function) application.  In the lambda calculus, if we write $\lambda x. \lambda y. (y x)$, we take
+the inner part to mean ``give $x$ to $y$ as an argument'' (in other words, apply $x$ to $y$).  An analogous \LaTeX$\;$macro would be defined as follows:
+\begin{center}
+    \verb+\newcommand{\func}[2]{#2{#1}}+
+\end{center}
+There are two important things to note about this implementation of the lambda expression.  The first is that by saying the macro takes two arguments, we are mirroring that
+the lambda expression is abstracted twice (intuitively, there are two arguments).  The second is that in \LaTeX, \verb+#2 #1+ would \textbf{NOT} be function application.
+To apply a function in \LaTeX, you \textbf{MUST} use curly braces.  Try this out by defining the pairing function as given in lecture:
+
+\lcalc{\op{pair} \equiv \lambda x. \lambda y. \lambda f. f x y}
+
+% TODO: You need to define this macro
+\begintodo{pair}
+\newcommand{\pair}[3]{#3{#1}{#2}}
+\finishtodo{pair}
+
+\section{Booleans}
+To really get started, we need a couple more functions which we define for you:
+
+\lcalc{\op{true} \equiv \lambda x . \lambda y. x}
+\begindone{true}
+\newcommand{\true}[2]{#1}
+\finishdone{true}
+
+\lcalc{\op{false} \equiv \lambda x . \lambda y. y}
+\begindone{false}
+\newcommand{\false}[2]{#2}
+\finishdone{false}
+
+\begintests{booleans}
+\test{\false{10}{20}}{20}
+\test{\true{10}{20}}{10}
+\finishtests{booleans}
+
+If we're going to write some real functions, we're probably going to need the normal 
+boolean operations: \op{and}, \op{or}, \op{not}.  Define these functions here:
+
+% TODO: You need to define this macro
+\begintodo{and}
+\newcommand{\cAnd}[2]{#1{#2}{#1}}
+\finishtodo{and}
+
+% TODO: You need to define this macro
+\begintodo{or}
+\newcommand{\cOr}[2]{#1{#1}{#2}}
+\finishtodo{or}
+
+% TODO: You need to define this macro
+\begintodo{not}
+\newcommand{\cNot}[3]{#1{#3}{#2}}
+\finishtodo{not}
+
+\begintests{boolean functions}
+\test{\cAnd{\false}{\true}{1}{0}}{0}
+\test{\cAnd{\false}{\false}{1}{0}}{0}
+\test{\cAnd{\true}{\true}{1}{0}}{1}
+\test{\cOr{\false}{\true}{1}{0}}{1}
+\test{\cOr{\false}{\false}{1}{0}}{0}
+\test{\cOr{\true}{\true}{1}{0}}{1}
+\test{\cNot{\true}{1}{0}}{0}
+\test{\cNot{\false}{1}{0}}{1}
+\finishtests{boolean functions}
+
+One more thing we'll need is the ``if-then-else'' operator we covered in lecture.
+% TODO: You need to define this macro
+\begintodo{ifthenelse}
+\newcommand{\ifthenelse}[3]{#1{#2}{#3}}
+\finishtodo{ifthenelse}
+
+\begintests{ifthenelse}
+\test{\ifthenelse{\true}{1}{\error}}{1}
+\test{\ifthenelse{\false}{\error}{2}}{2}
+\finishtests{ifthenelse}
+
+\section{Lists}
+Now that we have basic booleans, let's continue making useful constructs to get to
+pairs and lists.  If we have a pair, we'd like to be able to get the first and
+second elements out of the pair.  We use \op{first} and \op{second} for this:
+
+\lcalc{\op{first} \equiv \lambda p . p (\lambda x. \lambda y. x)}
+\begindone{first}
+\newcommand{\first}[1]{#1{\true}}
+\finishdone{first}
+
+\lcalc{\op{second} \equiv \lambda p . p (\lambda x. \lambda y. y)}
+\begindone{second}
+\newcommand{\second}[1]{#1{\false}}
+\finishdone{second}
+
+Now that we have pairs, we'd like to represent entire lists.  We use
+cons cells like in the lecture. We represent the list $[1, 2, 3]$ as
+$(1\;(2\;(3\;\texttt{nil})))$. We can construct lists by repeated 
+applications of $\texttt{cons}$. To get the above list, we use
+$$\c{1}{\c{2}{\c{3}{\texttt{nil}}}}$$
+\op{nil} is easy enough to implement:
+
+\lcalc{\op{nil} \equiv \op{false}}
+\begindone{nil}
+\newcommand{\nil}{\false}
+\finishdone{nil}
+
+\lcalc{\op{cons} \equiv \op{pair}}
+\begindone{cons}
+\newcommand{\cons}{\pair}
+\finishdone{cons}
+
+To finish off our list definitions, we define \op{car}, which gets the first
+element of the list, and \op{cdr} which gets everything but the first element
+of the list.  Here they are:
+
+\begindone{car}
+\newcommand{\car}{\first}
+\finishdone{car}
+\begindone{cdr}
+\newcommand{\cdr}{\second}
+\finishdone{cdr}
+
+We would like to be able to tell if a list is empty; so, we define a macro \op{isempty}
+which returns \op{true} if the list is empty and \op{false} otherwise.  Implement this
+function here (Hint: You'll want to use a helper function).
+
+% TODO: You need to define this macro
+\begintodo{isempty}
+\newcommand{\help}[2]{\cNot}
+\newcommand{\isempty}[1]{#1{\help}{\true}}
+\finishtodo{isempty}
+
+
+\section{Recursion}
+As we discussed in lecture, we can use a fixed-point combinator to create recursive
+functions in the lambda calculus.  We present two of them for you here:
+
+\begindone{fix}
+\newcommand{\fixer}[3]{#2{#1{#1}{#2}}{#3}}
+\newcommand{\om}[1]{#1{#1}}
+\newcommand{\fix}{\om{\fixer}}
+\finishdone{fix}
+
+\begindone{Y}
+\newcommand{\dupPrint}{\ensuremath{\lambda f. \lambda x . f (x x)}}
+\newcommand{\dup}[2]{#1 {#2{#2}}}
+\newcommand{\Y}[1]{\dup{#1}{\dup{#1}}}
+\finishdone{Y}
+
+Throughout the rest of this question, you'll probably want to use the Y-combinator,
+but you could exchange it for the other one if you wanted to!
+
+Now let's use the Y-combinator to actually create a recursive function!  \op{listId}
+takes in a list as an argument, recurses over every element in the list, and returns
+the list unchanged.
+
+\begindone{listId}
+\newcommand{\recListId}[2]{\ifthenelse{\isempty{#2}}{\nil}{\cons{\car{#2}}{#1{\cdr{#2}}}}}
+\newcommand{\listId}[1]{\Y {\recListId} {#1}}
+\finishdone{listId}
+
+
+To get a feel for how this type of recursion works, define the following function:
+\op{printlist} which prints out the list in a readable way.  For example, if the
+given list is \c{1}{\c{2}{\c{3}{\texttt{nil}}}}, then \op{printlist} should output
+\begin{center}
+(1 (2 (3 nil)))
+\end{center}
+
+% TODO: You need to define this macro
+\begintodo{printlist}
+\newcommand{\helpthree}[2]{\ifthenelse{\isempty{#2}}{nil}{(\first{#2} {#1{\second{#2}}})}}
+\newcommand{\printlist}[1]{\Y{\helpthree}{#1}}
+\finishtodo{printlist}
+
+\begintests{printlist}
+\newcommand{\lstA}{\cons{1}{\cons{2}{\cons{3}{\nil}}}}
+\newcommand{\lstB}{\cons{1}{\cons{2}{\nil}}}
+\newcommand{\lstC}{\cons{1}{\nil}}
+\test{\printlist{\nil}}{nil}
+\test{\printlist{\lstC}}{(1 nil)}
+\test{\printlist{\lstB}}{(1 (2 nil))}
+\test{\printlist{\lstA}}{(1 (2 (3 nil)))}
+\finishtests{printlist}
+
+\section{Church Numerals}
+As in lecture, we'd like a way of representing numbers; so, we turn to Church Numerals.  We'll
+define zero for you:
+
+\begindone{z}
+\newcommand{\z}[1]{\id}
+\finishdone{z}
+
+You define successor:
+
+% TODO: You need to define this macro
+\begintodo{s}
+\newcommand{\s}[3]{#2{#1{#2}{#3}}}
+\finishtodo{s}
+
+...and plus:
+
+% TODO: You need to define this macro
+\begintodo{plus}
+\newcommand{\plus}[4]{#1{#3}{#2{#3}{#4}}}
+\finishtodo{plus}
+
+Just like with lists, we need a way of testing for the base case.  Please define
+\op{iszero}:
+
+% TODO: You need to define this macro
+\begintodo{iszero}
+\newcommand{\helptwo}[1]{\false}
+\newcommand{\iszero}[1]{#1{\helptwo}{\true}}
+\finishtodo{iszero}
+
+Here's predecessor (which is still really annoying):
+
+\begindone{p}
+\newcommand{\phelpa}[3]{#3{#2{#1}}}
+\newcommand{\phelpb}[2]{#1}
+\newcommand{\p}[3]{#1{\phelpa{#2}}{\phelpb{#3}}{\id}}
+\finishdone{p}
+
+We provide two ways of printing church numerals (via unary and via \LaTeX's
+counters):
+
+\begindone{unary}
+\newcommand{\recUnary}[2]{\ifthenelse{\iszero{#2}}{}{1{#1 {\p{#2}}}}}
+\newcommand{\unary}[1]{\Y{\recUnary}{#1}}
+\finishdone{unary}
+
+\begindone{printnum}
+\newcounter{num}
+\newcommand{\recPrintNum}[2]{\ifthenelse{\iszero{#2}}{}{\addtocounter{num}{1}{#1{\p{#2}}}}}
+\newcommand{\printnum}[1]{\setcounter{num}{0}{\Y{\recPrintNum}{#1}}\arabic{num}}
+\finishdone{printnum}
+
+\begintests{church numerals}
+\test{\printnum{\s{\s{\s{\s{\z}}}}}}{4}
+\test{\unary{\plus{\s{\z}}{\s{\s{\z}}}}}{111}
+\finishtests{church numerals}
+
+\section{Putting It All Together}
+Implement an \op{append} function which takes in two arguments $x$ and $L$, and appends $x$ to the list $L$.
+
+% TODO: You need to define this macro
+\begintodo{append}
+\newcommand{\helpfour}[3]{\ifthenelse
+        {\isempty{#3}}
+        {\cons{#2}{#3}}
+        {\cons{\car{#3}}{#1{#2}{\cdr{#3}}}}
+    }
+\newcommand{\append}[2]{\Y{\helpfour}{#1}{#2}}
+\finishtodo{append}
+
+Implement a \op{reverse} function which takes in a list $L$ and returns a new list with the elements of $L$ 
+in reverse order.
+
+% TODO: You need to define this macro
+\begintodo{reverse}
+\newcommand{\helpfive}[2]{\ifthenelse
+        {\isempty{#2}}
+        {#2}
+        {\append{\car{#2}}{#1{\cdr{#2}}}}
+    }
+\newcommand{\reverse}[1]{\Y{\helpfive}{#1}}
+\finishtodo{reverse}
+
+Finally, implement a function \op{range} which takes in a church numeral which represents the number $n$ and
+outputs the list \c{1}{\c{2}{\dots\c{n}{\texttt{nil}}\dots}}:
+
+% TODO: You need to define this macro
+\begintodo{range}
+\newcommand{\helpsix}[2]{\ifthenelse{\iszero{#2}}
+    {\nil}
+    {\cons
+        {\printnum{#2}}
+        {#1{\p{#2}}}
+    }
+}
+\newcommand{\range}[1]{\reverse{\Y{\helpsix}{#1}}}
+\finishtodo{range}
+
+\begintests{range}
+\test{\printlist{\range{\s{\s{\s{\s{\z}}}}}}}{(1 (2 (3 (4 nil))))}
+\finishtests{range}
+\end{document}

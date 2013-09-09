@@ -1,0 +1,2 @@
+cp BSTOrderedTable.sml BSTOrderedTableTest.sml RangeCount.sml RangeCountTest.sml ../latex/hw08.pdf /afs/andrew.cmu.edu/course/15/210/handin/ksikka/assn8/
+/afs/andrew.cmu.edu/course/15/210/bin/check/08/check.pl

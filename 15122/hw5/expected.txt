@@ -1,0 +1,66 @@
+OO
+##
+constructing winning move list: (0,0)(1,0)
+solved in 2 moves
+#OO
+OOO
+not solved.
+##O
+#OO
+OOO
+constructing winning move list: (0,0)
+solved in 1 moves
+OO#
+O##
+OO#
+constructing winning move list: (2,1)
+solved in 1 moves
+OO#
+O##
+OO#
+constructing winning move list: (2,1)
+solved in 1 moves
+O#O
+###
+O#O
+constructing winning move list: (1,1)
+solved in 1 moves
+###
+O##
+O##
+constructing winning move list: (1,0)(2,2)
+solved in 2 moves
+O##
+#OO
+#O#
+constructing winning move list: (2,0)(0,2)(2,2)
+solved in 3 moves
+OOO
+O#O
+OOO
+constructing winning move list: (1,0)(0,1)(1,1)(2,1)(1,2)
+solved in 5 moves
+###
+###
+###
+constructing winning move list: (0,0)(2,0)(1,1)(0,2)(2,2)
+solved in 5 moves
+O##O
+#OO#
+O#OO
+O###
+constructing winning move list: (1,1)(2,1)(2,3)
+solved in 3 moves
+O#OO
+O#OO
+O#OO
+O#OO
+not solved.
+OO###
+OOOOO
+OOO##
+O##O#
+OO###
+constructing winning move list: (3,0)(3,2)(2,3)(4,4)
+solved in 4 moves
+0

@@ -1,0 +1,28 @@
+group is
+  $/basis.cm
+  ../../../src/sequence/sources.cm
+  ../../../src/matrix/sources.cm
+  ../../../src/ordered/sources.cm
+
+  las.sml
+  sequtils.sml
+
+  game.sig
+  player.sig
+  humanplayer.sml
+  minimax.sml
+  alphabeta.sml
+  jamboree.sml
+  referee.sml
+
+  nim.sml
+  runnim.sml
+
+  explicit.sml
+
+  connect4.sml
+  runconnect4.sml
+
+ (* For Extra Credit *)
+ (*popout.sml*)
+ (*runpopout.sml*)

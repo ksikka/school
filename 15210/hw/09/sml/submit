@@ -1,0 +1,2 @@
+cp SeamFinder.sml original.jpg seamcarved.jpg ../latex/hw09.pdf /afs/andrew.cmu.edu/course/15/210/handin/ksikka/assn9/
+/afs/andrew.cmu.edu/course/15/210/bin/check/09/check.pl

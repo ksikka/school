@@ -1,0 +1,194 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{8}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+\today \\
+\end{center}
+
+
+\question{1}{Task 3.1}
+\textbf{Claim 1:} The empty queues are related.\\
+Formally, $R(\msml{LQ.emp},\msml{LLQ.emp})$.
+
+\textbf{Proof:} Let \sml{f} and \sml{b} be lists. Consider \sml{LLQ.emp $\cong$ (f,b) $\cong$ ([],[])}.
+
+Consider:
+\begin{align*}
+      & \sml{f@(rev b)}                      & \\
+\cong & \sml{[]@(rev [])}                    &\text{def of LLQ.emp} \\
+\cong & \sml{[]@(case [] of [] => [] | ...)} &\text{step} \\
+\cong & \sml{[]@[]}                          &\text{evaluation of case} \\
+\cong & \sml{[]}                             &\text{Lemma 3}
+\end{align*}
+Since \sml{f@(rev b)} is equivalent to \sml{LQ.emp $\cong$ []}, 
+R(LQ.emp,LLQ.emp) holds by definition of R.
+
+\textbf{Claim 2:} Insertion preserves relatedness.\\
+Formally, for all \sml{x:int}, \sml{l:int list}, \sml{f:int list}, \sml{b:int list},
+if R(\sml{l}, \sml{(f,b)}), then R(\sml{LQ.ins(x,l)}, \sml{LLQ.ins(x,(f,b))})
+
+\textbf{Proof:}
+Let \sml{x:int}, \sml{l:int list}, \sml{f:int list}, \sml{b:int list} be arbitrary,
+and assume that:\\
+R(\sml{l}, \sml{(f,b)})
+
+We want to show that R(\sml{LQ.ins(x,l)}, \sml{LLQ.ins(x,(f,b))}).
+
+\textbf{Define} \sml{(f',b') $\cong$ LLQ.ins(x,(f,b))}
+Consider:
+\begin{align*}
+      & \sml{(f',b')} &\\
+\cong & \sml{LLQ.ins(x,(f,b))}) &\\
+\cong & \sml{(f,x::b)} & \text{step} \\
+\cong & \sml{(f,x::b)} & \text{step} \\
+\end{align*}
+Now we know that \sml{(f',b') $\cong$ (f,x::b)}.
+Now consider:
+\begin{align*}
+      & \sml{f' @ (rev b')} & \\
+\cong & \sml{f @ (rev (x::b))} &\text{proven above} \\
+\cong & \sml{f @ (case (x::b) of [] => [] | x::xs => (rev xs) @ x)} &\text{step} \\
+\cong & \sml{f @ ((rev b) @ [x])} &\text{case evaluation} \\
+\cong & \sml{(f @ (rev b)) @ [x]} &\text{Lemma 1} \\
+\cong & \sml{l @ [x]} &\text{Lemma 1} \\
+\cong & \sml{LQ.ins(l,x)} &\text{step, equiv is transitive} \\
+\end{align*}
+Therefore, by the definition of R, we have proven that R(\sml{LQ.ins(x,l)}, \sml{(f',b')}).
+Then, by the our definition of \sml{(f',b')}, we have proven the claim. 
+
+\textbf{Claim 3:} On related queues, removal gives equal integers and related queues.\\
+More formally, we must prove the following:
+For all \sml{x:int}, \sml{l:int list}, \sml{f:int list}, \sml{b:int list}, if R(\sml{l}, \sml{(f,b)}) then one of the
+following is true:
+
+\sml{LQ.rem l $\cong$ NONE} and \sml{LLQ.rem (f,b) $\cong$ NONE}\\
+or\\
+There exist \sml{x:int, y:int}, \sml{l':int list}, \sml{f':int list}, \sml{b':int list}, such that
+\begin{enumerate}
+\item \sml{LQ.rem l $\cong$ SOME(x,l')}
+\item \sml{LLQ.rem (f,b) $\cong$ SOME(y,(f',b'))}
+\item \sml{x = y}
+\item R(\sml{l'}, \sml{(f',b')})
+\end{enumerate}
+
+\textbf{Proof:}
+Let \sml{l:int list}, \sml{f:int list}, \sml{b:int list}.\\
+Assume R(\sml{l}, \sml{(f,b)}).
+
+First, note that $l$ may be either \sml{[]} or \sml{x::xs} (empty or non-empty).
+We will examine these two cases separately.
+
+\textbf{Case \sml{l$\cong$[]}}
+Since we know that \sml{l} and \sml{(f,b)} are related, we know \sml{[]} and \sml{(f,b)} are related.
+This means that \sml{[] $\cong$ f @ (rev b)}. We can see by the definition of the \sml{@} function,
+that \sml{[]} is only outputted when both inputs are \sml{[]}.
+Therefore, \sml{f$\cong$[]} and \sml{(rev b) $\cong$ []}.
+However, \sml{rev b} only outputs \sml{[]} when \sml{b$\cong$[]}. Therefore \sml{b$\cong$[]}.
+
+Consider:
+\begin{align*}
+      & \sml{LQ.rem l} &\\
+\cong & \sml{LQ.rem []} &\text{given}\\
+\cong & \sml{case [] => NONE | ...} &\text{step}\\
+\cong & \sml{NONE}&\text{case evaluation}
+\end{align*}
+And consider:
+\begin{align*}
+      & \sml{LLQ.rem (f,b)} &\\
+\cong & \sml{LLQ.rem ([],[])} &\text{shown above}\\
+\cong & \sml{case ([],[]) of ([],[]) => NONE | ...}&\text{step}\\
+\cong & \sml{NONE} & \text{case evaluation}
+\end{align*}
+We have shown that \sml{LQ.rem l $\cong$ NONE} and \sml{LLQ.rem (f,b) $\cong$ NONE}.
+Therefore the claim holds for this case.
+
+\textbf{Case \sml{l$\cong$ x::xs}} where \sml{x:int} and \sml{xs:int list}
+Consider:
+\begin{align*}
+      & \sml{LQ.rem l} & \\
+\cong & \sml{LQ.rem x::xs} & \text{given} \\
+\cong & \sml{case x::xs of [] = [] | x::xs => SOME(x,xs)} & \text{step} \\
+\cong & \sml{SOME(x,xs)} & \text{step}
+\end{align*}
+Therefore we have shown that \sml{LQ.rem l $\cong$ SOME(x,l')} where \sml{l'} is \sml{xs}.
+
+Since we know that \sml{l} and \sml{f},\sml{b} are related, we know that \sml{l $\cong$ x::xs $\cong$ f @ rev b}. 
+By the spec of rev, we know that the length of rev b is equal to the length of b.
+By the spec of @, we know that the length of l is equal to the sum length of f and rev b,
+which, by the above statement, is equal to the sum of f and b. Since l has a positive length
+because it is not \sml{[]}, then \sml{f+b} has a positive length. Therefore, f or b, or both have positive length.
+
+There are 3 cases for the lengths of f and b.
+\begin{enumerate}
+\item length of f = length of l (b is empty)
+\item length of b = length of l (f is empty)
+\item f and b are both non-zero
+\end{enumerate}
+
+We will see that case 2 becomes case 1 after 1 iteration of LLQ.rem.
+Consider case 2: \sml{LLQ.rem ([],b)} which steps to \sml{case ([],b) of ... | ([],\_) => rem (rev back,[])} which steps to
+\sml{rem (rev b, [])}. This is clearly case 1 where \sml{f $\cong$ rev b}. We can confirm that this is true, since in case 1,
+when we flatten the LLQ we get f@rev[] which is equivalent to f@[], which by lemma 3 is equivalent to f. And, 
+since we assumed relatedness, \sml{l $\cong$ f }. In case 2, 
+when we flatten the LLQ we get \sml{[]@rev b}, which according to Lemma to is equivalent to \sml{rev b}, and since we assumed
+relatedness to l, \sml{l $\cong$ rev b}. After it all, we see case 2 is equivalent to case 1 by transitivity through l.
+
+Therefore, we wil only prove the properties for Case 1 and 3, and say that case 2 becomes case 1.
+
+Now to show \sml{LLQ.rem (f,b) $\cong$ SOME(y,(f',b'))} for case 1 and 3:
+
+Consider (where f = z::zs and b is arbitrary):
+\sml{LLQ.rem (f,b)} which is the same as\\
+\sml{LLQ.rem (z::zs,b)} which steps to\\
+\sml{case (z::zs,b) of ... | (x::xs,\_) => SOME (x, (xs,back))} which evaluates to\\
+\sml{SOME (z, (zs,b))}
+
+Clearly, the claim is true for some \sml{y, f' and b'. where y is z, f' is zs, and b' is b}.
+
+Now we claim that \sml{x = y}. Recall that \sml{x} refers to \sml{l $\cong$ x::xs} and y  refers to \sml{f $\cong$ z::zs}.
+Also recall that \sml{l $\cong$ f@rev b} by relatedness.
+Proof: \\
+\sml{l $\cong$ f@rev b} is true by relatedness, so by equivalence,\\
+\sml{x::xs $\cong$ z::zs@rev b}
+
+Clearly, \sml{x = z} because the first elements of two non-empty but congruent lists
+are congruent and above we stated "y is z" so \sml{x $\cong$ y}.
+
+The proof is trivial... I value my sleep...
+\end{document}
+

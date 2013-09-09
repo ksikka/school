@@ -1,0 +1,27 @@
+int fib(int n)
+//@requires n>=1;
+{
+    if (n <= 2) return 1;
+    else return fib(n-1) + fib(n-2);
+}
+
+int fastfib(int n) 
+//@requires n >= 1;
+//@ensures \result == fib(n);
+{
+    if (n <=2) return 1;
+    int i =1;
+    int j = 1;
+    int k = 2;
+    int x = 3;
+    while (x < n)
+    //@loop_invariant 3<=x && x<=n && i==fib(x-1) && j==fib(x-2) && k==i+j;
+    {
+        i=j;
+        j=k;
+        if ((i+j)<0) return k;
+        k=i+j;
+        x++;
+    }
+    return k;
+}

@@ -1,0 +1,218 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{10}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+\today \\
+\end{center}
+
+
+\question{2.1}{Pebbling 2DFS}
+
+\begin{center}
+\begin{tabular}{l|l|l}
+  Time Step & Pebble 1 & Pebble 2\\
+  \hline\hline
+  1 & A& \\
+  \hline
+  2 & B& C\\
+  \hline
+  3 & D& E\\
+  \hline
+  4 & H& I\\
+  \hline
+  5 & K& L\\
+  \hline
+  6 & N& F\\
+  \hline
+  7 & Q& G\\
+  \hline
+  8 & J&  \\
+  \hline
+  9 & M&  \\
+  \hline
+ 10 & O& P\\
+  \hline
+ 11 & R&  \\
+  \hline
+ 12 & S&  \\
+\end{tabular}
+\end{center}
+
+\question{2.2}{Pebbling 2BFS}
+
+\begin{center}
+\begin{tabular}{l|l|l}
+  Time Step & Pebble 1 & Pebble 2\\
+  \hline\hline
+  1 & A& \\
+  \hline
+  2 & B& C\\
+  \hline
+  3 & D& E\\
+  \hline
+  4 & F& G\\
+  \hline
+  5 & H& I\\
+  \hline
+  6 & J& K\\
+  \hline
+  7 & L& M\\
+  \hline
+  8 & N& O\\
+  \hline
+  9 & P& Q\\
+  \hline
+ 10 & R&  \\
+  \hline
+ 11 & S&  \\
+\end{tabular}
+\end{center}
+
+\question{3.1}{}
+Since \texttt{map} does stuff in parallel, the processor gets to decide 
+the schedule in which it performs the operations. \texttt{incr} incorporates
+the following operations: (1) getting the value stored in \texttt{terminals}
+(2) adding 1 to the value and (3) storing the value back in the ref.
+
+Say the ref has a value of 4, and two calls to \texttt{incr} need to be done.
+The processor may choose to do the following:
+\begin{enumerate}
+\item get the value from terminals (4)
+\item get the value from terminals (4)
+\item increment 1 to the one of the values (4 to 5)
+\item increment 1 to the other value (4 to 5)
+\item store the value in the ref (4 to 5)
+\item store the other value in the ref (5 to 5)
+\end{enumerate}
+At the end of these two parallel \texttt{incr} operations, the value of 
+terminals has changed from 4 to 5. However, by the spec of incr,
+the value should have changed from 4 to 5 to 6. This is why different schedules
+will lead to different values for the integer.
+
+\question{3.2}{}
+Yes it is benign in sequential contexts, because at the beginning of each
+sequential call, the value of 0 is stored in the ref, and during the call, only 
+that call will affect the ref.
+
+\question{3.3}{}
+No, it is not benign in parallel contexts. Multiple calls to \texttt{next\_move} will alter
+the same reference \texttt{terminals}. Therefore the result of the value 
+in \texttt{terminals} is affected by the other instances of \texttt{next\_move}.
+
+\question{3.4}{}
+Yes it is benign in sequential contexts, because each call has it's own
+ref, which is initialized to zero to start and is not affected by other
+sequential calls to \texttt{next\_move}.
+
+\question{3.5}{}
+Yes it is benign in parallel contexts. Parallel calls to \texttt{next\_move} do not
+affect each other since each one has it's own copy of the ref \texttt{terminals}.
+
+\question{4.1}{}
+\textbf{Lemma 3:}\\
+For all \sml{l : 'a list}, \sml{r : 'a list}\\
+\begin{center}\sml{revTwoPiles(l, r) = (rev l) @ r}\end{center}
+
+The proof is by induction on \sml{l}:\\
+
+\textbf{Base Case:}\\
+\emph{\texttt{l $\cong$ []}}
+\begin{align*}
+      & \sml{revTwoPiles([], r)} &\\
+\cong & \sml{case [] of [] => r | ...} & \text{step}\\ 
+\cong & \sml{r} & \text{step}\\
+\cong & \sml{[] @ r} & \text{Lemma 1}\\
+\cong & \sml{(case [] of [] => [] | ...) @ r} & \text{rev step} \\
+\cong & \sml{(rev l) @ [z]} & \text{rev step}
+\end{align*}
+
+\textbf{Inductive Hypothesis:}\\
+\emph{\texttt{l $\cong$ x::xs}}\\
+Assume \sml{revTwoPiles(xs, r) $\cong$ (rev xs) @ r}
+
+\textbf{Inductive Step:}\\
+\emph{\texttt{l $\cong$ x::xs}}\\
+\emph{WTS: \sml{revTwoPiles(x::xs, r) $\cong$ (rev x::xs) @ r}}
+
+\begin{align*}
+      & \sml{revTwoPiles(x::xs, r)} & \\
+\cong & \sml{case ... | (x::xs) => revTwoPiles(xs , x::r)} & \text{step}\\
+\cong & \sml{revTwoPiles(xs , x::r)} & \text{step}\\
+\cong & \sml{(rev xs) @ (x::r)} & \text{by the IH}\\
+\cong & \sml{(rev xs) @ (x::([] @ r))} & \text{by Lemma 1}\\
+\cong & \sml{(rev xs) @ (case x::[] of ... | x::[] => x::([] @ r))} & \text{rev step from @}\\
+\cong & \sml{(rev xs) @ (x::[] @ r)} & \text{rev step from @}\\
+\cong & \sml{(rev xs) @ ([x] @ r)} & \text{ x cons nil is [x]}\\
+\cong & \sml{((rev xs) @ [x]) @ r} & \text{Lemma 1}\\
+\cong & \sml{(case x::xs of ... | x :: xs => (rev xs) @ [x]) @ r)} & \text{rev step from rev}\\
+\cong & \sml{(rev x::xs) @ r} & \text{rev step from rev}
+\end{align*}
+
+\question{4.2}{}
+\textbf{Theorem 1:}
+For all values \sml{l : 'a list}
+\begin{center}\sml{rev l = rev2 l}\end{center}
+
+\textbf{Proof:}\\
+Consider:
+
+\sml{rev2 l}\\
+$\cong$\sml{let ... in revTwoPiles(l , []) end}\qquad\qquad\qquad step\\
+$\cong$\sml{revTwoPiles(l, [])}\qquad\qquad\qquad\qquad\qquad\qquad\qquad step\\
+$\cong$\sml{(rev l) @ []}\qquad\qquad\qquad\qquad\qquad\qquad\qquad Lemma 3\\
+$\cong$\sml{rev l}\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad Lemma 1
+
+\question{5.3}{}
+In the case that the key is not in the dictionary, PoorMemoizer will
+use the function passed in to compute the result. However, the function
+passed in makes recursive calls, those calls will not be memoized.
+In the case of computing the nth fibonacci number where n is not
+in the dictionary, the recursive function for fibonacci
+will call f(n-1) and f(n-2), without checking if (n-2) or (n-1) are in the 
+dictionary.
+
+\question{5.5}{}
+The effects will not occur if arguments passed to the function 
+are already in the dictionary. If you try to memoize a function which utilizes 
+the print function, effects will only occur if you pass in a key which is 
+not already in the dictionary. If you pass a value which is already
+in the dictionary (or if the function does so recursively), the memoized
+function will recognize that and will immediately return the function's
+previously returned value. In the case of the print function, the printing will
+not occur but the function will still return \texttt{()}.
+\end{document}

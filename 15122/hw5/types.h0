@@ -1,0 +1,4 @@
+typedef struct board* ktype;
+typedef struct move* vtype;
+
+typedef struct board* queue_elem;

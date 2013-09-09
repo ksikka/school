@@ -1,0 +1,2 @@
+cp ../latex/hw06.pdf Bridges.sml BridgesTest.sml SequenceMIS.sml MISTest.sml MISColoring.sml MISColoringTest.sml Schedule.sml /afs/andrew.cmu.edu/course/15/210/handin/ksikka/assn6/
+/afs/andrew.cmu.edu/course/15/210/bin/check/06/check.pl

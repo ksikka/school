@@ -1,0 +1,59 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   					Word Ladder
+ *
+ * @author: V. Adamchik
+ ******************************************************************************/
+
+ /*****************************************************************************
+               Do not submit this file.
+ *****************************************************************************/
+
+
+#use <conio>
+#use "readfile.c0"
+#use "path-util.c0"
+#use "path-search.c0"
+
+void test_pair(string start, string target)
+{
+	string_bundle dict_bund = read_words("dictionary.txt");
+
+	//find a ladder between the start and the target
+	stack ladder = find_path(start, target, dict_bund);
+
+	if (!stack_empty(ladder) )
+	{
+		print(pop(ladder));
+		while (!stack_empty(ladder))
+		{
+			print(" <-- "); print(pop(ladder));
+		}
+		println("\n");
+	}
+	else
+	{
+		print("No path found from ");
+		print(start);
+		print(" to ");
+		print(target);
+		println("\n");
+	}
+}
+
+
+int main()
+{
+//	string_bundle bund = read_words("tests/easy.txt");
+//	string_bundle bund = read_words("tests/medium.txt");
+	string_bundle bund = read_words("tests/hard.txt");
+
+	if (bund->length % 2 != 0) return -1;
+
+	for (int i = 0; i < bund->length; i += 2)
+		test_pair(bund->array[i], bund->array[i + 1]);
+
+	return 1;
+}

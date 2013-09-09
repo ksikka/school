@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Assignment 11}
+\newcommand{\myrecitation}{E}
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+{\Large \myhwname} \\
+\myname \\
+\myandrew \\
+\myrecitation \\
+\today
+\end{center}
+\begin{question}{The ZFCs Are Alive}
+\begin{enumerate}[a)]
+\item
+We assumed that there is a proof of $T$ in $ZFC$. Since $ZFC$ is a subset of $ZFC+\neg S$,
+we know there is a proof of $T$ in $Z'$.
+\begin{center}$T\implies$``If there is a proof of $S$ in $ZFC$ then $S$ is true''\end{center}
+$\implies$\begin{center}``There isn't a proof of $S$ in $ZFC$ or $S$ is true''\end{center}
+Recall that $\neg S$ is an axiom in $ZFC$.$\implies$
+\begin{center}``There isn't a proof of $S$ in $ZFC$''\end{center}
+$\implies$\begin{center}$\neg A$\end{center}
+
+We have shown a $Z'$ proof of $\neg A$ \qed
+
+\item
+``$ZFC$ is consistent'' $\iff$ ``$\forall S \in ZFC$, at least one of $S$ and
+$\neg S$ is unprovable''
+
+We can generalize the above proof for any statement $S$, since the above proof
+is not dependant on it's definition. Therefore, let $S$ be an arbitrary statement,
+and by the logic in part A, we can prove that there does not exist a proof of $S$.
+See the following logic ($A$ uses the generalized definition of $S$).\\
+$\neg A$ = $\neg$ ``there is a proof of $S$ in $ZFC$''\\
+$\neg A$ = ``$S$ is unprovable in $ZFC$''\\
+
+Therefore, by the definition of consistency, It is possible to show that $ZFC$ is consistent. \qed
+
+\item don't know
+\item don't know
+
+\end{enumerate}
+
+
+\end{question}
+\begin{question}{When You Know L's In $\mathbf{NP}$}
+\textbf{Want to show:}\\
+    $L \in NP \implies L^{*} \in NP$
+    
+\textbf{Proof:}\\
+    If $L \in NP$ then there exists a verifier for membership in $L$ which runs
+    in polynomial time. Call this verifier $f$, a function which takes a string
+    and returns true if the string is in the Language.
+    
+    The verifier for $L^{*}$ takes a string input and a certificate, which is a list of integers.
+    The verifier will return true if the string input is in the Kleene star of L.
+    The certificate for $w \in L^{*}$ is a list of integers such that the $i{th}$ element
+    of the list is the length of $w_i$ in $w$ (see definition of Kleene star in problem 
+    statement).
+
+    \textbf{The verifier will follow this procedure:}
+    \begin{enumerate}
+        \item if the certificate is the empty list, check if the string is empty.
+            if it is, return true. if not, return false.
+        \item check that the sum of the elements in the certificate is equal to the
+        length of the input string. if this does not hold, return false.
+        \item Call the first element in the certificate $x$. If the verifier 
+        for L returns false when fed the first $x$ characters of the input string,
+        return false.
+        \item Return the result of the verifier called on the rest of the input string,
+        with the certificate as the list without the first element.
+    \end{enumerate}
+    
+    \textbf{This verifier is correct:}
+        The empty string is accepted.
+        The invariant that the sum of the lengths of the concatted strings 
+            (as recorded in the certificate) equals the entire string holds.
+        The verifier returns true by the recursive definition of membership in 
+            Kleene star of L: $w \in L^{*} \iff w = w_pv$ such that $w_p\in L, v\in L^{*}$
+    
+    \textbf{This verifier runs in poly-time:}
+        Let k be the length of the certificate and let s be the length of the input string.
+        The algorithm calls the verifier $k$ times. The verifier runs in polynomial
+        time, so we can say it is upper bounded by $s^{p}$ for some $p, p\neq 0$.
+        Then the algorithm is $O(ks^{p})$ which is clearly polynomial time.
+
+\end{question}
+\begin{question}{Raindrops On Roses And Subsets Of Numbers}
+\newcommand{\SUM}{\text{ SUM }}
+\textbf{Part 1: You can solve the subset sum problem using a partition oracle in poly-time:}
+
+\textbf{The algorithm:}\\
+Given $L$, a list of integers, and $k$, an integer.
+\begin{enumerate}
+\item Calculate the sum of the numbers, call it $SUM$
+\item Add $(2k-\SUM)$ to $L$ and call it $L'$
+\item Return the result of PARTITION L'
+\end{enumerate}
+
+\textbf{Correctness:}\\
+PARTITION L returns true iff there is a 2-partition of L such that the sum of
+one partition is equal to the sum of the other. Say those partitions are $S_1$ and $S_1$
+If PARTITION L returns true, then:
+$$\SUM S_1 = \SUM S_2 \qquad\land\qquad \SUM S_1 + \SUM S_2 = \SUM L$$
+$$\implies \SUM S_1 = \SUM S_2 \qquad\land\qquad \SUM S_1 + \SUM S_1 = \SUM L$$
+$$\implies \SUM S_1 = \SUM S_2 \qquad\land\qquad 2*\SUM S_1 = \SUM L$$
+$$\implies \SUM S_1 = \SUM S_2 = \frac{\SUM L}{2}$$
+Consider $L \cup \{2k- \SUM L\}$. We will call this set $L'$ for convenience. 
+We know that $\SUM L' = \SUM L + 2k- \SUM L = 2k$. 
+Therefore, if $L'$ is accepted in PARTITION, there are two sets in $L'$ which partition
+$L'$ and sum to $k$. The element $2k- \SUM L$ can only be in one of these sets, so 
+the other set is a subset of $L$ which sums to $k$. Therefore, this reduction is a mapping reduction.
+
+\textbf{It's poly-time:}\\
+Calculating the sum of numbers is at most poly-time on the length of the inputs. Adding
+an element to the list is at most poly-time.
+Therefore the overall reduction is at most poly-time.
+\\
+\\
+\textbf{Part 2: You can solve the partition problem using a subset sum oracle in poly-time:}
+\begin{enumerate}
+\item Let L be a list of integers.
+\item Calculate the sum of the numbers, call it SUM.
+\item If SUM is odd, return false.
+\item Else, return the result of subset sum (L,SUM/2).
+\end{enumerate}
+\textbf{Correctness:}\\
+A list of integers is accepted in PARTITION if and only if there exists a 2-partitioning
+of the list such that each partition sums to $(\SUM L)/2$. Note that $\SUM L$ must
+be an even number for $(\SUM L)/2$ to be even, and for there to exist such a partitioning.
+If $(L,\frac{\SUM L}{2})$ is accepted in SUBSETSUM then there exists a subset of $L$, called $S_1$
+which sums to $\frac{\SUM L}{2}$. In addition, we can conclude that $\exists S_2$ 
+such that $S_2= L\setminus S_1$. Therefore an integer list is accepted in PARTITION
+if and only if $\frac{\SUM L}{2}$ is even and $(L,\frac{\SUM L}{2})$ is accepted in SUBSETSUM.
+Therefore this is a mapping reduction.
+
+\textbf{It's poly-time:}
+Calculating the sum of numbers is at most poly-time on the length of the list.
+Checking whether it is even or odd is at most poly-time by doing the mod of SUM.
+Therefore the overall reduction is at most poly-time.
+
+\end{question}
+\begin{question}{So Long, Farewell, auf Widersehen, Goodbye!}
+Aur revoir!\\
+
+\begin{enumerate}[a)]
+\item
+\textbf{Want to show:} \texttt{YO\_IT\_WENT\_OFF} $\in \mathbf{NP}$
+
+The verifier $V$ takes $\{\langle m,n\rangle \}$, the encoding of $m$ and $n$ in binary,
+and the certificate $d$ which is the binary representation of an integer, which represents the divisor of $n$.
+
+What $V$ does is it first checks if $d$ is within it's bounds as specified ($1<d<m$). It will return false if this
+condition is violated. Then it checks if $d$ is a divisor of $n$ by computing $d$ times the 
+result of integer division of $n$ and $d$ and checking whether this is equal to $n$ itself. It it is, return 
+true. Else return false.
+
+Multiplication, integer division, and checking equality are polynomial in number of bits. Therefore
+the computation described above will run in polynomial time.\qed
+
+\item
+\textbf{Want to show:} \texttt{YO\_IT\_WENT\_OFF} $\in \mathbf{P}$ implies that there exists a polynomial time algorithm to find the prime factorization of an integer.
+
+We assume that \texttt{YO\_IT\_WENT\_OFF} $\in \mathbf{P}$, which implies that 
+there exists a polynomial time oracle for \texttt{YO\_IT\_WENT\_OFF}.
+
+\texttt{YO\_IT\_WENT\_OFF} takes in $\langle m,n \rangle$ as an input, but we can choose
+to put in $m,n$ such that $m=n$. Then, \texttt{YO\_IT\_WENT\_OFF} returns true iff
+there is a diviser between 1 and $n$. This is equivalent to an oracle which tells 
+if a number is composite.
+
+\textbf{The Algorithm (for an input $n$):}
+\begin{enumerate}
+\item If \texttt{YO\_IT\_WENT\_OFF}(n) is false, then $n$ is prime, so output $n$ and halt. Else, \texttt{YO\_IT\_WENT\_OFF}(n) is true, so $n$ is composite.
+\item For all integers $d$ such that $1<d<n$, check whether $d$ is a divisor of $n$ $(n \mod d \texttt{ == } 0)$.
+\item Identify the smallest $d$ which satisfies this condition and call it $p$. By a lemma below, this 
+is necessarily a prime factor of $n$.
+\item Output $\{p,\langle \text{ result of this algorithm on }n \rangle\}$
+\end{enumerate}
+
+\textbf{Lemma:} The smallest divisor of a composite number is a prime factor of that number.\\
+\textbf{Proof:} AFSOC that the smallest divisor $d$ of a composite number $m$ is not prime. Then there 
+is a prime factor of $d$ which is less than $d$. But this prime factor is also a factor of $m$ and is 
+smaller than $d$. Contradiction. \qed
+
+When the algorithm halts, the result is the prime factorization of the input. 
+The recursive call in (4) take a prime factor out of the prime factorization of a composite input
+until there is only 1 prime in the prime factorization (the halting condition).
+
+The smallest possible prime factor is 2. Therefore, each recursive call of the algorithm
+divides $n$ by at least 2. Thus, it reduces the number of bits of the input by at least 1.
+Therefore the algorithm will call itself at most $log(n)$ times, as the size of the input
+decreases linearly in the number of bits.
+
+Step 1 is poly-time on $n$, step 2 is linear on $n$, step 3 is linear, step 4 is the recursion.
+The overall algorithm runs in log times a poly, which is still polynomial runtime.
+\qed
+\end{enumerate}
+\end{question}
+\end{document}

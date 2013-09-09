@@ -1,0 +1,5 @@
+group is
+  $/basis.cm
+  ../../../src/sequence/sources.cm
+  
+  24-25.sml

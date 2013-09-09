@@ -1,0 +1,204 @@
+/**
+ ***************************************************************************
+ *                    HOMEWORK  15-122
+ ***************************************************************************
+ *   	A game board implementation.
+ *
+ *
+ * @author: mostly ksikka
+ **************************************************************************/
+
+#use <conio>
+#use "bit-array.c0"
+#use "readfile.c0"
+
+typedef struct board* board;
+struct board
+{
+    int width;
+    int height;
+    bitarray lights;     /* w*h array as a packed integer */
+};
+
+/********************************
+      BOARD  INTERFACE
+ ********************************/
+
+/* Provided for testing purposes*/
+void print_board(board B);
+board read_board(string filename);
+
+// For invariants
+bool is_board(board B);
+
+// returns true if the index i is a valid location in the board
+bool in_bounds(board B, int x, int y)
+//@requires is_board(B);
+;
+
+//returns the index of the bitarray, given the x,y coord
+int board_index(board B, int x, int y)
+//@requires is_board(B);
+//@ensures 0 <= \result && \result < B->width*B->height;
+;
+
+// Returns whether the light at location (x,y) in B
+// is on or off.
+bool board_get(board B, int x, int y)
+//@requires is_board(B);
+;
+
+// Sets the light at loc (x,y) in B to b.
+void board_set(board B, int x, int y, bool b)
+//@requires is_board(B);
+;
+
+// Makes a deep copy of B
+board copy_board(board B)
+//@requires is_board(B);
+//@ensures is_board(\result);
+;
+
+// Flips lights at (i,j) and at all adjacent (i', j'), not diagonals
+void toggle_board(board B, int x, int y)
+//@requires is_board(B);
+//@requires in_bounds(B,x,y);
+//@ensures is_board(B);
+;
+
+// Flips lights at (i,j) and at all adjacent (i', j'), not diagonals
+void untoggle_board(board B, int x, int y)
+//@requires is_board(B);
+//@requires in_bounds(B,x,y);
+//@ensures is_board(B);
+;
+
+/********************************
+      BOARD  IMPLEMENTATION
+ ********************************/
+// For invariants
+bool is_board(board B)
+{
+  return B != NULL &&
+          0 < B->width &&
+           0 < B->height &&
+            (B->width * B->height) <= 32;
+}
+
+bool in_bounds(board B, int x, int y)
+//@requires is_board(B);
+{
+  return 0 <= x && x < B->width &&
+          0 <= y && y < B->height;
+}
+
+int board_index(board B, int x, int y)
+//@requires is_board(B);
+//@ensures 0 <= \result && \result < B->width*B->height;
+{
+  return y * B->width + x;
+}
+
+// Returns whether the light at location (x,y) in B
+// is on or off.
+bool board_get(board B, int x, int y)
+//@requires is_board(B);
+//@requires in_bounds(B, x, y);
+{
+  return bitarray_get(B->lights, board_index(B,x,y));
+}
+
+// Sets the light at loc (x,y) in B to b.
+void board_set(board B, int x, int y, bool b)
+//@requires is_board(B);
+//@requires in_bounds(B, x, y);
+{
+  B->lights = bitarray_set(B->lights, board_index(B,x,y), b);
+}
+
+// Makes a deep copy of B
+board copy_board(board B)
+//@requires is_board(B);
+//@ensures is_board(\result);
+{
+  board new = alloc(struct board);
+  new->lights = B->lights;
+  new->width = B->width;
+  new->height = B->height;
+  return new;
+}
+
+// Flips lights at (i,j) and at all adjacent (i', j'), not diagonals
+void toggle_board(board B, int x, int y)
+//@requires is_board(B);
+//@requires in_bounds(B,x,y);
+//@ensures is_board(B);
+{
+  //the adjacent lights can be thought of as two intersecting bars
+  //this will flip the bits in the horizontal bar
+  for(int i = -1; i <= 1; i++)
+  {
+    if(in_bounds(B, x+i, y))
+      B->lights = bitarray_flip(B->lights, board_index(B, x+i, y));
+  }
+  //flips the vertical bar
+  for(int j = -1; j <= 1 ; j++)
+  {
+    if(in_bounds(B, x, y+j))
+      B->lights = bitarray_flip(B->lights, board_index(B, x, y+j));
+  }
+  //flip light at (i,j) again to account for double flipping before
+  B->lights = bitarray_flip(B->lights, board_index(B,x,y));
+}
+
+// Flips lights at (i,j) and at all adjacent (i', j'), not diagonals
+void untoggle_board(board B, int x, int y)
+//@requires is_board(B);
+//@requires in_bounds(B,x,y);
+//@ensures is_board(B);
+{
+  toggle_board(B, x, y);
+}
+
+// For testing purposes
+// Reads a board from a file
+board read_board(string filename)
+//@ensures is_board(\result);
+{
+    board B = alloc(struct board);
+    string_bundle sb = read_words(filename);
+    int x; int y;
+    assert(sb->length > 0);
+    B->width = string_length(sb->array[0]);
+    B->height = sb->length;
+    B->lights = 0;
+    assert(B->width * B->height <= 32);
+    for (y = 0; y < B->height; y++) {
+        string s = sb->array[y];
+        assert(B->width == string_length(s));
+        for (x = 0; x < B->width; x++) {
+            char c = string_charat(s, x);
+            if (c == 'O') board_set(B, x, y, false);
+            else if (c == '#') board_set(B, x, y, true);
+            else assert(false);
+        }
+    }
+
+    return B;
+}
+
+
+void print_board(board B)
+//@requires is_board(B);
+{
+  int x; int y;
+  for (y = 0; y < B->height; y++) {
+    for (x = 0; x < B->width; x++) {
+      if (board_get(B, x, y))
+	print("#");
+      else
+	print("O");
+    }
+    println("");
+  }
+}

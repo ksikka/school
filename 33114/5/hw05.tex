@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Homework 5}
+\newcommand{\myclass}{Physics of Musical Sound}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\Large \myclass -- \myhwname} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+\begin{question}{Problem 1}
+\begin{enumerate}[a)]
+\item
+E$_1$ is a fifth above A$_0$.\\
+$f(E_1) = (2^{7/12}) * 2^{-4}(440\text{ Hz})=41.2\text{ Hz}$
+\item
+F$^{\sharp}_{3}$ is a major sixth above A$_2$\\
+$f(F_3^{\sharp}) = (2^{9/12}) * 2^{-2}(440\text{ Hz})=185.0\text{ Hz}$
+\item
+G$_{7}$ is a minor seventh above A$_6$\\
+$f(G_7) = (2^{10/12}) * 2^{2}(440\text{ Hz})=3136.0\text{ Hz}$
+\item
+D$_{4}^{\flat}$ is a major third above A$_3$\\
+$f(D_4^{\flat}) = (2^{4/12}) * 2^{-1}(440\text{ Hz})=277.2\text{ Hz}$
+\end{enumerate}
+\end{question}
+
+\begin{question}{Problem 2}
+\begin{enumerate}[a)]
+\item This is a minor third since it spans E,F,G and it's  3 semitones.\\
+Just ratio: $6/5 = 1.2$\\
+Just cents: $316$\\
+Equal temp ratio: $2^{1/4} = 1.189$\\
+Equal temp cents: $300$
+\item This is a major sixth since it spans G,A,B,C,D,E and it's 9 semitones.\\
+Just ratio: $5/3 = 1.667$\\
+Just cents: $884$\\
+Equal temp ratio: $2^{9/12} = 1.682$\\
+Equal temp cents: $900$
+\item This is a major third since it spans D,E,F and it's 4 semitones.\\
+Just ratio: $15/8 = 1.875$\\
+Just cents: $1088$\\
+Equal temp ratio: $2^{11/12} = 1.888$\\
+Equal temp cents: $1100$
+\item This is a major seventh since it spans D,E,F,G,A,B,C and it's 11 semitones.\\
+Just ratio: $5/4 = 1.250$\\
+Just cents: $386$\\
+Equal temp ratio: $2^{1/3}$\\
+Equal temp cents: $400$
+\end{enumerate}
+\end{question}
+\begin{question}{Problem 3}
+An octave above E$_4$ is E$_5$.\\
+In just intonation, the ratio is 2 and the interval is 1200 cents.\\
+In equal temperament, the ratio is 2 and the interval is 1200 cents.
+
+A perfect fifth above B$_3$ is F$_4^{\sharp}$\\
+In just intonation, the ratio is $3/2 = 1.5$ and the interval is 702 cents.\\
+In equal temperament, the ratio is $2^{7/12} = 1.498$ and the interval is 700 cents.
+
+A minor seventh below B$_4^{\flat}$ is C$_4$.\\
+In just intonation, the ratio is $9/5 = 1.8$ and the interval is 1018 cents.\\
+In equal temperament, the ratio is $2^{10/12} = 1.782$ and the interval is 1000 cents.
+\end{question}
+\begin{question}{Problem 5}
+D$_2$, D$_3$, D$_4$, D$_5$, because the 1st, 2nd, 4th, and 8th harmonics are octaves apart.
+The 3rd harmonic is A$_3$ because $\frac{3}{2}D_3$ is a fifth above D$_3$.
+Therefore the 6th and 12th harmonics are A$_4$ and A$_5$.
+The 5th harmonic is F$_4^{\sharp}$ because $\frac{5}{4}D_3$ is a major third above D$_4$,
+    the fourth harmonic.
+The 10th harmonic is easily derived from this fact to be F$_5^{\sharp}$.
+The 9th harmonic is 9/8 times the 8th harmonic, and 9/8 is a major second. Therefore
+the 9th harmonic is a major second above D$_5$, which is E$_5$.
+
+Thus we have all of he harmonics except the 7th and the 11th. Looking at the table
+in the back of the book, we can see that D$_2$ has a frequency of 73.42 Hz. The 
+7th harmonic has a frequency of $7*73.42 = 513.9$ Hz and the 11th harmonic has a 
+frequency of $11*73.42 = 807.6$ Hz. Matching this up with the notes in the back
+of the book, we see that the 7th harmonic is approximately C$_5$ and the 11th
+harmonic is approximately G$_5$.
+
+The notes of the harmonic series are as follows:\\
+D$_2$, D$_3$, A$_3$, D$_4$, F$_4^\sharp$, A$_4$, C$_5$, D$_5$, E$_5$, F$_5^\sharp$, G$_5$, A$_5$
+\end{question}
+\begin{question}{Problem 5}
+To get from the fourth harmonic to the fifth, you multiply by 5/4ths, which tells us
+that the fifth harmonic is a major third above the fourth harmonic. Therefore, 
+the fourth harmonic is a major third below A$_5$, which is F$_5$. The first 
+harmonic is 2 octaves lower, which is F$_3$.
+
+The ninth harmonic is 9/8 times the eigth harmonic, so the eigth harmonic is a 
+major second below the ninth. A major second below B$_6^{\flat}$ is A$_6^{\flat}$.
+The first harmonic is 3 octaves below the eigth, so it is A$_3^{\flat}$.
+\end{question}
+\begin{question}{Problem 6}
+\begin{enumerate}[a)]
+\item
+\begin{center}
+\begin{tabular}{c || c | c | c | c | c}
+Construction & Semitones & Interval & Note in C & Ratio & Cents\\
+\hline
+2$\cdot$M3 + P5$- 8^{ve}$                  & 3  & m3 & D$^{\sharp}$ & 75/64  & 275 \\
+$2\cdot 8^{ve}-\text{P}5-2\cdot \text{M}3$ & 9  & M6 & A            & 125/75 & 925 \\
+$2\cdot \text{M}3 - \text{P}5$             & 1  & m2 & C$^{\sharp}$ & 25/24  & 71  \\
+$8^{ve} + \text{P}5 - 2\cdot \text{M}3$    & 11 & M7 & B            & 48/25  & 1129\\
+\end{tabular}
+\end{center}
+\item 
+m3:Just =  75/64 : 6/5   = 125/128\\
+M6:Just = 125/75 : 5/3   = 128/125\\
+m2:Just =  25/24 : 16/15 = 125/128\\
+M7:Just =  48/25 : 15/8  = 128/125\\
+\item Three Just major thirds don't make exactly an octave.
+\end{enumerate}
+\end{question}
+\begin{question}{Problem 7}
+\begin{enumerate}[a.]
+\item
+Cents above $f_1$ for the harmonics of $f_1$ and $f_1+\text{M}3$:\\
+\begin{center}
+\begin{tabular}{|c || c | c | c | c | c | c | c | c | c | c|}                     \hline
+Note              & 1   & 2    & 3    & 4    & 5    & 6    & 7    & 8    & 9    & 10  \\ \hline
+$f_1$             & 0   & 1200 & 1902 & 2400 & 2786 & 3102 & 3369 & 3600 & 3804 & 3986\\ \hline
+$f_1 + \text{M}3$ & 400 & 1600 & 2302 & 2800 & 3186 & 3502 & 3769 & 4000 & 4204 & 4386\\ \hline
+\end{tabular}
+\end{center}
+This data was collected with the aid of Excel, using the cents to Hz conversion formula. 
+Also, a major third is 400 cents in 12-tet.
+\item Beat frequency will be lowest when the cents difference is lowest and the harmonic
+number is lowest. Therefore, the lowest beat frequency will occur between the 5th harmonic
+of $f_1$ and the 4th harmonic of $f_1 + \text{M}3$ (difference of 14 cents.) The next
+lowest beat frequency is between the 10th harmonic of $f_1$ and the 8th harmonic of 
+$f_1 + \text{M}3$ (difference of 14 cents). Again, you know that one has a lower
+beat frequency than the other because it also depends on the harmonic number. 
+\item Assume the 1st harmonic for $f_1$ is 440 Hz. 
+The 5th harmonic of $f_1$ is $5*400 \text{Hz} = 2200 \text{Hz}$. The 4th harmonic
+of $f_1 + \text{M}3$ is $4*2^{4/12}*440 \text{Hz} = 2217.6 \text{Hz}$. The difference of
+17.6 Hz is the beat frequency.
+
+The 10th harmonic of $f_1$ is $10*440 \text{Hz} = 4400 \text{Hz}$. The 8th harmonic
+of $f_1 + \text{M}3$ is $8*2^{4/12}*440 \text{Hz} = 4434.9 \text{Hz}$. The difference of
+34.9 Hz is the beat frequency.
+\end{enumerate}
+\end{question}
+\begin{question}{Problem 8}
+The chord A$_3$C$_4^\sharp$E$_4$ in just intonation.
+
+To find the beat frequency, we find the frequency of the notes and give the 
+difference.
+
+A$_3$ is $440/2$ Hz = 220 Hz. C$_4^\sharp$ is a M3 above A$_3$, so it's frequency is
+$\frac{5}{4}220$ Hz $= 275$ Hz. E$_4$ is a P5 above A$_3$, so it's frequency is
+$\frac{3}{2}220$ Hz $= 330$ Hz. The difference between the frequencies is 55 Hz 
+between the first two notes, and 55 Hz between the second two notes, and 110 Hz
+between the outer two notes. You will notice the 55 Hz beating the most. $T=\frac{1}{f}$
+so the period is $\frac{1}{55 \text{Hz}} = 0.1818 \text{s}$.
+\end{question}
+\end{document}

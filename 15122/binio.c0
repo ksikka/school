@@ -1,0 +1,14 @@
+#use <string>
+
+string bin_to_str(int n)
+{
+    string s = "";
+    while(n > 1)
+    {
+        string odd = "0";
+        if(n % 2 != 0) odd = "1";
+        s += odd;
+        n /= 2;
+    }
+    return s;
+}

@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{07}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-210}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-210 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+Section C\\
+\today\\
+\end{center}
+
+\question{1}{Task 3.1}
+In Kruskal's algorithm, we greedily add minimum weight edges sequentially so long as the
+tree invariant is maintained. We know Kruskal's is correct, so if we show that Kruskal's
+algorithm adds the 2nd lightest edge, then we've proved that it must be in the MST.
+
+Kruskal's first adds the lightest edge. Then it adds the second lightest edge. This 
+does not create a cycle because the graph is simple so there are no parallel edges.
+Therefore the second lightest
+edge must be in the MST.
+
+
+\question{2}{Task 3.2}
+The probability of a house winning a prize package is $\frac{1}{3}$
+since of the house, the house to the left, and the house to the right,
+one of them will win, and each with equal probability.
+
+Let $X_i$ be an indicator variable for whether or not the $i^{th}$ house wins a prize package.
+Let $X$ be a random variable representing the number of houses which win prize
+packages. We know $X = \sum_{i = 1}^{n} X_i$. Then by linearity of expectation:
+
+$$\mathbb{E}[X] = $$
+$$\mathbb{E}[\sum_{i = 1}^{n} X_i] = $$
+$$\sum_{i = 1}^{n} \mathbb{E}[X_i] = $$
+$$\sum_{i = 1}^{n} P(X_i) = \frac{n}{3}$$
+
+
+\question{3}{Task 3.3}
+By markov's inequality,
+
+$$Pr(X_n \geq \frac{2n}{3}) \leq \frac{E[X_n]}{\frac{2n}{3}}  $$
+$$ = \frac{n/3}{2n/3} = \frac{1}{2} $$
+
+$$ E[f(n)] \leq E[f(X_n)] + \Theta(n)$$
+$$ \leq E[f(X_n) | X_n \geq \frac{2n}{3}] + E[f(X_n) | X_n < \frac{2n}{3}] + \Theta(n)$$
+The first term is upper bounded by 1/2 by markovs inequality.
+$$ \leq 1/2 f(n)... $$
+something something
+
+
+
+
+\end{document}
+

@@ -1,0 +1,196 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{5}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+2/25/12 \\
+\end{center}
+
+
+\question{1}{Task 2.2}
+\textbf{Claim:} For all \texttt{l1: $\alpha$ list} and all \texttt{l2: 
+$\alpha$ list list}, 
+  \begin{center}
+    \texttt{ap(l1, concatap l2) $\cong$ concatap(l1 :: l2)}
+  \end{center}
+
+\textbf{Proof:}\\
+\begin{align*}
+     & \texttt{concatap(l1::l2)} &\\ 
+\cong& \texttt{case l1::l2 of [] => [] | x::xs => ap(x,concatap(xs))} & \text{step}\\
+\end{align*}
+At this point, l1::l2 can be either be \texttt{nil} or \texttt{x::xs}. We will show 
+both cases.
+
+Case \texttt{nil}:\\
+(both \texttt{l1} and \texttt{l2} are \texttt{nil}) since \texttt{[]::[] = []}:
+\begin{align*}
+      & \texttt{case [] of [] => [] | x::xs => ap(x,concatap(xs))} & \text{def of concatap}\\
+\cong & \texttt{[]} & \text{step}\\
+\cong & \texttt{l2} & \text{value of l2}\\
+\cong & \texttt{case [] of [] =>l2 | ...} & \text{rev. step from ap}\\
+\cong & \texttt{ap([],[])} & \text{rev. step, def of ap}\\
+\cong & \texttt{ap([],case [] of [] => [])} & \text{ rev. step, def of concatap}\\
+\cong & \texttt{ap([],concatap([])} & \text{rev. step from concatap}\\
+\cong & \texttt{ap(l1,concatap(l2)} & \text{values of l1, l2}\\
+\end{align*}
+
+Case \texttt{x::xs}:
+\begin{align*}
+\cong& \texttt{case l1::l2 of [] => [] | x::xs => ap(x,concatap(xs))} & \text{def of concatap}\\
+\cong& \texttt{ap(l1,concatap(l2))} & \text{reverse step}\\
+\end{align*}
+In both cases, the lemma holds. QED.
+
+\question{2}{Task 2.3}
+\texttt{Claim:} For all \texttt{l : $\alpha$ list list},
+\begin{center}
+\texttt{concat l $\cong$ concatap l}
+\end{center}
+
+\textbf{Proof:} We proceed by structural induction on \sml{l}
+
+\textbf{Case []:}
+Want to show: \texttt{concat [] $\cong$ concatap []}
+Consider:
+\begin{align*}
+        & \texttt{concat []} & \text{step}\\
+  \cong & \texttt{case [] of [] => [] ...} & \text{step}\\
+  \cong & \texttt{[]} & \text{step}\\
+  \cong & \texttt{case [] of [] => [] ...} & \text{reverse step} \\
+  \cong & \texttt{concatap []} & \text{reverse step} \\
+\end{align*}
+
+\textbf{Case x::xs:}
+Inductive Hypothesis: \texttt{concat xs $\cong$ concatap xs}
+Inductive Step:
+
+
+Consider:
+\begin{align*}
+      & \texttt{concat x::xs} & \\
+\cong & \texttt{case x::xs of ... | x::xs => ...} & \text{step}\\
+\cong & \texttt{case x of [] => concat xs | y::ys => y::concat (ys::xs) )} & \text{step}\\
+\end{align*}
+In the list of lists xs, the first element can be the empty list, or a non-empty list.
+We will consider both cases.
+Case \texttt{x = []}:
+\begin{align*}
+\cong & \texttt{case [] of [] => concat xs | y::ys => y::concat (ys::xs) )} & \text{cont. from above}\\
+\cong & \texttt{concat xs} & \text{step}\\
+\cong & \texttt{concatap xs} & \text{IH}\\
+\cong & \texttt{ap([],concatap xs)} & \text{Lemma 2}\\
+\cong & \texttt{case []::xs of ... | x::xs => ap(x,concatap xs)} & \text{rev. step}\\
+\cong & \texttt{concatap []::xs} & \text{rev. step}\\
+\end{align*}
+
+Case \texttt{x = y::ys}:
+\begin{align*}
+\cong & \texttt{case y::ys of [] => concat xs | y::ys => y::concat (ys::xs) )} & \text{cont. from above}\\
+\cong & \texttt{ y::concat (ys::xs) } & \text{step}\\
+\cong & \texttt{ y::(case ys::xs of ... | x::xs => case x of ... )} & \text{step, evaluate the case}\\
+\cong & \texttt{ y::(case ys of [] => concat xs | z::zs =>... )} & \text{step}\\
+\end{align*}
+Here we run into another fork in the road. We said x = y::ys, but this function
+evaluates differently based on whether or not ys is nil. So we will consider both cases, 
+since both are possible.
+Case \texttt{x = y::[]}
+\begin{align*}
+\cong & \texttt{ y::(case [] of [] => concat xs | z::zs =>... )} & \text{cont. from above}\\
+\cong & \texttt{ y::(concat xs)} & \text{step}\\
+\cong & \texttt{ y::(concatap xs)} & \text{IH}\\
+\cong & \texttt{ y::(ap([],concatap xs))} & \text{Lemma 2}\\
+\cong & \texttt{ case y::[] of [] => l2 | x::xs => x::(ap(xs,l2))} & \text{rev. step, from ap}\\
+\cong & \texttt{ ap(y::[],concatap(xs))} & \text{rev. step}\\
+\cong & \texttt{ ap(x,concatap(xs)) } & \text{x=y::[]}\\
+\cong & \texttt{ case x::xs of [] => [] | x::xs => ap(x,concatap(xs)) } & \text{rev. step (concatap)}\\
+\cong & \texttt{ concatap (x::xs) } & \text{rev. step}\\
+\end{align*}
+Here we see that the lemma holds for the subcase when x = y::[].
+
+Case \texttt{x = y::ys}:
+\begin{align*}
+\cong & \texttt{ y::(case ys of ... | z::zs => z::(concat... )} & \text{cont. from above}\\
+\cong & \texttt{ y::(z::(concat(zs::ys))} & \text{step}\\
+\cong & \texttt{ y::(z::(concat(zs::ys))} & \text{step}\\
+\end{align*}
+This decomposition by concat will happen until the tail of the list is nil.
+Since lists are assumed to be finite, the decomposition will inevitably terminate.
+When the tail becomes nil, Case x=y::[] holds.
+
+I can't figure out the rest of this proof.
+However, I tried starting at the bottom of the proof and working up. Here is 
+what I came up with...
+\begin{align*}
+\cong & \texttt{ y::(z::(ap (zs,concat xs)))} & \text{cont. from above.}\\
+\cong & \texttt{ y::(z::(ap (zs,concatap xs)))} & \text{cont. from above.}\\
+\cong & \texttt{ y::(z::(concatap zs::xs)))} & \text{cont. from above.}\\
+\cong & \texttt{ y::(concatap ys::xs)} & \text{rev. step}\\
+\cong & \texttt{ y::(ap(ys,concat xs))} & \text{rev. step}\\
+\cong & \texttt{ y::(ap(ys,concatap xs))} & \text{IH}\\
+\cong & \texttt{ case y::ys of [] => l2 | x::xs => x::(ap(xs,l2))} & \text{rev. step, from ap}\\
+\cong & \texttt{ ap(y::ys,concatap(xs))} & \text{rev. step}\\
+\cong & \texttt{ ap(x,concatap(xs)) } & \text{x=y::[]}\\
+\cong & \texttt{ case x::xs of [] => [] | x::xs => ap(x,concatap(xs)) } & \text{rev. step (concatap)}\\
+\cong & \texttt{ concatap (x::xs) } & \text{rev. step}\\
+\end{align*}
+I was almost there :(. Partial credit please?
+
+
+\question{3}{Task 2.4}
+
+\begin{enumerate}
+\item lemma 3
+\item lemma 3
+\item since g and f are valuable, \texttt{gof} is valuable
+\item since g and f are total, \texttt{gof} are total
+\item lemma 3
+\item step
+\item step
+\item \texttt{map g(map f[]) $\cong$ map(gof)[]}
+\item step
+\item step
+\item step, def of map
+\item \texttt{map g(map f xs) $\cong$ map gof xs}
+\item \texttt{map g(map f xLLxs) $\cong$ map (gof) (x::xs)}
+\item step
+\item def of function composition
+\item def of function composition
+\item ***, transitivity, and totality of map
+\end{enumerate}
+\end{document}
+

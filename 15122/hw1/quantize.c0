@@ -1,0 +1,30 @@
+#use "imageutil.c0"
+
+pixel[] quantize(pixel[] pixels, int width, int height, int q_level)
+//@requires (q_level >= 0)&&(q_level < 8);
+//@requires (width > 0) && (height > 0);
+//@requires \length(pixels) == width * height;
+//@ensures \length(\result) == \length(pixels);
+{
+    pixel p;
+    int a;
+    int r;
+    int g;
+    int b;
+    int q = 255 << q_level;
+    
+    for(int i = 0; i < width*height; i++) //enter loop to iterate
+    {
+        p = pixels[i];	//get rgb
+        a = get_alpha(p);
+        r = get_red(p);
+        g = get_green(p);
+        b = get_blue(p);
+        r = r & q;	//quantize each component
+        g = g & q;
+        b = b & q;
+        pixels[i]  = make_pixel(a,r,g,b);
+    }
+    
+    return pixels;
+}

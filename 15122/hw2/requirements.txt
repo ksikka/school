@@ -1,0 +1,17 @@
+Requirements:
+
+1. duplicates.c0
+    check new array length is right
+    annotations
+2. common-unsorted.c0
+    analyze big-O
+    ask about repeats
+3. common-test.c0
+    uses readfile.c0
+    annotations
+    auxiliary funcs
+4. write a README
+    answers questions on site
+    how long did it take ou to complete the written portion of this homework?
+    how long did it take you to complete the programming portion of this
+    homework?    

@@ -1,0 +1,495 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{times}
+\usepackage{amsmath,amsthm}
+\usepackage{url}
+\usepackage{framed}
+\usepackage{verbatim}
+\usepackage[bookmarks=true,colorlinks=true,unicode=true,breaklinks]{hyperref}
+\newcommand{\exercise}[0]{\noindent \textbf{Exercise.} \smallskip }
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+\newcommand{\evalsto}[0]{\ensuremath{\Longrightarrow}}
+
+\title{15-150 Lecture 4: \\ Lists}
+\author{Lecture by Ian Voysey}
+\date{26 January 2012}
+
+\input{defs.tex}
+
+\begin{document}
+\maketitle
+
+\noindent
+\tableofcontents \newpage
+
+\section{What Are Lists?}
+\begin{framed}
+\begin{quote}
+A list of integers (a value of type \verb|int list|) is either
+\begin{itemize}
+\item[] \verb|[]|, or
+\item[] \verb|x :: xs| where \verb|x : int| and \verb|xs : int list|.
+\end{itemize}
+And that's it!
+\end{quote}
+\end{framed}
+
+\verb|[]| is pronounced ``nil'' or ``the empty list''; \verb|::| is
+pronounced ``cons''. Therefore, the values of type \verb|int list| are
+lists like these:
+\begin{verbatim}
+  1 :: (2 :: (3 :: (4 :: [])))
+\end{verbatim}
+This can also be written without the parens as
+\begin{verbatim}
+  1 :: 2 :: 3 :: 4 :: []
+\end{verbatim}
+because \verb|::| is right-associative. For a particular list with a fixed
+number of elements, you can also write the elements inside of square-brackets
+separated by commas, as in
+\begin{verbatim}
+  [1,2,3,4]
+\end{verbatim}
+This is just a convenient notation from SML; it's short hand for the above
+form.
+\begin{framed}
+The operation on lists is case analysis (and recursion):
+\begin{verbatim}
+case l of
+    [] => <branch1>
+  | x :: xs => <branch2, with (x : int) and (xs : int list) in scope>
+\end{verbatim}
+\end{framed}
+
+giving a branch for \verb|[]| and a branch for \verb|::|. In the body of
+the \verb|::| branch, the variable \verb|x| stands for the first element of
+the list, and the variable \verb|xs| stands for the rest of the list.
+
+Note that \verb|::| is being used both to create lists, in value
+declarations, and take lists apart, in the part of the \verb|::| branch to
+the left of \sml{=>}.
+
+\section{Structurally Recursive Functions on Lists}
+
+\subsection{length}
+Let's write a function compute the length of a list, which is to say the
+number of elements in the list, or the number of times that \verb|::|
+appears in the structure of the list.
+\verbatiminput{length.sml}
+
+The length of the empty list is \verb|0|: it has no elements, and we know
+that because \verb|::| does not appear in \verb|[]|. If we assume that the
+recursive call is correct inductively, the length of \verb|x :: xs| is one
+more than the length of the tail \verb|xs|: we saw an instance of
+\verb|::|, so we add $1$ and recur.
+
+Here's an example of \sml{length} running on a small list:
+
+\begin{verbatim}
+length (1 :: (2 :: []))
+|-> case (1 :: (2 :: [])) of [] => 0 | x :: xs => 1 + length xs
+|-> 1 + length (2 :: [])
+|-> 1 + (case 2 :: [] of [] => 0 | x :: xs => 1 + length xs)
+|-> 1 + (1 + (length []))
+|-> 1 + (1 + (case [] of [] => 0 | x :: xs => 1 + length xs))
+|-> 1 + (1 + (0))
+|-> 1 + 1
+|-> 2
+\end{verbatim}
+
+\sml{length} transforms a list into an integer by walking down the list,
+replacing each element with \sml{1}, and each \texttt{::} with \sml{+}, and
+then evaluating up all of the additions once the recursion finishes. So
+above, we start with the int list expression
+\begin{verbatim}
+  1 :: 2 :: []
+\end{verbatim}
+and we get the int expression
+\begin{verbatim}
+  1 +  1 +  0
+\end{verbatim}
+
+\subsection{sum}
+We can write a function to compute the sum of the elements in a list very
+similarly:
+\verbatiminput{sum.sml}
+\sml{sum} transforms a list into an integer by walking down the list,
+leaving each element alone, replacing each \sml{::} with a \sml{+}, and
+evaluating up all of the additions once the recursion finishes.
+
+So, for example, in the trace
+\begin{verbatim}
+sum (1 :: (2 :: []))
+|-> case (1 :: (2 :: [])) of [] => 0 | x :: xs => x + sum xs
+|-> 1 + sum (2 :: [])
+|-> 1 + (case 2 :: [] of [] => 0 | x :: xs => x + sum xs)
+|-> 1 + (2 + (sum []))
+|-> 1 + (2 + (case [] of [] => 0 | x :: xs => x + sum xs))
+|-> 1 + (2 + (0))
+|-> 1 + 2
+|-> 3
+\end{verbatim}
+we transform the int list expression
+\begin{verbatim}
+  1 :: 2 :: []
+\end{verbatim}
+into the int expression
+\begin{verbatim}
+  1 +  2 +  0
+\end{verbatim}
+
+\subsection{General Form}
+These two functions suggest a general template for a function on lists:
+\begin{framed}
+\begin{verbatim}
+(* Purpose: operate on every element of a the list *)
+fun f (l : int list) : A =
+    case l of
+        [] => < expression of type A >
+      | x :: xs => < expression of type A in terms of x : int,
+                                                     xs : int list,
+                                             and (f xs) : A >
+\end{verbatim} 
+\end{framed}
+In the cons case, you can use the first element of the list \verb|x|, the
+rest \verb|xs|, and a recursive call to \verb|f| on the smaller list
+\verb|xs|. Note that any call to \verb|f| on any expression equivalent to
+\verb|l| that gets evaluated in the recursive case causes
+non-termination.
+
+\subsection{Raise Salaries}
+Let's do something a bit more practical. I have here a list of the TA's
+salaries and---since Dan isn't around to stop me---I'm going to give everyone
+a big raise.
+
+\verbatiminput{raise.sml}
+
+Note that this function takes two arguments, like the \verb|add| function
+you wrote in lab; see the end of the Lecture 3 notes if you need to review
+pairs. Also note that this function transforms integer lists into other
+integer lists, which is slightly more interesting than the examples above;
+this is a case where we've picked the type \sml{A} in the general form to
+be the type \sml{int list}.
+
+\section{Structural Induction on Lists}
+
+\newcommand{\rb}{rB}
+\newcommand{\LHS}[1]{\mappm{\rb}{(\mappm{\rb}{({#1},a)},b)}}
+\newcommand{\RHS}[1]{\mappm{\rb}{({#1},a+b)}}
+\newcommand{\pred}[1]{\ce{\LHS{#1}}{\RHS{#1}}}
+\newcommand{\rbbod}[2]{\mcase{#1}{\vnil}{\vnil}
+  {\msml{x::xs}}{\msml{(x+{#2})}\msml{::}\mappm{\rb}{(xs,{#2})}}}
+
+\subsection{Proof of Fusion Property}
+Let's prove that two nested calls of \sml{raiseBy} can be fused into one
+call without changing the result.  Specifically, we'll prove Theorem
+\ref{thrm:fusion}. This is saying that we can optimize and traverse the
+list once instead of twice, and no program will be able to tell the
+difference.
+
+\begin{theorem}[Fusion]
+\label{thrm:fusion}
+For all values $\oftpm{l}{\tlst{\tint}}, \oftpm{a}{\tint},
+\oftpm{b}{\tint}$, $$\pred{l}$$
+\end{theorem}
+\begin{proof}
+The proof is by structural induction on $l$. In all of the cases below, let
+\sml{a} and \sml{b} be any values of type $\tint$.
+
+\begin{description}
+\item [\textbf{Case for \ttt{[]}}]
+  To show: $$\pred{\vnil}$$
+  Proof:
+  \begin{align*}
+    &\LHS{\vnil} &\\
+    \cong~& \mappm{\rb}{(\rbbod{\vnil}{a},b)} &\text{step}\\
+    \cong~& \mappm{\rb}{(\vnil,b)}            &\text{step}\\
+    \cong~& \rbbod{\vnil}{b}                  &\text{step}\\
+    \cong~& \vnil                             &\text{step}\\
+    \cong~& \rbbod{\vnil}{(a+b)}              &\text{step, sym}\\
+    \cong~& \RHS{\vnil}                       &\text{step, sym}
+  \end{align*}
+  By transitivity of $\cong$, this concludes this case.
+
+\item [\textbf{Case for \ttt{x::xs}}]
+  inductive hypothesis: $$\pred{xs}$$
+  To show: $$\pred{x::xs}$$
+  Proof:
+  \begin{align*}
+    &\LHS{x::xs} &\\
+    \cong~& \mappm{\rb}{(\rbbod{x::xs}{a},b)}               &\text{step}\\
+    \cong~& \mappm{\rb}{((x+a)::\mappm{\rb}{(xs,a)},b)}     &\text{step}\\
+    \cong~& \rbbod{(x+a)::\mappm{\rb}{(xs,a)}}{b}           &\text{***}\\
+    \cong~& ((x+a)+b)::\mappm{\rb}{(\mappm{\rb}{(xs,a)},b)} &\text{step}\\
+    \cong~& ((x+a)+b)::\RHS{xs}                             &\text{IH}\\
+    \cong~& (x+(a+b))::\RHS{xs}                             &\text{math}\\
+    \cong~& \rbbod{x::xs}{(a+b)}                            &\text{step, sym}\\
+    \cong~& \RHS{x::xs}                                     &\text{step, sym}
+  \end{align*}
+  By transitivity of $\cong$, and taking *** on faith, this concludes this
+  case and the proof.
+\end{description}
+\end{proof}
+
+\subsection{Valuability}
+To finish the proof of Theorem \ref{thrm:fusion} above, we need to give a
+justification for why
+$$\mappm{\rb}{((x+a)::\mappm{\rb}{(xs,a)},b)}$$ and $$\rbbod{(x+a)
+  ::\mappm{\rb}{(xs,a)}}{b}$$ are equivalent.
+
+Why do we need to be careful here? We make a very similar assertion in the
+base case when we said
+that $$\ce{\mappm{\rb}{(\vnil,b)}}{\rbbod{\vnil}{b}}$$ In both cases, we're
+substituting an argument for a parameter in the body of a function; the
+critical difference is that in the base case the arguments to that function
+are both values, but in the inductive case one of them is an expression but
+not a value.
+
+So we need a rule stating to what a function application is equivalent that
+works in both situations. We seem to want to be able to say that, when
+given any function
+\begin{verbatim}
+  fun f (x : A) : B = e1
+\end{verbatim}
+and any expression \texttt{e2 : A}, $$\ce{(\mappm{f}{e2})}
+{\msml{[e2/x]e1}}$$ where $\msml{[e2/x]e1}$ is the expression that results
+from substituting $\msml{e2}$ for all instances of $\msml{x}$ in
+$\msml{e1}$.
+
+To see why this isn't good enough, consider the function
+\begin{verbatim}
+  fun f (x : int) : int = 7
+\end{verbatim}
+and the expression
+\begin{verbatim}
+  f (1 div 0)
+\end{verbatim}
+By our proposed rule, we can substitute for all zero occurrences of \sml{x}
+in \sml{7} and get $$\ce{\mappm{f}{(1 ~div ~0)}}{7}$$ But SML has a
+call-by-value evaluation semantics! So if we actually evaluate the
+expression, it raises an error because you can't divide by zero.
+
+Because $\cong$ is an equivalence relation, allowing both interpretations
+would mean that $$\ce{\msml{7}}{\msml{raise ~Div}}$$ which this directly
+contradicts the definition of $\cong$, where we said that programs that
+raise exceptions are not equivalent to programs that do not raise
+exceptions. The evaluation semantics of SML aren't going to change, so
+something must be wrong with our rule about equivalence of function
+application expressions.
+
+To patch up our rule, we need a couple of definitions:
+\begin{enumerate}
+\item \emph{Definition.} An expression $e$ is valuable if and only if there
+  exists some value $v$ such that $\ce{e}{v}$. Specifically to this proof,
+  \begin{itemize}
+  \item \emph{(pairs)} If $e = (e_1,e_2)$ then $e$ is valuable iff $e_1$ is
+    valuable and $e_2$ is valuable.
+
+  \item \emph{(sums)} If $e = e_1+e_2$ then $e$ is valuable iff $e_1$ is
+    valuable and $e_2$ is valuable.
+
+  \item \emph{(cons)} If $e = e_1::e_2$ then $e$ is valuable iff $e_1$ is
+    valuable and $e_2$ is valuable.
+
+  \item \emph{(app)} If $e = (f ~e_1)$ then $e$ is valuable iff $f$ is
+    total and $e_1$ is valuable
+
+  \end{itemize}
+
+\item \emph{Definition.} A function $\oftp{f}{\tarr{\alpha}{\beta}}$ is
+  total if and only if for all values $\oftp{v}{\alpha}$, $(\mapp{f}{v})$
+  valuable.
+\end{enumerate}
+Now, we can give the following rule:
+
+\begin{framed}
+  \noindent
+  Given any function
+\begin{verbatim}
+  fun f (x : A) : B = e1
+\end{verbatim}
+and any expression \texttt{e2 : A}, $$\ce{(\mappm{f}{e2})}
+{\msml{[e2/x]e1}}$$ if and only if \texttt{e2} is valuable.
+\end{framed}
+
+So, finally, the justification that we really wanted at *** is
+\begin{quote}
+  \begin{enumerate}
+    \item
+    \begin{itemize}
+    \item \sml{+} is total
+    \item \sml{x} is assumed to be a value
+    \item \sml{a} is assumed to be a value
+    \item Therefore, \sml{x+a} is valuable by the rule for sums.
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+    \item \sml{xs} is assumed to be a value
+    \item \sml{a} is assumed to be a value
+    \item Therefore, \sml{(xs,a)} is valuable by the rule for pairs.
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+    \item \sml{\rb} is total (by Theorem \ref{thrm:total} proven below)
+    \item Therefore, \sml{\rb(xs,a)} is valuable by the rule for
+    applications.
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+    \item Therefore, \sml{(x+a)::(\rb(xs,a))} is valuable by the rule for
+      cons.
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+    \item \sml{b} is assumed to be a value
+    \item Therefore, \sml{\rb((x+a)::(\rb(xs,a)), b)} is valuable by the rule
+      for pairs.
+    \end{itemize}
+
+    \item Finally, then, $$\mappm{\rb}{((x+a)::\mappm{\rb}{(xs,a)},b)}$$ is
+      contextually equivalent to $$\rbbod{(x+a) ::\mappm{\rb}{(xs,a)}}{b}$$
+      by the valuability argument above and a step.
+  \end{enumerate}
+\end{quote}
+This is very verbose and we'll often suppress most of these concerns---like
+the totality of simple SML built-ins, explicitly citing assumptions, and
+totality lemmas about structurally recursive functions such as
+\sml{\rb}.
+
+The main point, though, is that you can only treat an expression like a
+name for a value and step through function application with it when
+\emph{you know it will actually produce a value}.
+
+\subsection{Template for Structural Induction on Lists}
+
+Induction is applicable if you're trying to prove a theorem of the form
+\begin{quote}
+  ``for all $\oftp{\msml{l}}{\tlst{\tint}}$, [some statement about $l$ is
+    true]''
+\end{quote}
+Here's the format that any proof by structural induction on lists should
+have:
+\begin{framed}
+\begin{proof}
+The proof is by structural induction on $l$.
+
+\begin{description}
+\item [\textbf{Case for \ttt{[]}}]
+  To show: [substitute \ttt{[]} into the statement for every instance of $l$] \\
+  Proof: \ldots
+
+\item [\textbf{Case for \ttt{x::xs}.}]  Inductive hypothesis: [substitute
+  \ttt{xs} into the predicate].\\
+  To show: [substitute \ttt{x::xs} into the statement for every instance of $l$].\\
+  Proof: \ldots
+\end{description}
+\end{proof}
+\end{framed}
+
+\subsubsection{Critical Observation}
+It's critical to note that following this schema does \emph{not} produce a
+proof by induction on the length of the list: we're arguing about the
+structure of the list directly and length is never involved. It happens to
+be the case that lists and natural numbers have a similar structure, but
+that's incidental. We never mentioned length in our proof of Theorem
+\ref{thrm:fusion} above or Theorem \ref{thrm:total} below.
+
+\subsection{Totality}
+\textit{This proof was not presented in lecture, but it's included for
+  completeness and because it's a good example of a proof by structural
+  induction on lists.}
+
+\begin{theorem}[Totality]
+\label{thrm:total}
+\sml{\rb} is total.
+\end{theorem}
+
+\newcommand{\totalp}[1]{$\exists \oftp{v}{\tlst{\tint}}$ such that $v$ is a
+  value and $\ce{\mappm{\rb}{({#1},a)}}{v}$}
+
+\begin{proof}
+By the definitions of totality and valuability, it suffices to prove
+\begin{quote}
+  For all values $\oftpm{l}{\tlst{\tint}}, \oftpm{a}{\tint}$, $\exists
+  \oftp{v}{\tlst{\tint}}$ such that $$\ce{\mappm{\rb}{(l,a)}}{v}$$
+\end{quote}
+We will proceed, therefore, by induction on \sml{l}. In all of the cases
+below, let \sml{a} be any values of type $\tint$.
+
+\begin{description}
+\item [\textbf{Case for \ttt{[]}}] To show: \totalp{\vnil}\\
+  Proof:
+  \begin{align*}
+          & \mappm{\rb}{(\vnil,a)} &\\
+    \cong~& \rbbod{\vnil}{a} & \text{step}\\
+    \cong~& \vnil & \text{step}
+  \end{align*}
+  Choose $v$ to be the value $\oftp{\vnil}{\tlst{\tint}}$. By the
+  transitivity of $\cong$, this concludes the case.
+
+\item [\textbf{Case for \ttt{x::xs}.}]
+  Inductive hypothesis: \totalp{\msml{xs}}\\
+  To show: \totalp{\msml{x::xs}}\\
+  Proof:
+  \begin{align*}
+          & \mappm{\rb}{(\msml{x::xs},a)} &\\
+    \cong~& \rbbod{\msml{x::xs}}{a} & \text{step}\\
+    \cong~& \msml{(x+a)::\rb(xs,a)} & \text{step}\\
+  \end{align*}
+  By the inductive hypothesis, \totalp{\msml{xs}}. Therefore, let
+  $\oftp{\msml{rl}}{\tlst{\tint}}$ be given such that
+  $\ce{\msml{\rb(xs,a)}}{\msml{rl}}$. Continuing from above, this gives us
+  \begin{align*}
+    \cong~& \msml{(x+a)::rl} & \text{IH}\\
+  \end{align*}
+  We assume that built in addition on values of type $\tint$ is total, so
+  let $\msml{rs}$ be a value such that $$\ce{\msml{rs}}{(x+a)}$$ Again
+  continuing from above, this give us
+  \begin{align*}
+    \cong~& \msml{rs::rl} & \text{+ total}\\
+  \end{align*}
+  We assume that built in \verb|::| is total, so let $\msml{rf}$ be a value
+  such that $$\ce{\msml{rf}}{\msml{rs::rl}}$$ Again continuing from above, this
+  give us
+  \begin{align*}
+    \cong~& \msml{rf} & \text{:: total}\\
+  \end{align*}
+  Choose $v$ to be the value $\oftp{\msml{rf}}{\tlst{\tint}}$. By the
+  transitivity of $\cong$, this concludes the case.
+
+\end{description}
+\end{proof}
+
+\subsection{Other Theorems}
+The three simple functions discussed above are actually enough to prove a
+number of interesting theorems. Here are just a couple, with the proofs
+left to the reader.
+
+
+\begin{theorem}[Self Inverse]
+\label{thrm:inverse}
+For all values $\oftpm{l}{\tlst{\tint}},
+\oftpm{a}{\tint}$, $$\ce{\msml{\rb(\rb{(l,\sim a)},a)}}{\msml{l}}$$
+\end{theorem}
+
+\begin{theorem}[Length Preservation]
+\label{thrm:length}
+For all values $\oftpm{l}{\tlst{\tint}},
+\oftpm{a}{\tint}$, $$\ce{\msml{(\mapp{length}{l})}}{\msml{length(rb(l,a))}}$$
+\end{theorem}
+
+\begin{theorem}[Sum Scale]
+\label{thrm:scale}
+For all values $\oftpm{l}{\tlst{\tint}},
+\oftpm{a}{\tint}$, $$\ce{\msml{sum(\rb(l,a))}}{\msml{(\mapp{sum}{l}) +
+    ((\mapp{length}{\msml{l}}) * a)}}$$
+\end{theorem}
+\end{document}

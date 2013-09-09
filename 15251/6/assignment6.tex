@@ -1,0 +1,293 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+%%%%%%%%%%%%%%%%% Identifying Information %%%%%%%%%%%%%%%%%
+%% This is here, so that you can make your homework look %%
+%% pretty when you compile it.                           %%
+%%     DO NOT PUT YOUR NAME ANYWHERE ELSE!!!!            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Assignment 6}
+\newcommand{\myrecitation}{E}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+{\Large \myhwname} \\
+\myname \\
+\myandrew \\
+\myrecitation \\
+\today
+\end{center}
+\begin{question}{Like a fly in a web}
+\textbf{Part a}
+
+Let $P(n) = $``For all simple graphs with $n$ vertices and $m$ edges, 
+this algorithm produces a bipartition in which 
+at least $\frac{m}{2}$ of the edges cross the partition."
+
+The proof is by induction on $n$.
+
+\textbf{Base case:} $(n=1)$\\
+$m$ must be 0 since there are no vertices to connect to. 
+The algorithm does nothing, and $\frac{m}{2} = 0$ so $P(1) =$ true.
+
+\textbf{Inductive Hypothesis:}
+For some $n \in \mathbb{N}$, for all simple graphs with $n$ vertices and $m$ edges, 
+this algorithm produces a bipartition in which 
+at least $\frac{m}{2}$ of the edges cross the partition.
+
+\textbf{Inductive Step:}
+Add a vertex and connect it to $k$ of the $n$ other vertices. Then there are 
+a total of $m+k$ edges
+
+Place $n$ vertices on the left or the right according to the algorithm. By the IH, 
+we know at least $\frac{m}{2}$ edges cross the center.
+
+You have two options for the $(n+1)^{th}$ vertex: place it on the left or on the right.
+If you place it on the left a set of edges $A$ will cross the center. If you place it
+on the right, a set of edges $B$ will cross the center. $A \cap B = \null$ since 
+no edge will cross the center in both cases (duh). Therefore, $|A| + |B| = k$.
+
+The algorithm says to place the last vertex on the left or right so that 
+the larger of $A$ and $B$ crosses the center. Without loss of generality, we'll
+say that $A$ is larger and therefore crosses the center. 
+\begin{align*}
+|A| + |B| &= k\\
+2|A| \geq |A| + |B| &= k\\
+|A| &\geq \frac{k}{2}
+\end{align*}
+
+Therefore, at least $\frac{m}{2}+\frac{k}{2} = \frac{m+k}{2}$ edges will be cut.
+
+\textbf{Part b}
+
+\textbf{Claim:}\\
+If the planar graph $G$ is isomorphic to its dual $G'$, then $G'$ has $2n-2$ edges.
+
+Let $G$ have $n$ vertices, $e$ edges, and $f$ faces.
+Let $G'$ have $n'$ vertices, $e'$ edges, and $f'$ faces.
+
+\textbf{Fun Facts:}
+\begin{enumerate}
+\item Since $G \simeq G'$, there is a bijection between their vertex sets, so $n=n'$.
+\item According to the definition stated in the problem, there is also a bijection 
+between the sets of edges, so $e=e'$.
+\item Since $G'$ is the dual of $G$, $n' = f$ because to form a dual of a graph, you 
+put one vertex for every face of the graph.
+\end{enumerate}
+
+\textbf{QEDmyGraph:}\\
+Since $G'$ is the dual of $G$, and $G$ is planar, we know that $G'$ is planar
+and therefore $n' + f' = e' + 2$
+\begin{align*}
+e' &= n' + f' - 2\\
+   &= n + f' - 2\\
+   &= n + n - 2\\
+e' &= 2n - 2
+\end{align*}
+QED
+\end{question}
+\begin{question}{Oh no, not again}
+WTS: Consider a regular, bipartite graph G whose edges go only between A and B. 
+Observe that the graph is regular (every node in G has the same degree). 
+Assuming G has at least one edge, show that G has a perfect matching.
+Also show that the edges of G are a union of disjoint perfect matchings.
+
+(part a is by the lecture notes.)
+
+Proof that a regular bipartite graph is the disjoint union of the edges of perfect matchings:
+Say you have a regular bipartite graph where all nodes have degree $k$. By the lemma proved in 
+part A, it must have a perfect matching. Remove the edges in that perfect matching. By definition 
+of perfect matching, all nodes now have degree $k-1$. Lo and behold, another regular bipartite graph. 
+Therefore it must have a perfect matching. Continue to remove the edges in the perfect matchings 
+until all the nodes have degree 0, ie. there are no more edges to remove. Therefore, if we added 
+the sets of edges that we 
+removed at each step, we'd see that their union gets us back to the original graph. Also
+because of the method used to remove the sets of edges, they are clearly disjoint.
+
+\end{question}
+\begin{question}{The Blob}
+ Suppose Mutant Town starts off with only the axiom K3 . Show that in the resulting
+ system, the set of theorems is the same as the set of graphs which are NOT 2-colorable.
+\begin{enumerate}[a.]
+\item First, note that graphs where $n\leq 2$ are obviously colorable.
+Also, using the axiomatic system, you cannot form graphs where $n\leq 2$, since 
+the only axiom has 3 nodes and there is no operation which decreases the number of nodes.
+Therefore the claim holds for all graphs where $n=0,1,2$.
+
+\textbf{Claim:} If the only axiom is $K_3$, then the resulting set of theorems is not 2-colorable.
+
+We proceed by structural induction on the number of vertices.
+
+\textbf{Base case:}\\
+The axiom $K_3$ is the complete graph with 3 nodes. This is not 2 colorable because it is
+an odd cycle. 
+
+\textbf{Inductive Hypothesis:}\\
+Assume the claim to be true for all graphs where $n<k$ for some $k\in\mathbb{N}$$G$ be a graph formed from the axiomatic system which is not 2-colorable.
+
+\textbf{Inductive Step:}\\
+Case GROW: The claim holds if you apply grow to any graph in the axiomatic system where $n<k$. By the IH, these graphs are not 2-colorable. By adding an edge or vertex, the subgraph
+which is not 2-colorable still exists in the graph. Therefore, the graph is not 2 colorable.\
+
+Case CRUSH: Say you are crushing 2 not-2-colorable graphs by the IH. Then these graphs both contain an odd cycle, because they are not
+2 colorable. The crush operation does not change that fact. All crush does is modify the neighbor-set of 2 vertices, and it does
+not remove anything from the neighbor-set since it performs the union. Therefore CRUSH cannot eliminate any odd cycles. The resulting
+graph must not be 2-colorable because it contains an odd cycle.
+
+Case BLOB: Again, BLOB does not eliminate odd cycles. It is like CRUSH, but it also adds an edge. The key is that it does not remove 
+anything from the neighbor-set, which is why it cannot eliminate odd cycles. More detail
+(u,v) (x,y)
+It merges u and x into the same vertex which I will call x.
+(x,v) (x,y)
+It then adds the edge (v,y). You can see that we have not removed the odd cycles in any way, we've only possibly created another
+odd cycle.
+
+Therefore, we have shown by induction that no graph produced by the axiomatic system is 2-colorable. Now we must show that 
+any graph which is not 2-colorable can be produced by the axiomatic system. However, I didn't get up to this part.
+
+\item
+\textbf{Claim:} Given only the axiom $K_4$, no resulting theorem is 3-colorable.
+
+We proceed by structural induction on the number of vertices.
+
+\textbf{Base Case: }\\
+The graph $K_4$ contains the subgraph $K_3$, which is 3-colorable. Then add a node to the graph, and connect every node to it by an edge. 
+No matter what color you choose for the new node, it will connect to a node with the same color. Therefore $K_4$ is not 3-colorable.
+
+\textbf{Induction Hypothesis: }\\
+Any theorem that is a result of $k$ or fewer deductive rules is not $3$-colorable. \\
+
+\textbf{Inductive Step: } In each of our three cases we show that after an additional deductive rule, the claim still holds.\\
+
+\textbf{Case GROW: } We are given a theorem $G$ which is not 3-colorable by the IH. 
+The application of GROW results in a new theorem $G'$. GROW only adds a vertex or an edge, 
+Therefore $G$ is a subgraph of $G'$. Since $G$ is not $3$-colorable, $G'$ is not $3$-colorable. \\
+
+\textbf{Case CRUSH: } $G$ and $H$ which is are not 3-colorable by our induction hypothesis. 
+There must exists a node $n$ where one neighbor of $n$ is the same color as $n$, since $G$ is not 3-colorable. 
+Let $G_s$ be the subgraph of $G$ which is not 3-colorable. If we apply CRUSH($u$,$v$) such that $u,v \notin G_s$ 
+we see that $G_s$ remains unaffected. So, the resulting theorem has the subgraph $G_s$, 
+and is therefore not $3$-colorable. \\
+In the other case, you do CRUSH($u$,$v$) such that at least one of $u,v \in G_s$. CRUSH does not remove edges so by the same reasoning in
+part A, the resulting theorem is not 3-colorable.
+
+\textbf{BLOB: } We are given two theorems $G_1$ and $G_2$ which are not 3-colorable by the IH. 
+
+I did not complete the rest of the proof.
+\end{enumerate}
+\end{question}
+\begin{question}{Running in Circles}
+For this proof, let the term ``duo'' denote a subgraph that consists of two parallel edges between two nodes.
+
+Let $k_{n}$ be the number of labeled graphs $G$ with $n$ vertices where $G$ is isomorphic to its own edge graph, $\widetilde{G}$. 
+
+$$k_n = k_{n-1} + (n-1)k_{n-1} - \binom{n-1}{2}k_{n-3}$$
+
+To create a graph with $n$ nodes from a graph with $n-1$ nodes, there are two ways to proceed. First add a node.
+Either:
+\begin{enumerate}
+\item Connect the node to the (n-1) graph
+\item Do not connect the node to the rest of the nodes. Instead give it a loop.
+\end{enumerate}
+
+For the second case, this results in $k_{n-1}$ graphs of size $n$ because there is only 1 way to add
+a node with a loop to the (n-1) graph.
+
+For the first case, there are $n-1$ possible spots to insert a new $n^{th}$ node in each graph; this 
+results in $(n-1)k_{n-1}$ graphs of size $n$. However, for each case in the $k_{n-1}$ graph arrangements with a duo,
+we overcount the number of graphs. Notice that we count each edge of the duo, when in reality, there is only one 
+new graph formed by inserting the node into the duo.
+
+To account for the overcounting, we subtract the set of all the $n$-size graphs that result 
+from inserting a new node into a $(n-1)$-size graph with a duo. In order to determine the 
+total number of $(n-1)$-size graphs that contain a duo, we look at $k_{n-3}$ because it represents the 
+total number of $(n-1)$-size graphs without the 2 nodes that make up the duo.
+
+We multiply $k_{n-3}$ by $\binom{n-1}{2}$ because of the Rule of Produce, and because we're choosing 2 labeled
+nodes. 
+
+Therefore, by the Rule of Sum, the number of labeled graphs on $n$ vertices is 
+
+$$k_n = k_{n-1} + (n-1)k_{n-1} - \binom{n-1}{2}k_{n-3}$$
+$$= nk_{n-1} + \frac{(n-1)(n-2)}{2}k_{n-3}$$ 
+
+\end{question}
+\begin{question}{Pizzadeliv'ryman}
+\textbf{Claim:} For all $n\in\mathbb{N}$, for all complete directed graphs with $n$ nodes, there exists a path 
+in $G$ which touches all $n$ nodes.
+
+\textbf{Base Case:}\\
+$n=0$\\
+There are no nodes, so the path which satisfies the claim is the empty path.
+
+$n=1$\\
+There is one node. The path which satisfies the claim is the path with that node.
+
+\textbf{Inductive Hypothesis:}\\
+For some $k\in\mathbb{N}$, all complete directed graphs with $k$ nodes have a path 
+that touches all $k$ nodes.
+
+
+\textbf{Inductive Step:}\\
+Consider a complete directed graph G with $k$ nodes. Therefore, by the IH, there 
+exists a path $p$ such which contains every node. Now, add a node $f$, and connect every
+node in $G$ with an edge to $f$. Therefore this new graph, $G'$, is complete.
+
+Paths must have 2 endpoints. Since these graphs are directed, their paths will
+also be directed. Say $p$, from above, has two endpoints $(e_1,e_2)$ such that
+the edge connected to $e_1$ points away from $e_1$, and the edge connected to $e_2$ 
+points toward $e_2$.
+
+Remember that node $f$ from above is connected to $e_1$ and $e_2$. We 
+call the edge that connects $f$ to $e_1$ $a$ and the $b$ is the edge which 
+connects $f$ to $e_2$.
+
+Case f \verb|-->| $e_1$\\
+prepend f to the path p
+
+Case $e_2$ \verb|-->| f\\
+append f to the path p
+
+Case f \verb|-->| $e_1$ and $e_2$ \verb|<--| f\\
+Traverse path $p$ from $e_1$ to $e_2$, and at each node in the way,
+look at the edge which connects it to $f$. At $e_1$, the node is pointing
+to $f$, but by the time you get to $e_2$, the node is pointing from $f$ to $e_2$.
+This change of direction means that somewhere along the way, the direction 
+alternated between to $f$ and from $f$. Then you can put $f$ in between those two
+nodes such that $e_1$ \verb|-->| ... \verb|-->| $x$ \verb|->| $f$ \verb|->| $y$ \verb|-->| ... \verb|-->| $e_2$. 
+
+\end{question}
+\begin{question}{On the Run}
+%%Put your answer here
+\end{question}
+\end{document}

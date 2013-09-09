@@ -1,0 +1,112 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   Linked qlist implementation of a Queue
+ *
+ * @author: V. Adamchik
+ ******************************************************************************/
+
+ /*****************************************************************************
+               Do not modify this file.
+ *****************************************************************************/
+
+/* Interface to queues */
+
+#use "client.c0"
+
+typedef struct q_node* qlist;
+struct q_node
+{
+	queue_elem data;
+	qlist next;
+};
+
+typedef struct queue* queue;
+struct queue
+{
+	qlist front;
+	qlist back;
+	int size;
+};
+
+bool queue_empty(queue Q);      /* O(1) */
+queue queue_new();                  /* O(1) */
+void enqueue(queue_elem e, queue Q);  /* O(1) */
+queue_elem dequeue(queue Q);            /* O(1) */
+void print_queue(queue Q);         /* O(n) */
+
+/* IMPLEMENTATION */
+
+
+bool isSegment(qlist start, qlist end)
+{
+	qlist p = start;
+	while (p != end)
+	{
+		if (p == NULL) return false;
+		p = p->next;
+	}
+	return true;
+}
+
+
+bool is_queue(queue Q)
+{
+	return Q->front != NULL && Q->back != NULL  && isSegment(Q->front, Q->back);
+}
+
+bool queue_empty(queue Q)
+//@requires is_queue(Q);
+{
+	return Q->front == Q->back;
+}
+
+
+queue queue_new()
+//@ensures is_queue(\result);
+//@ensures queue_empty(\result);
+{
+	queue Q = alloc(struct queue);
+	qlist L = alloc(struct q_node);
+	Q->front = L;
+	Q->back = L;
+	Q->size = 0;
+	return Q;
+}
+
+queue_elem dequeue(queue Q)
+//@requires is_queue(Q);
+//@requires !queue_empty(Q);
+//@ensures is_queue(Q);
+{
+	assert(!queue_empty(Q));
+	queue_elem e = Q->front->data;
+	Q->front = Q->front->next;
+	Q->size--;
+	return e;
+}
+
+void enqueue(queue_elem e, queue Q)
+//@requires is_queue(Q);
+//@ensures is_queue(Q);
+{
+	qlist L = alloc(struct q_node);
+	Q->back->data = e;
+	Q->back->next = L;
+	Q->back = L;
+	Q->size++;
+}
+
+// prints this queue from front to back
+void print_queue(queue Q)
+//@requires is_queue(Q);
+{
+	qlist p = Q->front;
+	while (p != Q->back)
+	{
+		printint(p->data->lights); print(", ");
+		p = p->next;
+	}
+	print ("\n");
+}

@@ -1,0 +1,152 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	This is a one character text editor back-end.
+ *
+ *     Run Lovas' front-end "lovas-E0.c0" for a full demo.
+ *
+ * @author:
+ ******************************************************************************/
+
+#use "text-buffer.c0"
+
+
+/* INTERFACE */
+
+bool tbuf_empty(tbuf B);  //  Checks if the linked list has only the point node and its buffer is empty
+bool is_tbuf(tbuf B);         // Checks if it's linked and either empty or has a non-empty point.
+tbuf tbuf_new();              // Creates an empty text buffer
+
+// Splits the full point node into two nodes.
+// The point is the new right buffer
+void split_point(tbuf B);
+
+void forward_char(tbuf B);          // Moves the cursor one char forward, to the right
+void backward_char(tbuf B);       // Moves the cursor one char  backward, to the left
+void insert_char(char ch, tbuf B); // Inserts the character before the cursor
+
+// Deletes the character before the cursor.
+// It also deletes the point node if it's empty.
+void delete_char(tbuf B);
+
+/* IMPLEMENTATION */
+bool tbuf_empty(tbuf B)
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{
+return tbuf_at_right(B) && tbuf_at_left(B) && gapbuf_empty(B->point->data);
+}
+bool is_tbuf(tbuf B)
+{
+  if(!is_linked(B)) return false;
+  if(B->start == NULL || B->start->next == NULL) return false;
+  dll current = B->start->next;
+  int limit = current->data->limit;
+  bool invariants = true;
+  while(invariants && current != B->end)
+  {
+    invariants = is_gapbuf(current->data) &&
+                  limit == current->data->limit;
+    current = current->next;
+  }
+  return invariants;
+
+}
+tbuf tbuf_new()
+//@ensures is_tbuf(\result);
+{
+  tbuf t = alloc(struct text_buffer);
+  t->start = alloc(struct list_node);
+  t->point = alloc(struct list_node);
+  t->point->data = gapbuf_new(16);
+  t->point->data->limit = 16;
+  t->end = alloc(struct list_node); 
+  (t->start)->next = t->point;
+  (t->point)->prev = t->start;
+  (t->point)->next = t->end;
+  (t->end)->prev = t->point;
+  return t;
+}
+void split_point(tbuf B)
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{
+  dll point = B->point;
+  elem buffer = point->data;
+  if(!gapbuf_full(buffer)) return;
+  int limit = buffer->limit;
+  int midpt = limit/2;
+  dll insertleft = alloc(struct list_node);
+  dll insertright = alloc(struct list_node);
+  insertleft->data = gapbuf_new(limit);
+  insertright->data = gapbuf_new(limit);
+  for(int i = 0; i < midpt; i++)
+  {
+    gapbuf_insert(buffer->buffer[i], insertleft->data);
+    gapbuf_insert(buffer->buffer[i+midpt], insertright->data);
+  }
+  bool gap_left = buffer->gap_end <= midpt;
+  bool gap_right = !gap_left;
+  while((gap_left && buffer->gap_start != insertleft->data->gap_start) 
+         // if gap is on left, loop until gap starts at same place
+          || (gap_right && false))
+           // if gap is on right, dont move the gap
+  {
+    gapbuf_backward(insertleft->data);
+  }
+
+  while((gap_left && insertright->data->gap_start != 0 )
+         // if gap is on left, loop until gap starts at beginning
+          || (gap_right && buffer->gap_end != insertright->data->gap_end))
+            //if gap is on right, loop until gap is at same place
+  {
+    gapbuf_backward(insertright->data);
+  }
+  //link everything together
+  insertleft->prev = B->point->prev;
+  insertleft->next = insertright;
+  insertright->prev = insertleft;
+  insertright->next = B->point->next;
+  B->point->prev->next = insertleft;
+  B->point->next->prev = insertright;
+  //choose where to point
+  if(gap_left) B->point = insertleft; else B->point = insertright;
+}  
+void forward_char(tbuf B) 
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{
+  if(gapbuf_at_right(B->point->data))
+    tbuf_forward(B);
+  gapbuf_forward(B->point->data);
+  
+}
+void backward_char(tbuf B)
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{
+  if(gapbuf_at_left(B->point->data))
+    tbuf_backward(B);
+  gapbuf_backward(B->point->data);
+}
+void insert_char(char ch, tbuf B) 
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{ 
+  if(gapbuf_full(B->point->data)) 
+    split_point(B);
+  gapbuf_insert(ch,B->point->data);
+}
+void delete_char(tbuf B) 
+//@requires is_tbuf(B);
+//@ensures is_tbuf(B);
+{
+  if(gapbuf_empty(B->point->data))
+    tbuf_delete_point(B);
+  else if(gapbuf_at_left(B->point->data))
+    tbuf_backward(B);
+  gapbuf_delete(B->point->data);
+  if(gapbuf_empty(B->point->data))
+    tbuf_delete_point(B);
+}

@@ -1,0 +1,212 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\input{defs.tex}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{2}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+Section G but im not sure\\
+January 25, 2012 \\
+\end{center}
+
+
+\question{1}{Task 2.1}
+No, this does not type check. When smlnj tries to evaluate the expression 
+\verb|square 7.0|, it fails to do so, because 7.0 is not an int but 
+\verb|square| is a function of type \verb|int -> int|.
+
+\question{2}{Task 2.2}
+a. The value 3 : int is put in the place of the x in line 5. This is because of
+ the val declaration in line 4 takes precedence over the x defined in the 
+arguments of the function, due to the scope properties of the let clause.
+
+b. The value of the expression \verb|5.2 * (real x)| is substituted for p, where
+ x is 3, as said in part a. This evaluates to \verb|5.2 * (real 3)|, then 
+ \verb|5.2 * 3.0|, then \verb|15.6|. So ultimately the value which replaces p is 
+15.6. This is because p is within the \verb|in| block so it takes the value 
+prescribed to it in the \verb|let| block, specifically line 5. Also, SML is 
+pass-by-value, so the value is passed to the \verb|in| block, not the 
+expression.
+
+c. The value of the first argument passed to the fucntion replaces x, because 
+the declaration of the function names the first argument x. The x in line 4 or 
+7 do not substitute for the x in line 11, because those are within the scope 
+of the inner let statement, and they disappear after the end on line 9.
+
+d. assemble (x, 2.0) evaluates to 58.
+
+\question{3}{Task 2.3}\begin{verbatim}
+let val x : real = real (square 6) 
+in 3 + (trunc x) 
+end
+\end{verbatim}
+$\mapsto$
+\begin{verbatim}let val x : real = real (6 * 6)
+in 3 + (trunc x)
+end
+\end{verbatim}
+$\mapsto$ \begin{verbatim}
+let val x : real = real (36)
+in 3 + (trunc x)
+end
+\end{verbatim}
+$\mapsto$ \begin{verbatim}
+let val x : real = 36.0
+in 3 + (trunc x)
+end
+\end{verbatim}
+$\mapsto$ \verb|3 + (trunc 36.0)| \\\\
+$\mapsto$ \verb|3 + 36| \\\\
+$\mapsto$ \verb|39| \\\\
+
+
+\question{4}{Task 2.4}
+They are not equivalent. The fact function steps to a case statement, which 
+eventually steps to ~1*fact(~2). This repeats for quite a long time, and 
+assuming integers do not overflow, and that our heap is infinitely large, this function will infinite loop.
+
+In the case of f 10, this function steps to f 10. It steps to the same 
+thing consistently, using no additional memory. This will also infinite loop.
+
+Therefore, the expressions are equivalent.
+
+\question{5}{Task 2.5}
+Consider the expression \verb|fact 3|.\\
+
+$\sml{fact(3)}&\\
+$\mapsto$
+\sml{case 3 of 0 => 1 | \_ => 3 * fact(3-1)} \\
+$\mapsto$
+\sml{3 * fact(3-1)} \\
+$\mapsto$
+\sml{3 * fact(2)} \\
+$\mapsto$
+\sml{3 * case 2 of 0 => 1 | \_ 2 * fact(2-1)}\\
+$\mapsto$
+\sml{3 * 2 * fact(2-1)}\\
+$\mapsto$
+\sml{3 * 2 * fact(1)}\\
+$\mapsto$
+\sml{6 * fact(1)}\\
+$\mapsto$
+\sml{6 * case 1 of 0 => 1 | \_ 1 * fact(1-1)}\\
+$\mapsto$
+\sml{6 * 1 * fact(1-1)}\\
+$\mapsto$
+\sml{6 * 1 * fact(0)}\\
+$\mapsto$
+\sml{6 * fact(0)}\\
+$\mapsto$
+\sml{6 * case 0 of 0 => 1 | \_ 0 * fact(0-1)}\\
+$\mapsto$
+\sml{6 * 1}\\
+$\mapsto$
+\sml{6}\\
+Thus, fact(3) evaluates to 6.
+
+Now consider:
+\begin{tabular}
+
+fact(fact(3))
+fact(6)
+case 6 of 0 => 1 | _ 6 * fact(6-1)
+6 * fact(6-1)
+fact(3) * fact(fact(3) - 1)
+
+Therefore:
+fact(fact(3)) == fact(3) * fact(fact(3) - 1)
+
+(* And that's a fact. *)
+
+\question{6}{Task 3.2}
+$H_0$ is $0$. $H_1$ is $1$. $H_2$ is $\frac{3}{2}$. $H_3$ is $\frac{11}{6}$. $H_4$ is $\frac{25}{12}$.
+
+\question{7}{Task 3.4}
+$I_0$ is $0$. $I_1$ is $1$. $I_2$ is $\frac{1}{2}$. $I_3$ is $\frac{5}{6}$. $I_4$ is $\frac{7}{12}$.
+
+\question{8}{Task 4.2}
+Base Case
+double n where n = 0
+double 0
+case 0 of 0 => 0 | _ 2 + double(n-1)
+0
+2*0
+2n where n = 0
+
+Inductive Hypothesis
+Assume \sml{double k} $\cong 2*k$ for some $k \in \mathbb{N}$
+
+Inductive Step
+Consider
+2(k+1)
+2k + 2
+2 + double(k)
+2 + double(k + 1 - 1)
+case 0 of 0 => 0 | 2 + double(k + 1 - 1)
+double(k+1)
+Therefore 2(k+1) === double(k+1)
+
+Base Case
+\sum_{i=0}^{n}i where n = 0
+0
+summ 0
+case 0 of 0 => 0 | _ 0 + (summ(0-1))
+0
+0*1
+0*(0+1)
+0*(0+1) div 2
+n*(n+1) div 2 where n = 0
+\frac{0(0+1)}{2}
+\frac{n(n+1)}{2} where n = 0
+
+Inductive Hypothesis
+Assume \summ n \equals n*(n+1) div 2
+
+Inductive Step
+First, we make the assumption that n+1 evaluates to a value.
+Consider
+summ(n+1)
+case n+1 of 0 => 0 | _ n+1 + summ((n+1)-1)
+n+1 + summ((n+1)-1)
+n+1 + summ(n)
+n+1 + \frac{n(n+1)}{2}
+(n^2+n) div 2 + 2(n+1) div 2
+(n^2+n) div 2 + (2n+2) div 2
+(n^2+3n+2) div 2
+((n+1)(n+2)) div 2
+
+
+\end{document}
+

@@ -1,0 +1,40 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	A bit array implementation.
+ * @author: Mostly ksikka
+ ******************************************************************************/
+typedef int bitarray;
+/* get the ith bit of bitarray n, with 0 being the least significant */
+bool bitarray_get(bitarray n, int i)
+//@requires 0 <= i && i < 32;
+;
+/* set the ith bit of bitarray n to bool b, returning a new bitarray */
+bitarray bitarray_set(bitarray n, int i, bool b)
+//@requires 0 <= i && i < 32;
+;
+/* toggle the ith bit of the bitarray n, returning a new bitarray */
+bitarray bitarray_flip(bitarray n, int i)
+//@requires 0 <= i && i < 32;
+;
+//***----------BEGIN IMPLEMENTATION---------***/
+bool bitarray_get(bitarray n, int i)
+//@requires 0 <= i && i < 32;
+{
+  //@assert ((n >> i) & 1) == 1 || ((n >> i) & 1) == 0; 
+  if (((n >> i) & 1) == 1) return true;
+  return false;
+}
+bitarray bitarray_set(bitarray n, int i, bool b)
+//@requires 0 <= i && i < 32;
+{
+  if(b != bitarray_get(n,i)) return bitarray_flip(n,i);
+  else return n;
+}
+bitarray bitarray_flip(bitarray n, int i)
+//@requires 0 <= i && i < 32;
+{
+  return n ^ (1 << i);
+}
+

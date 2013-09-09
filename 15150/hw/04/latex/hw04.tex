@@ -1,0 +1,197 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{4}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+Due 2/15/12 \\
+\end{center}
+
+
+\question{1}{Task 3.1}
+
+{\bf Claim:} For all values \sml{n:int} and \sml{l:int list},
+ if \sml{l sorted} then \sml{insert(n,l) sorted}.
+
+We proceed by induction on \sml{l}.
+
+{\bf Case \sml{[]}:}
+
+WTS that if \sml{[] sorted} then \sml{insert(n,[]) sorted}.
+
+Given that \sml{[]} is sorted, consider:
+
+\begin{align*}
+  & \sml{insert(n,[])} && \\
+  \cong & \sml{case [] => n :: [] | ...} && step\\
+  \cong & \sml{n :: []} && step \\
+  \cong & \sml{[n]} && step \\
+\end{align*}
+
+Since \sml{[n]} is a singleton list, it is sorted by defintion. QED.
+
+{\bf Case \sml{x::xs}:}
+
+Want to show that if \sml{x::xs sorted} then \sml{insert(n,x::xs) sorted}.
+
+Inductive Hypothesis:
+
+Assume that for some int list xs, if \sml{xs sorted} then \sml{insert(n,xs)} is also sorted.\\
+
+Inductive Step:
+
+Want to show that if the claim holds for xs, it holds for x::xs.
+
+Consider \sml{x::xs}. If it is not sorted, the claim is true.
+
+Consider \sml{insert(n,x::xs)} where \sml{x::xs} is sorted.
+
+\begin{align*}
+\cong & \sml{insert(n,x::xs)} && \\
+\cong & \sml{case x::xs of [] => ... | (x :: xs) => (case n < x of true ... } && step \\
+\cong & \sml{case n < x of true => n :: (x :: xs) | false => x :: (insert (n , xs)) } && step \\
+\end{align*}
+
+Now, \sml{n < x} can be either true or false. Case true:
+
+\begin{align*}
+\cong & \sml{n :: (x :: xs)} && step \\
+\end{align*}
+
+This result is sorted, because \sml{x::xs} is sorted, and \sml{n < x}. Now, case false:
+
+\begin{align*}
+\cong & \sml{x :: (insert (n , xs))} && step \\
+\end{align*}
+
+\sml{insert(n,xs)} is sorted by the IH, so therefore, the result is sorted by the definition of sortedness.
+
+In all cases, the inductive step holds.
+
+$\blacksquare$
+
+\question{2}{Task 3.2}
+{\bf Claim:} For all valuable expressions \sml{e:int} and \sml{es:int} list, \\
+if \sml{es sorted} then \sml{insert(e,es) sorted}.
+
+All valuable expressions \sml{e} and \sml{es} will evaluate to values \sml{x} and \sml{xs}. Then, 
+by the theorem proved in Task 3.1, if if \sml{x sorted} then \sml{insert(x,xs) sorted}.
+Since, \sml{x} $\cong$ \sml{e}, and \sml{xs} $\cong$ \sml{es}, the claim holds.
+
+\question{3}{Task 3.3}
+{\bf Claim:} For all values \sml{l:int list}, \sml{(isort l) sorted}.
+
+We proceed by induction on l.
+
+{\bf Base Case:}\\
+WTS \sml{isort []} is sorted.\\
+
+\begin{align*}
+      & \sml{isort []} && \\
+\cong & \sml{case [] of [] => [] | ...} && step \\
+\cong & \sml{[]} && step \\
+\end{align*}
+This is sorted by definition, therefore \sml{isort []} is sorted.
+
+Inductive Hypothesis:
+
+Assume \sml{isort xs} is sorted, for some \sml{xs}.
+
+Inductive Step:
+
+WTS \sml{isort x::xs} is sorted.
+
+Consider:
+
+\begin{align*}
+     & \sml{isort x::xs} && step \\
+\cong & \sml{case x::xs of [] => [] | (x :: xs) => insert (x , isort xs)} && step \\
+\cong & \sml{insert (x , isort xs)} && step \\
+\end{align*}
+isort xs is sorted, by the IH.
+By the lemma proved in Task 3.1, this is also sorted.
+
+\question{4}{Task 4.4}
+Claim: For all values \sml{t1 t2:tree},
+\sml{depth (combine(t1,t2)) $\leq$ 1+max(depth t1, depth t2)}.
+
+{\bf Base Case:}
+
+Want to show that \sml{depth (combine(Empty,t2)) $\leq$ 1+max(depth Empty, depth t2)}.
+
+Consider:
+
+\begin{align*}
+      & \sml{depth (combine(Empty,t2))} && step \\
+\cong & \sml{depth (case Empty of Empty => t2 | Node(l,x,r) => ...} && step \\
+\cong & \sml{depth t2} && step \\
+\end{align*}
+
+\sml{depth t2} is less than \sml{1+depth(t2)}, so the claim holds for the base case.
+
+{\bf Inductive Hypothesis:}
+?
+{\bf Inductive Step:}
+?
+\question{5}{Task 5.2}
+\begin{enumerate}
+\item $W_{takeanddrop}(0) = k_0$ \\
+$W_{takeanddrop}(d) = k_0 + W_{takeanddrop}(d-1)$ \\
+This recurrance is $O(d)$ because it expands to the sum of d constants.
+\item $S_{takeanddrop}(0) = k_0$ \\
+$S_{takeanddrop}(d) = k_0 + S_{takeanddrop}(d-1)$ \\
+This recurrance is $O(d)$ because there is no room for parallelism. Each step 
+depends on something in a sequential manner. 
+\item $W_{halves}(d) \leq 2 W_{takeanddrop}(d)$ \\
+This recurrance is $O(d)$.
+\item $S_{halves}(d) = max(S_{takeanddrop}(d),S_{takeanddrop}(d)) = S_{takeanddrop}(d)$ \\
+This recurrance is $O(d)$.
+\item $W_{rebalance}(0) = k_0 \\
+W_{rebalance}(n) = k_0 + W_{halves}(n) + 2 W_{rebalance}(\frac{n}{2}) \\
+W_{rebalance}(n) = k_0 + log(n) + 2 W_{rebalance}(\frac{n}{2})$ \\
+By the tree method, the right-most term can be reformulated to be:\\
+$W_{rebalance}(n) = k_0 + log(n) + \sum_{i=1}^{log n}k_0$ \\
+$W_{rebalance}(n) = k_0 + log(n) + k_0 log(n)$ \\
+Therefore, the bound for this is $O(log(n))$.
+\item $S_{rebalance}(0) = k_0 \\
+S_{rebalance}(n) = k_0 + S_{halves}(n) + max( W_{rebalance}(\frac{n}{2}), W_{rebalance}(\frac{n}{2}) )  \\
+S_{rebalance}(n) = log(n) + W_{rebalance}(\frac{n}{2}) 
+S_{rebalance}(n) = log(n) + \sum_{i=1}^{log(n)}n \\
+S_{rebalance}(n) = log(n) + log(n) $
+This is bounded by $log(n)$.
+\end{enumerate}
+
+\end{document}

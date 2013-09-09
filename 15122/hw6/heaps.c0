@@ -1,0 +1,219 @@
+/**
+ ******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *     Priority queue, implemented as a binary heap of the fixed size
+ *
+ * Frank Pfenning, Victor Adamchik
+ ******************************************************************************/
+
+ /*****************************************************************************
+               Do not submit this file.
+ *****************************************************************************/
+
+ #use <string>
+ #use <conio>
+ #use "heaps.h0"
+
+
+/****************************************************************
+         library-side interface
+ ****************************************************************/
+
+typedef struct heap* heap;
+struct heap
+{
+	int limit;   // the array size
+	int next;   // the index to insert
+	elem[] heap;
+};
+
+
+bool is_complete(heap H);	/* check if the heap is a complete tree  */
+bool is_heap(heap H);	/* check all heap invariants  */
+heap heap_new(int limit);	/* create new heap of size limit */
+bool heap_empty(heap H);	/* is H empty? */
+int heap_size(heap H);	/* return the current size */
+void heap_insert(elem x, heap H); /* insert x into H */
+elem heap_min(heap H);	/* return minimum */
+elem heap_delmin(heap H);	/* delete and return minimum */
+void print_heap(heap H); 	/* print the array  */
+
+/****************************************************************
+         library-side implementation
+ ****************************************************************/
+ //checks if the tree is complete
+bool is_complete(heap H)
+//@requires \length(H->heap) == H->limit;
+{
+	if (H == NULL) return false;
+
+	for (int k = 1; k < H->next; k++)
+		if(H->heap[k] == NULL) return false;
+
+	return true;
+}
+
+bool is_heap(heap H)
+//@requires \length(H->heap) == H->limit;
+{
+	if (!is_complete(H)) return false; //check if the tree is complete
+	if (!(1 <= H->next && H->next <= H->limit)) return false;
+
+	for (int i = 1; i < H->next; i++)
+    //@loop_invariant 1 <= i && i <= H->next;
+    	if (!(i == 1 || compare(H->heap[i/2], H->heap[i]) <= 0 )) return false;
+
+	return true;
+}
+
+heap heap_new(int limit)
+//ensures is_heap(\result) && heap_empty(\result);
+{
+	heap H = alloc(struct heap);
+	elem[] tmp = alloc_array(elem, limit);
+	H->limit = limit;
+	H->next = 1;
+	H->heap = tmp;
+	return H;
+}
+
+bool heap_empty(heap H)
+//@requires is_heap(H);
+{
+	return (H->next == 1);
+}
+
+bool heap_full(heap H)
+//@requires is_heap(H);
+{
+	return (H->next == H->limit);
+}
+
+
+int heap_size(heap H)
+//@requires is_heap(H);
+{
+	return H->next - 1;
+}
+
+void swap(elem[] A, int i, int j)
+//@requires 0 <= i && i < \length(A);
+//@requires 0 <= j && j < \length(A);
+{
+	elem temp = A[i];
+	A[i] = A[j];
+	A[j] = temp;
+}
+
+bool is_heap_except_up(heap H, int n)
+//@requires \length(H->heap) == H->limit;
+{
+	if (!is_complete(H)) return false;
+	if (!(1 <= H->next && H->next <= H->limit)) return false;
+
+	for (int k = 1; k < H->next; k++)
+	//@loop_invariant 1 <= k && k <= H->next;
+		if ( !(k == 1 || k == n || compare(H->heap[k/2],  H->heap[k]) <= 0) ) return false;
+	return true;
+}
+
+void percolate_up(heap H, int n)
+// H is a heap, except possibly at n, which may be smaller than parent
+//@requires is_heap_except_up(H, n);
+//@requires 1 <= n && n < H->next;
+//@ensures is_heap(H);
+{
+	while (n > 1)
+	//@loop_invariant is_heap_except_up(H, n);
+	{
+		if (compare(H->heap[n], H->heap[n/2]) < 0)
+		{
+			swap(H->heap, n, n/2);
+			n=n/2;
+		}
+		else
+			break;
+	}
+}
+
+void heap_insert(elem x, heap H)
+//@requires is_heap(H);
+//@requires !heap_full(H);
+//@ensures is_heap(H);
+{
+ 	assert(!heap_full(H));
+	H->heap[H->next] = x;
+	H->next++;
+	percolate_up(H, H->next - 1);
+}
+
+bool is_heap_except_down(heap H, int n)
+//@requires \length(H->heap) == H->limit;
+{
+	if (!is_complete(H)) return false;
+	if (!(1 <= H->next && H->next <= H->limit)) return false;
+
+	for (int k = 1; k < H->next; k++)
+	//@loop_invariant 1 <= k && k <= H->next;
+		if ( !(k == 1 || k/2 == n || compare(H->heap[k/2],  H->heap[k]) <= 0) ) return false;
+	return true;
+}
+
+
+void percolate_down(heap H, int n)
+// H is heap, except possibly at k which may be larger than a child
+//@requires is_heap_except_down(H,n);
+//@requires 1 <= n && n <= H->next;
+//@ensures is_heap(H);
+{
+	elem tmp = H->heap[n];
+	int child;
+
+	while (2*n < H->next)
+	//@loop_invariant is_heap_except_down(H, n);
+	{
+		child = 2*n;
+		// find the smallest child
+		if (child+1 < H->next && compare (H->heap[child], H->heap[child + 1]) > 0) child++;
+		//swap
+		if (compare(tmp, H->heap[child]) > 0)  swap(H->heap, n, child);
+		else
+			break;
+		n = child;
+	}
+}
+
+elem heap_delmin(heap H)
+//@requires is_heap(H);
+//@requires !heap_empty(H);
+//@ensures is_heap(H);
+{
+	assert(!heap_empty(H));
+	int n = H->next;
+	elem min = H->heap[1];
+	H->heap[1] = H->heap[n-1];
+	H->next = n - 1;
+	percolate_down(H, 1);
+	return min;
+ }
+
+elem heap_min(heap H)
+//@requires is_heap(H);
+//@requires !heap_empty(H);
+//@ensures is_heap(H);
+{
+	assert(!heap_empty(H));
+	return H->heap[1];
+}
+
+void print_heap(heap H)
+//@requires is_heap(H);
+//@ensures is_heap(H);
+{
+	if(!heap_empty(H))
+		for(int k = 1; k < H->next; k++) { print_data(H->heap[k]); print(" "); }
+
+	println("");
+}
+

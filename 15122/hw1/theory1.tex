@@ -1,0 +1,306 @@
+\documentclass[12pt]{exam}
+\usepackage{amsmath}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+
+\newcommand\Cnought{C$_0$}
+\newcommand\modulo{\ \texttt{\%}\ }
+\newcommand\lshift{\ \texttt{<<}\ }
+\newcommand\rshift{\ \texttt{>>}\ }
+\newcommand\cgeq{\ \texttt{>=}\ }
+
+\newcommand{\answerbox}[1]{
+\begin{framed}
+\hspace{5.65in}
+\vspace{#1}
+\end{framed}}
+
+
+\pagestyle{head}
+
+\headrule \header{\textbf{15-122 Assignment 1}}{}{\textbf{Page
+\thepage\ of \numpages}}
+
+\pointsinmargin \printanswers
+
+\setlength\answerlinelength{2in} \setlength\answerskip{0.3in}
+
+\begin{document}
+\addpoints
+\begin{center}
+\textbf{\large{15-122 : Principles of Imperative Computation
+ \\ \vspace{0.2in} Fall 2011
+\\  \vspace{0.2in} Assignment 1
+}}
+
+ \vspace{0.2in}
+ (\large{Theory Part})
+
+ \vspace{0.2in}
+
+ \large{Due: Thursday, September 15, 2011 in class}
+\end{center}
+
+\vspace{0.5in}
+
+\hbox to \textwidth{Name:\enspace\hrulefill}
+
+
+\vspace{0.2in}
+
+\hbox to \textwidth{Andrew ID:\enspace\hrulefill}
+
+\vspace{0.2in}
+
+\hbox to \textwidth{Recitation:\enspace\hrulefill}
+
+
+
+% End title box
+\vspace{0.5in}
+
+\noindent The written portion of this week's homework will give you some practice
+working with the binary representation of integers and reasoning with
+invariants.  You should type up your solutions or write them
+\textit{neatly} by hand, and you should submit your work in class on the
+due date just before lecture or recitation begins.
+\vspace{0.2in}
+
+\noindent \textbf{Be sure to staple your homework
+before you submit it and make sure your name and section letter is
+clearly shown.}
+
+\vspace{0.2in}
+
+\begin{center}
+\gradetable[v][questions]
+\end{center}
+
+
+\newpage
+\begin{questions}
+\question{\textbf{Basics of \Cnought{}}}
+
+\begin{parts}
+\part[4]
+Let $x$ be an \texttt{int} in the \Cnought{} language.  Express the
+following operations in \Cnought{} using only constants and the bitwise operators
+(\texttt{\&}, \texttt{|}, \texttt{\^}, \texttt{\~}, \texttt{<<}, \texttt{>>}). [1 pt each]
+\vspace{0.2in}
+\begin{subparts}
+    \subpart Set $a$ equal to $x$ multiplied by 64.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+
+
+\vspace{0.1in}
+    \subpart Set $b$ equal to $x \modulo 16$, assuming that $x$ is positive.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+\vspace{0.1in}
+    \subpart Set $c$ equal to $x$ with its middle 12 bits all set to 1.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+\vspace{0.1in}
+    \subpart Set $d$ equal to the intensity of the green component of $x$,
+        assuming $x$ stores the packed representation of an RGB color.
+The intensity should be a value between 0 and 255, inclusive.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+
+\end{subparts}
+
+\newpage
+
+
+\part[2]
+Are the following two \texttt{bool} expressions equivalent in \Cnought{},
+     assuming \texttt{x} and \texttt{y} are of type \texttt{int}?  Explain your answer.
+\begin{verbatim}
+      (x/y < 122) && (y != 0)          (y != 0) && (x/y < 122)
+\end{verbatim}
+
+\begin{solution}
+\vspace{1in}
+\end{solution}
+
+\vspace{0.1in}
+\part[4]
+For each of the following statements, determine whether the statement is
+true or false in \Cnought{}.  If it is true, explain why.
+If it is false, give a counterexample to illustrate why.
+
+\begin{subparts}
+\vspace{0.1in}
+    \subpart For every \texttt{int} $x$: $x + 1 > x$.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+    \vspace{0.1in}
+    \subpart For every \texttt{int} $x$:
+          $x \lshift 1$ is equivalent to $x * 2$.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+
+    \vspace{0.1in}
+    \subpart For every \texttt{int} $x$: $x / 10 * 10 + x \% 10$ is equivalent to $x$.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+
+    \vspace{0.1in}
+    \subpart For every \texttt{bool} $a$ and \texttt{bool} $b$:
+          $a$ \texttt{\&\&} \texttt{!}$b$  is equivalent to \texttt{!(!}$a$ \texttt{||} $b$ \texttt{)}.
+\begin{solution}
+\vspace{0.6in}
+\end{solution}
+
+\end{subparts}
+\end{parts}
+
+\newpage
+
+
+\question{\textbf{Reasoning with Invariants}}
+\begin{parts}
+
+The Fibonacci sequence is shown below:
+\begin{verbatim}
+    1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...
+\end{verbatim}
+Each integer in the sequence is the sum of the previous two integers in the sequence. Consider the following implementation for \texttt{fastfib} that returns the n\textsuperscript{th} Fibonacci number
+(the body of the loop is not shown).
+\begin{verbatim}
+int fib(int n)
+//@requires n >= 1;
+{
+     if (n <= 2) return 1;
+     else return fib(n-1) + fib(n-2);
+}
+int fastfib(int n)
+//@requires n >= 1;
+//@ensures \result == fib(n);
+{
+     if (n <= 2) return 1;
+     int i = 1; int j = 1;
+     int k = 2; int x = 3;
+     while (x < n)
+     //@loop_invariant 3 <= x && x<=n && i==fib(x-1) && j==fib(x-2) && k==i+j;
+     {
+            // LOOP BODY NOT SHOWN
+     }
+     return k;
+}
+\end{verbatim}
+
+
+\part[3]
+Using the precondition and loop invariant, reason that the \texttt{fastfib} function
+must return the correct answer, even if you don't know what is in the body of the loop.
+You may assume the loop invariant is correct.
+\begin{solution}
+\vspace{2.55in}
+\end{solution}
+
+\newpage
+\part[2] Based on the given loop invariant, write the body of the loop.
+
+\begin{solution}
+\vspace{3.7in}
+\end{solution}
+
+\vspace{0.1in}
+\part[2]
+What is the largest Fibonacci number that can be generated by your \texttt{fastfib} program before
+\textit{overflow} occurs? (Overflow occurs when you add two positive integers together
+and get a negative result, or when you add two negative integers together and get a
+positive result.) Show how you derived your answer.
+\begin{solution}
+\vspace{2.8in}
+\end{solution}
+
+\end{parts}
+
+
+\newpage
+\question{\textbf{More on Reasoning with Invariants}}
+\begin{parts}
+
+A \Cnought{} programmer was writing a function to add up the first $n$ natural numbers
+and, after testing, noticed that the first $n$ natural numbers always seemed
+to add up to $n (n-1)/2$. To verify this, the programmer added annotations to the function
+as shown below:
+\vspace{0.1in}
+\begin{verbatim}
+int sum_first(int n)
+//@requires n > 0;
+//@ensures 2 * \result == n * (n - 1);
+{
+     int sum = 0;
+     int i = 0;
+     while (i < n)
+     //@loop_invariant 0 <= i && i <= n;
+     //@loop_invariant 2 * sum == i * (i - 1);
+     {
+        sum = sum + i;
+        i = i + 1;
+     }
+     return sum;
+}
+\end{verbatim}
+Prove that the postcondition (\texttt{ensures}) holds for the function using
+the given precondition(\texttt{requires}) and the loop invariants::
+
+\part[1]
+Give a brief argument explaining why the loop must terminate.
+\begin{solution}
+\vspace{1.3in}
+\end{solution}
+
+\vspace{0.1in}
+\part[1]
+Show that each loop invariant is true immediately before the loop condition is tested for the first time.
+\begin{solution}
+\vspace{1.3in}
+\end{solution}
+
+
+
+\part[4]
+Show that if each loop invariant is true at the start of a
+    loop iteration, then the loop invariants are also all true at the end
+    of that iteration.
+\begin{solution}
+\vspace{4.2in}
+\end{solution}
+
+\vspace{0.1in}
+
+\part[2]
+Show that if the loop terminates, the postcondition must hold.
+\begin{solution}
+\vspace{2.7in}
+\end{solution}
+
+
+
+\vspace{0.1in}
+
+
+
+    \end{parts}
+
+
+\end{questions}
+\end{document}

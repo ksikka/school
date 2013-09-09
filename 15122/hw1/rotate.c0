@@ -1,0 +1,71 @@
+#use "imageutil.c0"
+
+pixel[] rotate(pixel[] pixels, int width, int height)
+//@requires width == height; //checks that it is a square
+//@requires (width>0) && (height >0);  // checks that the ints are non-neg
+//@requires width * height <= 23170*23170; //overflow check
+//@requires \length(pixels) == width * height;
+//@ensures \length(\result) == \length(pixels)*4;
+{
+    int i = 0; //index counter for big pic
+    int j = 0; //index counter for original pic
+    pixel[] bigpic = alloc_array(pixel, height * width * 4);
+
+    //draws for top-left quadrant
+    for(int col = 0; col < width; col++)
+    {
+        for(int row = height-1; row >= 0; row--) 
+        //@loop_invariant i >= 0 && j >= 0;
+        //@loop_invariant i < width*height*4 && j <= width * height;
+        {
+            i = get_index(row,col,width*2,height*2);
+            bigpic[i] = pixels[j];
+            j++;
+        }
+    }
+
+    //draws for top-right quadrant
+    i=0; j=0;
+    for(int row = 0; row<height; row++)
+    {
+        for(int col=width;col<width*2; col++)
+        //@loop_invariant i >= 0 && j >= 0;
+        //@loop_invariant i < width*height*4 && j <= width * height;
+        {
+            i = get_index(row,col,width*2,height*2);
+            bigpic[i] = pixels[j];
+            j++;
+        }
+    }
+
+    //draws for bottom-right quadrant
+    i=0; j=0;
+    for(int col=width*2-1;col>=width; col--)
+    {
+        for(int row = height; row<height*2; row++)
+        //@loop_invariant i >= 0 && j >= 0;
+        //@loop_invariant i < width*height*4 && j <= width * height;
+        {
+            i = get_index(row,col,width*2,height*2);
+            bigpic[i] = pixels[j];
+            j++;
+        }
+    }
+
+    //draws for bottom-left quadrant
+    i=0; j=0;
+    for(int row = height*2-1; row>=height; row--)
+    {
+        for(int col=width-1;col>=0; col--)
+        //@loop_invariant i >= 0 && j >= 0;
+        ////@loop_invariant i < width*height*4 && j <= width * height;
+        {
+            i = get_index(row,col,width*2,height*2);
+            bigpic[i] = pixels[j];
+            j++;
+        }
+    }
+
+return bigpic;
+}
+

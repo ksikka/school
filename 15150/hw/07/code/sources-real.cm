@@ -1,0 +1,16 @@
+group is
+	$/basis.cm
+
+        ../../../src/sequence/sources.cm
+        seq.sml (* sets Seq = VectorSeq *)
+
+        space.sig
+        realplane.sml
+        plane-real.sml
+	mechanics.sml
+        naiveNBody.sml
+        bbox.sig
+        bbox.sml
+        barnes-hut.sml 
+	simulation.sml
+        solars.sml

@@ -1,0 +1,20 @@
+#use <conio>
+#use <string>
+int common_unsorted(string[] dictionary, int d, string[] wordlist, int w)
+    //@requires 0 <= d && d <= \length(dictionary);
+    //@requires 0 <= w && w <= \length(wordlist);
+    //@requires is_sorted( dictionary, 0, d) && is_unique( dictionary, d);
+    //@ensures \result >= 0; 
+{
+    int count = 0;   //counter for the common words between the two lists
+    for(int i = 0; i < w; i++)
+        //@loop_invariant 0 <= i && i <= w;
+    {
+        if( binsearch( wordlist[i], dictionary, d) >= 0)
+            count++; 
+    }
+    //COMPLEXITY
+    //For each element (n), the algorithm performs a binary search (log(n)) 
+    //Therefore, the overall complexity is O(n*log(n)).
+    return count;
+}

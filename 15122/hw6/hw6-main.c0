@@ -1,0 +1,81 @@
+/******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *   Test suite for the Huffman encoding algorithm
+ *
+ *Victor Adamchik
+ ******************************************************************************/
+
+ /*****************************************************************************
+               Do not submit this file.
+ *****************************************************************************/
+#use <conio>
+#use <string>
+#use "freqtable.c0"
+#use "encoding.c0"
+#use "decoding.c0"
+
+
+int main()
+{
+	// TEST 1
+	println("\nTEST 1... ");
+	freqtable table = read_freqtable("inputs/morefreecoffee.txt");
+	int n = table->length;
+	char[] chars = table->characters;
+	int[] freqs = table->frequencies;
+	htree H = build_htree(chars, freqs, n);
+
+	int num = htree_size(H);
+	print("the size of huffman tree (11) = "); printint(num); println("");
+
+	println("encoding \"morefreecoffee\"...");
+	string enc = encode(H, "morefreecoffee");
+	println(enc);
+	println("expected");
+	println("1010100110011111000101110011111100");
+	println("decoding... ");
+	println(decode(H, "1010100110011111000101110011111100"));
+	println("decoding... ");
+	println(decode(H, "11010010010101111001101011110010100"));
+
+//	println("cannot decode... ");
+//	println(decode(H, "110100100101011110011010111100101001"));
+
+
+	// TEST 2
+	println("\nTEST 2... ");
+	table = read_freqtable("inputs/english.txt");
+	n = table->length;
+	chars = table->characters;
+	freqs = table->frequencies;
+	H = build_htree(chars, freqs, n);
+
+	num = htree_size(H);
+	print("the size of huffman tree (51) = "); printint(num); println("");
+
+	println("encoding \"morefreecoffee\"...");
+	println(encode(H, "morefreecoffee"));
+	println("decoding... ");
+	println(decode(H, "00111110101011000010101011001000100111010010100101100100"));
+
+
+	// TEST 3
+	println("\nTEST 3... ");
+	table = read_freqtable("inputs/SJ-freq.txt");
+	n = table->length;
+	chars = table->characters;
+	freqs = table->frequencies;
+	H = build_htree(chars, freqs, n);
+
+	num = htree_size(H);
+	print("the size of huffman tree (61) = "); printint(num); println("");
+	string_bundle sb = read_words("inputs/SJ-cipher.txt");
+	bitstring message = "";
+	for(int k = 0; k < sb->length; k++)
+		message = string_join(message, sb->array[k]);
+	println(decode(H, message));
+
+
+    return 0;
+}

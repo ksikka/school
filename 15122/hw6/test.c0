@@ -1,0 +1,42 @@
+#use <conio>
+#use <string>
+#use "freqtable.c0"
+#use "encoding.c0"
+#use "decoding.c0"
+
+int main() {
+ println("\nThis program tests a normal input to succeed.");
+
+string input = "ed_ed";
+int len = 3;
+char[] chars = alloc_array(char, 3);
+int[] freqs = alloc_array(int, 3);
+chars[0] = 'e';
+chars[1] = 'd';
+chars[2] = '_';
+freqs[0] = 2;
+freqs[1] = 2;
+freqs[2] = 1;
+
+htree H = build_htree(chars, freqs, len);
+
+println("attempting to encode...");
+string encc = encode(H, input);
+println(encc);
+
+println("attempting to decode...");
+string decoded = decode(H, encc);
+println(decoded);
+
+if(string_equal(input,decoded))
+{
+  println("yay it worked");
+  return 0;
+}
+else
+{
+  println("boo wtf");
+  return 1;
+}
+
+}

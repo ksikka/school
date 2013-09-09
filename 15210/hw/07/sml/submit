@@ -1,0 +1,2 @@
+cp ../latex/hw07.pdf BoruvkaMST.sml MSTTest.sml /afs/andrew.cmu.edu/course/15/210/handin/ksikka/assn7/
+/afs/andrew.cmu.edu/course/15/210/bin/check/07/check.pl

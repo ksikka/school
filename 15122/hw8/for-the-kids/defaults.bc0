@@ -1,0 +1,97 @@
+C0 C0 FF EE       # magic number
+00 03             # version 3
+
+00 00             # int pool count
+# int pool
+
+00 01             # string pool total size
+# string pool
+00  # ""
+
+00 01             # function count
+# function_pool
+
+#<main>
+00 00             # number of arguments = 0
+00 05             # number of local variables = 5
+00 86             # code length = 134 bytes
+BB 04    # new 4           # alloc(int)
+36 00    # vstore 0        # i = alloc(int);
+BB 01    # new 1           # alloc(bool)
+36 01    # vstore 1        # b = alloc(bool);
+BB 01    # new 1           # alloc(char)
+36 02    # vstore 2        # c = alloc(char);
+BB 08    # new 8           # alloc(string)
+36 03    # vstore 3        # s = alloc(string);
+BB 08    # new 8           # alloc(int*)
+36 04    # vstore 4        # p = alloc(int*);
+10 01    # bipush 1        # true
+15 00    # vload 0         # i
+2E       # imload          # *(i)
+10 00    # bipush 0        # 0
+9F 00 06 # if_cmpeq 6      # (*(i) == 0)
+57       # pop             # 
+10 00    # bipush 0        # false
+10 00    # bipush 0        # 
+9F 00 13 # if_cmpeq 19     # if (*(i) == 0) goto <00:else>
+10 01    # bipush 1        # true
+15 01    # vload 1         # b
+34       # cmload          # *(b)
+10 00    # bipush 0        # false
+9F 00 06 # if_cmpeq 6      # (*(b) == false)
+57       # pop             # 
+10 00    # bipush 0        # false
+A7 00 05 # goto 5          # goto <01:endif>
+# <00:else>
+10 00    # bipush 0        # false
+# <01:endif>
+10 00    # bipush 0        # 
+9F 00 13 # if_cmpeq 19     # if ((*(i) == 0) && (*(b) == false)) goto <02:else>
+10 01    # bipush 1        # true
+15 02    # vload 2         # c
+34       # cmload          # *(c)
+10 00    # bipush 0        # '\0'
+9F 00 06 # if_cmpeq 6      # (*(c) == '\0')
+57       # pop             # 
+10 00    # bipush 0        # false
+A7 00 05 # goto 5          # goto <03:endif>
+# <02:else>
+10 00    # bipush 0        # false
+# <03:endif>
+10 00    # bipush 0        # 
+9F 00 12 # if_cmpeq 18     # if (((*(i) == 0) && (*(b) == false)) && (*(c) == '\0')) goto <04:else>
+10 01    # bipush 1        # true
+15 04    # vload 4         # p
+2F       # amload          # *(p)
+01       # aconst_null     # NULL
+9F 00 06 # if_cmpeq 6      # (*(p) == NULL)
+57       # pop             # 
+10 00    # bipush 0        # false
+A7 00 05 # goto 5          # goto <05:endif>
+# <04:else>
+10 00    # bipush 0        # false
+# <05:endif>
+10 00    # bipush 0        # 
+9F 00 0F # if_cmpeq 15     # if ((((*(i) == 0) && (*(b) == false)) && (*(c) == '\0')) && (*(p) == NULL)) goto <06:else>
+15 03    # vload 3         # s
+2F       # amload          # *(s)
+14 00 00 # aldc 0          # s[0] = ""
+B7 00 00 # invokenative 0  # string_equal(*(s), "")
+A7 00 05 # goto 5          # goto <07:endif>
+# <06:else>
+10 00    # bipush 0        # false
+# <07:endif>
+10 00    # bipush 0        # 
+9F 00 09 # if_cmpeq 9      # if (((((*(i) == 0) && (*(b) == false)) && (*(c) == '\0')) && (*(p) == NULL)) && string_equal(*(s), "")) goto <08:else>
+10 01    # bipush 1        # 1
+B0       # return          # 
+A7 00 06 # goto 6          # goto <09:endif>
+# <08:else>
+10 00    # bipush 0        # 0
+B0       # return          # 
+# <09:endif>
+
+00 01             # native count
+# native pool
+00 02 00 48       # string_equal
+

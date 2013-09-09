@@ -1,0 +1,26 @@
+C0 C0 FF EE       # magic number
+00 03             # version 3
+
+00 00             # int pool count
+# int pool
+
+00 00             # string pool total size
+# string pool
+
+00 01             # function count
+# function_pool
+
+#<main>
+00 00             # number of arguments = 0
+00 01             # number of local variables = 1
+00 09             # code length = 9 bytes
+BB 08    # new 8           # alloc(int*)
+36 00    # vstore 0        # i = alloc(int*);
+15 00    # vload 0         # i
+2F       # amload          # *(i)
+2E       # imload          # *(*(i))
+B0       # return          # 
+
+00 00             # native count
+# native pool
+

@@ -1,0 +1,14 @@
+group is
+	$/basis.cm
+
+	../../../src/ordered/sources.cm
+	types.sml
+
+        dict.sig
+        set.sig
+        treedict.sml
+        dictset.sml     (* code for section 3 goes here *)
+
+(* uncomment when you start working on section 4/5 *)
+       (*  order.sml *)      (* code for section 4/5 goes here *)
+

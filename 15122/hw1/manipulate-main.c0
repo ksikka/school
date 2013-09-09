@@ -1,0 +1,77 @@
+#use <conio>
+#use <string>
+#use <args>
+#use <parse>
+#use <img>
+#use <file>
+
+/* main file for a manipulation of your choice! */
+
+int result_width(int width, int height);
+int result_height(int width, int height);
+int[] manipulate(int[] pixels, int width, int height);
+// @requires width*height <= \length(pixels)
+// @ensures \length(\result) == result_width(width, height) * result_width(width, height);
+
+int main() {
+  image_t source;
+  image_t dest;
+  int width;
+  int height;
+  int outwidth;
+  int outheight;
+  int[] inpixels;
+  int[] outpixels;
+  int[] manippixels;
+  string *output = alloc(string);
+  string *input = alloc(string);
+  string type = "manipulate";
+  string[] args;
+  int i;
+  
+  args_string("-o", output);
+  args_string("-i", input);
+  args = args_parse()->argv;
+  
+  if (string_equal("", *input)) {
+    println("Usage: manipulate -i <input image> [-o <output image>]");
+    return 1;
+  }
+
+  if (string_equal("", *output))
+    *output = string_join(type, string_join("_", *input));
+  
+  print("Input image:  ");
+  println(*input);
+  print("Output image: ");
+  println(*output);
+  
+  source = image_load(*input);
+  width = image_width(source);
+  height = image_height(source);
+
+  print("Loaded image.  Dimensions are ");
+  printint(width);
+  print(" by ");
+  printint(height);
+  println(".");
+  
+  inpixels = image_data(source);
+  print("Running image manipulation...");
+  manippixels = manipulate(inpixels, width, height);
+  println("");
+
+  outwidth = result_width(width, height);
+  outheight = result_height(width, height);
+  //@assert \length(manippixels) == result_width(width, height) * result_height(width, height);
+  dest = image_create(outwidth, outheight);
+  outpixels = image_data(dest);
+  for (i = 0; i < outwidth*outheight; i++)
+    outpixels[i] = manippixels[i];
+  print("Saving output...");
+  image_save(dest, *output);
+  println("");
+  image_destroy(dest);
+  image_destroy(source);
+  return 0;
+}

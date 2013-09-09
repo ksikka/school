@@ -1,0 +1,602 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+%%%%%%%%%%%%%%%%% Identifying Information %%%%%%%%%%%%%%%%%
+%% This is here, so that you can make your homework look %%
+%% pretty when you compile it.                           %%
+%%     DO NOT PUT YOUR NAME ANYWHERE ELSE!!!!            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Assignment 4}
+\newcommand{\myrecitation}{E}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+{\Large \myhwname} \\
+\myname \\
+\myandrew \\
+\myrecitation \\
+\today
+\end{center}
+
+\begin{question}{Apocalypse Averted}
+\textbf{Part a:} Recall from a lecture that $ (1 + x)^{n} = \sum_{k=0}^{n}{\binom{n}{k}x^i}$.
+
+Therefore we can represent $n^{k+1}$ as $(1 + (n-1))^{k+1}$, which can be expanded 
+using the binomial theorem to $$n^{k+1}=\sum_{i=0}^{k+1}{\binom{k+1}{i}(n-1)^i}$$
+
+Consider $2^{k+1} + 3^{k+1} + ... + (n)^{k+1} + (n+1)^{k+1}$.\\
+But please consider it on the next page.
+
+\begin{align*}
+2^{k+1} + ... + (n+1)^{k+1} &= \sum_{i=0}^{k+1}{\binom{k+1}{i}(2-1)^{i}} + ... + \sum_{i=0}^{k+1}{\binom{k+1}{i}(n+1-1)^{i}}\\
+&\mbox{then by algebra,}\\
+2^{k+1} + ... + (n+1)^{k+1} &= \sum_{i=0}^{k+1}{\binom{k+1}{i}(1)^{i}} + ... + \sum_{i=0}^{k+1}{\binom{k+1}{i}(n)^{i}}\\
+&\mbox{then by factoring out the binomial coefficients,}\\
+2^{k+1} + ... + (n+1)^{k+1} &= \binom{k+1}{0}(1^0 + ... + n^0) + ... + \binom{k+1}{k+1}(1^{k+1} + ... + n^{k+1})\\
+&\mbox{then by the definition of $S_k(n)$,}\\
+2^{k+1} + ... + (n+1)^{k+1} &= \binom{k+1}{0}S_0(n) + ... + \binom{k+1}{k+1}S_{k+1}(n)\\
+&\mbox{then by using Sigma notation for the sum,}\\
+2^{k+1} + ... + (n+1)^{k+1} &= \sum_{i=0}^{k+1}\binom{k+1}{i}S_i(n)\\
+&\mbox{then by adding 1 to both sides}\\
+1^{k+1} + 2^{k+1} + ... + (n+1)^{k+1} &= 1 + \sum_{i=0}^{k+1}\binom{k+1}{i}S_i(n)\\
+&\mbox{then by the definition of $S_{k+1}(n)$ }\\
+S_{k+1}(n) + (n+1)^{k+1} &= 1 + \sum_{i=0}^{k+1}\binom{k+1}{i}S_i(n)\\
+&\mbox{then by subtracting $S_{k+1}(n)$ from both sides }\\
+(n+1)^{k+1} &= 1 + \sum_{i=0}^{k}\binom{k+1}{i}S_i(n)\\
+&\mbox{then by subtracting $1$ from both sides }\\
+(n+1)^{k+1} - 1 &= \sum_{i=0}^{k}\binom{k+1}{i}S_i(n)\\
+\end{align*}
+
+\textbf{Part b:}
+
+\textbf{Claim:}\\
+For all $n \in \mathbb{N}$, $S_{n}(x)$ is a polynomial with degree $n+1$.
+
+\textbf{Base Case:}\\
+When n = 0, $S_{0}(x) = 1^0 + ... + x^0$\\
+This is a sum of $x$ 1's. Therefore the $S_{0}(x)=x$. Therefore the claim holds 
+for the base case.
+
+\textbf{Inductive Hypothesis:}\\
+Assume the claim holds for all natural numbers $j$ upto some natural number $k$.
+
+\textbf{Inductive Step:}\\
+We know from Part A that $$\sum_{i=0}^{k}\binom{k+1}{i}S_i(n) = (n+1)^{k+1} - 1$$
+Then, the degree of the LHS is $k+1$ by the IH, and also by the RHS. 
+If we add another term to the LHS, namely $S_{k+1}$, we get the following 
+result:
+$$\sum_{i=0}^{k+1}\binom{k+2}{i}S_i(n) = (n+1)^{k+2} - 1$$
+The degree of this polynomial is the degree of highest degreed polynomial being 
+summed on the LHS. From the RHS, we know that this degree is $k+2$.
+
+Since the addition of $S_{k+1}$ changed the degree of the LHS from $k+1$ to $k+2$, 
+the degree of $S_{k+1}$ must be $k+2$. 
+
+Therefore, we have proved by 
+course of values induction that the claim holds for all $n \in \mathbb{N}$.
+
+\end{question}
+
+\begin{question}{In Lament of Locks}
+Consider a lock with n dials that can be either 0, 1, or 2. 
+Let $n$ be an integer such that $n\geq1$.
+
+Since there are $n$ dials, and each dial has three possible 
+values (0, 1, or 2), there are $3^{n}$ different combinations. We can 
+partition the set of all the combinations into two sets: the set of 
+combinations with an even number of zeros and the set of combinations with an 
+odd number of zeros. 
+
+\textbf{Notation:}
+\begin{enumerate}
+\item An ``O-combination'' has an odd number of zeros.
+\item An ``E-combination'' has an even number of zeros.
+\end{enumerate}
+
+\textbf{Fun facts:}\\
+$3^n$ is an odd number because 3 is an odd number, and an odd number 
+multiplied an odd number is odd.
+
+Since $3^n$ is an odd number, $3^n = 2k+1$ for some integer k.
+
+\textbf{Claim:}\\
+For all n in the natural numbers, given a lock with n dials and 
+$3^n=2k+1$ total possible combinations, there are $k$ O-combinations and $k+1$ 
+E-combinations, for some k in the natural numbers.
+
+We proceed by mathematical induction on $n$. 
+
+\textbf{Base Case:}\\
+When there is one dial, the possible combinations are 0, 1, or 2. 
+
+The combination (0) has an 1 zero: an odd number of zeroes. Therefore there is 
+1 O-combination.
+
+The combinations (1) and (2) have 0 zeroes: an even number of zeroes. Therefore 
+there are 2 E-combinations. 
+
+Therefore the claim holds, because there are $k$ O-combinations and $k+1$ 
+E-combinations where k is 1 in this case.
+
+\textbf{Inductive Hypothesis:}\\
+For some $z$ in the natural numbers, given a lock with z dials and 
+$3^z=2k+1$ total possible combinations, there are $k$ O-combinations and $k+1$ 
+E-combinations.
+
+\textbf{Want to show:}\\
+Given a lock with $z+1$ dials and $3^{z+1}=2j+1$ total possible combinations, there 
+are $j$ O-combinations and $j+1$ E-combinations.
+
+\textbf{Inductive Step:}\\
+Consider a lock with $z+1$ dials.
+
+Its combinations can be formed by taking all the combinations of a z-dial lock,
+and adding an additional dial with a value of 0, 1, or 2.
+
+To form an E-combination for the lock with z+1 dials...:\\
+Method 1- add a 0 onto an O-combination. There is 1 way to do this. Therefore, by 
+the IH, this method forms $k$ combinations.\\
+Method 2- add a 1 or 2 onto an E-combination because then the number of zeroes 
+does not change and it remains an E-combination. There are 2 ways to do this for each
+combination. Therefore, by the IH, this method forms $2(k+1)$ combinations.
+The total number of E-combinations is $2(k+1)+k$, which simplifies to $3k+2$.
+
+To form an O-combination for the lock with $z+1$ dials...:\\
+Method 1- add a 0 onto an E-combination, because then it has an odd number of 
+zeroes. There is 1 way to do this. Therefore, by 
+the IH, this method forms $k+1$ combinations.\\
+Method 2- add a 1 or 2 onto an O-combination, because then the number of zeroes 
+does not change and it remains an O-combination. There are 2 ways to do this for
+each combination. Therefore, by the IH, this method forms $2(k)$ combinations.
+The total number of E-combinations is $2(k)+(k+1)$, which simplifies to $3k+1$.
+
+Let $j = 3k+1$. There are $j$ O-combinations and $j+1$ E-combinations. The inductive 
+step holds.
+
+\textbf{A Formula:}\\
+Now, we can derive a formula for the number of E-combinations in terms of the 
+number of dials.\\
+Let the number of E-combinations be k+1.
+\begin{align*}
+k+1 &= \frac{2k}{2} + 1 & \mbox{by algebra}\\
+&= \lfloor \frac{2k}{2} + \frac{1}{2} \rfloor + 1 & \mbox{by properties of floor}\\
+&= \lfloor \frac{2k+1}{2} \rfloor + 1 & \mbox{by algebra}\\
+&= \lfloor \frac{3^{n}}{2} \rfloor + 1 & 2k+1 = 3^n = \mbox{num. of total combinations}\\
+\end{align*}
+
+If there are 15251 dials, it follows that there are $\lfloor \frac{3^{15251}}{2} \rfloor + 1$ 
+combinations with an even number of zeros.
+\end{question}
+
+
+
+\begin{question}{Mirror, Mirror On The Wall}
+A path is essentially a sequence of steps, where a step is an element in the set 
+\{LEFT, RIGHT, UP, DOWN\}.
+
+There are $2n$ steps. Choose $n$ of them to be $a$. Then theres only 1 way to make
+the rest of them $b$.
+
+Then, of the $2n$ steps, choose $n$ of them to be $z'$ where $z$ is the letter. 
+
+To clarify, the following is an example of the above process for n=4:
+
+\begin{align}
+aabbabaa && \binom{2n}{n} \mbox{ways to make such a sequence}\\
+a'ab'b'ab'aa && \binom{2n}{n} \mbox{ways to assign primes to $n$ variables}
+\end{align}
+
+\begin{align*}
+\mbox{Let } & a' = \mbox{UP}\\
+            & b  = \mbox{DOWN}\\
+            & b'  = \mbox{LEFT}\\
+            & a  = \mbox{RIGHT}
+\end{align*}
+
+\textbf{Claim:}\\
+Using this method of generating paths, there are the same number of UPs as DOWNs
+and the same number of LEFTs as RIGHTs.
+
+\textbf{Proof:}\\
+In the first step in the two step process, you choose $n$ $a$'s, so implicitly 
+there must be $2n-n=n$ $b$'s. Therefore there are as many $a$'s as $b$'s. (not 
+sure if that was essential to the proof, but it is included just in case.)
+
+In the second step, for every $a$ you prime, you implicity choose not to prime a $b$. 
+This is an exact one-to-one correspondance, so the number of $a'$'s is equal
+to the number of $b$'s. Using the translation above, the number of UPs equals 
+the number of DOWNs.
+
+Similarly, for every $b$ you prime, you implicity choose not to prime an $a$. 
+Therefore there are an equal number of RIGHTs and LEFTs.
+
+Say you prime $k$ $a$'s and $j$ $b$'s, where $k + j = n$. Then you choose not to prime 
+k b's and j a's. There are k UPs, k DOWNs, j LEFTs, and j RIGHTs. Altogether
+this is $2n$ steps. Since the equal number of UPs and DOWNs eliminate each 
+other's vertical progress, and likewise for the horizontal direction, the path
+ends at the same point it started at.
+
+Therefore, we have shown a method of counting all the length $2n$ paths which
+start and end at the same place, where each step in the path involves moving in
+one of the 4 cardinal directions. By the rule of product, there are 
+$$ \binom{2n}{n}\binom{2n}{n} $$
+distinct paths.
+
+\end{question}
+
+\begin{question}{Macaroni Revisited}
+\textbf{Notation:}\\
+\begin{itemize}
+\item 1 represents a macaroni
+\item 0 represents a bead
+\end{itemize}
+In this problem, there are $n+1$ macaronis and $n$ beads for each necklace.
+
+Instead of a necklace of macaroni and beads, imagine a circle of 1's and 0's. 
+(1 = macaroni, 0 = beads)
+
+\textbf{Generate a characteristic sequence for every necklace:}\\
+
+We describe a method to produce a characteristic sequence of 1's and 0's for 
+each macaroni necklace:
+\begin{enumerate}
+\item Find the longest continuous sequence of 1's.
+\item Cut the necklace right before the first 1 of that sequence. The beginning
+of the characteristic is the portion that starts with the longest continuous number
+of 1's. Note that the last number must be a 0.
+\item Omit the first 1.
+\end{enumerate}
+\emph{Note: Step 1 may not be deterministic. I explain at the end of the proof how 
+to fix this. For now, let's assume without proof that this method generates a 
+unique sequence of numbers for a given macaroni necklace.}
+
+Let k be the longest continuous sequence of 1's before omiting the first 1.
+\textbf{Claim:} $k > 1$
+
+\textbf{Proof:}\\
+Assume for the sake of contradiction that the longest continuous sequence of macaronis
+is 1 length. That means that each macaroni is separated by at least 1 bead.
+That implies that the number of macaronies is less than or equal to the number of 
+beads. This is a contradiction, because there are $n+1$ macaronies and $n$ beads.
+Therefore there must exist a continuous sequence of macaronis of length 2.
+
+Since we now know that $k>1$, when we omit the first 1, there must be another 1
+to start the sequence. In other words, after omitting a 1, the sequence must start 
+with 1 since there are at least 2 1's in the beginning of the sequence.
+
+\textbf{Claim:} As you're reading a macaroni sequence from left to right,
+ the number of 1's is always greater than or equal to the number of 0's.
+ 
+\textbf{Proof:} A necklace has $n+1$ macaronis and $n$ beads. After omitting a 1
+to form its macaroni sequence, the sequence has $n+1 -1=n$ 1's and $n$ 0's.
+This is analogous to the proof showed in lecture that when the car is going around
+in circles, it will never run out of gas. Why is it analogous? We are starting 
+at the largest "gas station", which in this problem, is the longest sequence of 
+macaronies. Then we go around, and as we pass each bead, our gas depletes. However,
+in the end, we'll always have enough gas to go one pass without running out.
+
+We can say that this method represents a way to transform an element of the set 
+of all macaroni necklaces to an element in the set of number sequences. This 
+transformation is a function, because 1 necklaces corresponds to only 1 number 
+sequence (we make this assumption according to the note).
+
+\textbf{Claim:}The function, as described above, is bijective.
+
+\textbf{Proof:}Every necklace maps to a distinct sequence of numbers. Every 
+sequence of numbers can construct a necklace by reversing the steps above. 
+First prepend a 1 to the number sequences Then connect the beginning and end in a 
+circle, and replace the 1's with macaroni and the 0 with beads.
+
+\textbf{Method for producing subsets of $\mathbb{N}$}\\
+We define $S_n$ as the set of all subsets of $\mathbb{N}$ where the following 
+conditions hold:
+
+The set contains 0
+Let i be an arbitrary element in the set. 
+Then the set also contains i+n and i+n+1.
+
+Furthermore, we derive the following facts:
+Since the set contains i, it contains i+n. Then must also contain (1+n)+n. Inductively, it must 
+contain i + kn for all $k \in \mathbb{N}$
+By the same logic for i +n+1, the set must contain i + kn + 1.
+
+\textbf{Method for creating lattice paths:}
+For each $S_n$, we can create a grid with $n$ columns, and infinite rows.
+Fill the grid with the Natural numbers using the following method.
+Say $n=4$, and start at 1 ...
+\begin{verbatim}
+                                _____ ____ ____ _____
+                                |    |    |    |    |
+                                 ---- ---- ---- ----
+                                |    |    |    | 4  |
+                                 ---- ---- ---- ----
+                                |    |    | 3  | 8  |
+                                 ---- ---- ---- ----
+                                |    | 2  | 7  | 12 |
+                                 ---- ---- ---- ----
+                                | 1  | 6  | 11 | 16 |
+                                 ---- ---- ---- ----
+                                | 5  | 10 | 15 | 20 |
+\end{verbatim}
+... and this pattern continues for the rest of the rows. 
+
+Note that as you go down the column, the pattern is i, i + n, i + 2n, ... This 
+is no coincedence, it is derived from the way we filled the grid and the fact that
+there are 4 columns. Also, note that as you go accross a row, the pattern is i, 
+i+n+1, i+2(n+1), i+3(n+1)... This is because the element to the right of an element
+is 1 greater than the element below it, by the way we filled the grid.
+
+Now, to create a ``Lattice path", start from the top-left corner of the cell
+in which there is a 1. Then, draw a line either right or up, until you reach the
+top-right most point of the grid, or if the move will not be adjacent to a number
+Note: the first move
+will be to the right, since a move up on the first move will not be adjacent to a number.
+Note: the
+last move will be up, since moving to the right to the top-right-most point is impossible
+without making a step that is not adjacent to a number.
+
+\textbf{Bijection from lattice paths to number sequences}
+Each lattice path represents a subset of $S_n$. Here's how. First create a lattice
+path. Then all the numbers below the lattice path and included in the set, and all
+those above the lattice path are excluded. Why does this work? Well 0 is in the set,
+which explains why we always start the lattice path with a move to the right.
+Every time you move up, you include all the numbers to the right of that number. 
+That makes sense, because as we previously determined, if i is in the set, then 
+i + n + 1 is in the set, so i + k(n + 1) is in the set. Every time you move down, 
+you include all the numbers below that number. This makes sense because if i is 
+in the set, then i + n is in the set, so i + kn is in the set. In conclusion,
+there is an injective mapping from lattice paths to number sets. There is also an injective mapping in the other direction. If you have two different
+subsets of $S_n$, they cannot be represented by the same lattice path. Therefore this mapping 
+is bijective.
+
+\textbf{Bijection from macaroni number sequences to lattice paths}
+You can go from macaroni to lattice paths using the following method:
+
+Imagine that you are reading a macaroni necklace's characteristic sequence from left
+to right. As you read it, the numbers signify as follows:\\
+1. 1 means move right\\
+2. 0 means move up\\
+
+We proved way back that as
+you're reading a macaroni sequence from left to right, the number of 1's is always
+greater than or equal to the number of 0's. This means the move you make will always
+be adjacent to some number in the grid. Also, the macaroni sequence starts with 1 and 
+ends with 0. Therefore the first move is right and the last move is up.  Also 
+the method is injective, since each macaroni necklace 
+clearly maps to a different lattice path. To go from lattice paths to macaroni
+sequences, you analyze the lattice path from left to right and replace UP with 0 and 
+RIGHT with 1. This is also clearly injective by definition. Since the forward process
+and the reverse process are injective, this method is bijective.
+
+The bijection from macaroni necklaces of length $n$ to subsets of $S_n$ 
+is from macaroni, to 1/0 sequences, to lattice paths, to subsets.
+
+Disclaimer: In the method I described for generating number sequences from 
+macaroni necklaces, I assumed that the one necklace generates a unique num.
+sequence. In reality, this is not the case.
+
+Claim: It is possible to generate exactly one number sequence from a distinct macaroni
+necklace such that 
+\begin{enumerate}
+\item it begins with the longest sequence of 1's
+\item as you go from left to right, the number of 1's $\geq$ the number of 0's
+\end{enumerate}
+
+I just haven't found the method for this yet, nor the proof that it is possible.
+However the rest of the proof is correct.
+\end{question}
+\begin{question}{Your Wandering Mind}
+Consider an $m$ x $n$ grid of balls, where the columns are sorted in ascending
+order. Pick two arbitrary balls in an arbitrary row. Let the left-most ball be
+$a$ and the right-most ball be $b$. 
+
+Pick arbitrary $e,f,c,d$ as follows:
+\begin{verbatim}
+| e |     | f |
+  .         .
+  .         .
+  .         .
+| a | ... | b |
+  .         .
+  .         .
+  .         .
+| c |     | d |
+\end{verbatim}
+(This doesn't work for edge cases like the first or last row, but that will
+be addressed at the end of the proof.)
+
+Since the columns are sorted, we can establish the following inequalities:
+\begin{align*}
+&e \leq a \leq c&\\
+&f \leq b \leq d&
+\end{align*}
+
+There are two cases: $a$ is smaller than $b$, or $a$ is larger than $b$.
+
+If $a \leq b$, the rows and columns are sorted. Done.
+
+If $a > b$, $a$ and $b$ can be swapped to fix this. Let $b$ be smaller than $a$,
+ so we swap $b$ and $a$. 
+
+\begin{verbatim}
+| e |     | f |
+  .         .
+  .         .
+  .         .
+| b | ... | a |
+  .         .
+  .         .
+  .         .
+| c |     | d |
+\end{verbatim}
+
+\textbf{Assume for sake of contradiction} that by swapping
+the balls, the columns are no longer sorted. This implies that either $b < e$ or
+$c < b$ (but not both because then $c < e$ and this is false since the columns
+were sorted to begin with).
+
+\textbf{Case $b < e$:}\\
+Recall from the originally established inequalities that $e < a$ and 
+$f < b$. Also $b < a$, which is why we swapped $b$ and $a$. From these, we can 
+construct the following inequality:
+$$ f < b < e < a $$
+This implies that $f < e$, which means that $e$ and $f$ need to be swapped.
+Once they are, we can rewrite the inequality as:
+$$ e < f < b < a $$
+With that correction, we maintain that the columns are sorted because 
+$e < b$ and $f < a$. Contradiction.
+
+\textbf{Case $c < b$:}\\
+Recall from the originally established inequalities that $a < c$
+We know $c < b$ and $b < a$. This implies $c < a$, but this contradicts the 
+first sentence of this case. Therefore this case never occurs. The columns
+must be sorted.
+
+\textbf{Right-most $a$:}\\
+We have proved by contradiction, that for an arbitrary $a$ and $b$, if they are 
+out of order and you swap them, the original column of $a$ remains sorted. Since
+we did this for an arbitrary $a$, the principle extends to all positions in the 
+row except the right-most edge of the row, because if the right-most edge of the
+row were $a$, there is no position $b$ to the right of it.
+
+However, if the principle is true for all elements in the row but the last, 
+it is \textbf{forced to be true} for the last position. This is because the right-most 
+two elements must be sorted (when m-1 is $a$, m must be $b$, and they are swapped 
+to be in the right order), AND the left-most m-2 elements must be sorted (the
+principle is true for all elements but the last).
+
+\textbf{Top and bottom rows:}\\
+What about the top row and the bottom row? With the top row, we can apply the 
+same reasoning as for any other row, but we ignore the case where $b < e$ because
+you can't choose an $e$ for a $b$ in the top row. Likewise for the bottom row.
+
+Therefore, by a non-constructive proof, sorting the rows maintains that the 
+columns are sorted.
+
+\end{question}
+\begin{question}{Last Ditch Attempt}
+\textbf{Overview: }
+\begin{enumerate}
+\item Partition the set of all tilings
+\item Show the cardinality of each partition in the form of a recurrance
+\item Simplify the recurrance
+\item Prove a closed form of the recurrance in terms of the Fibonacci sequence.
+\end{enumerate}
+\textbf{Partition the set of all tilings}\\
+All of the tilings can be partitioned based on the left-most block(s). All 
+tilings must fall into a partition, and no tiling can be in more than one 
+partition. We call $f_k$ the number of tilings of a $2xk$ board.
+
+Partition 1: A red 2x1 block as the left-most block. There's 1 way to put the red
+block on the left, and $f_{k-1}$ ways to tile the remaining 2xk-1 board.
+
+Partition 2: Two red 1x2 blocks on top of each other as the left-most blocks.
+There's one way to put the initial blocks on the left, and $f_{k-2}$ ways to tile
+the remaining 2xk-2 board.
+
+Partition 3: A 2xi block, for all integers $i$ such that $2 \leq i \leq k$ as the left-most block. There are 
+2 ways to pick a color for the left-most 2xi block, and $\sum_{i=2}^{k}{f_{k-i}}$
+ways to tile the remaining right 2xi board. The total number of ways to tile this
+type of board is the product of 2 and the sum. The sum is there to account for the range 
+of possibilities for $i$.
+
+\textbf{Recurrance for $f_k$}\\
+Therefore, the cardinality of the set of all tilings is the sum of the 
+cardinalities of the partitions (by rule of sum):
+$$ f_k = f_{k-1} + f_{k-2} + 2 \sum_{i=2}^{k}{f_{k-i}} $$
+
+\textbf{Simplifying the recurrance}\\
+\begin{align*}
+f_k &= f_{k-1} + f_{k-2} + 2 \sum_{i=2}^{k}{f_{k-i}} && \mbox{the recurrance}\\
+    &= f_{k-1} + f_{k-2} + 2f_{k-2} + 2 \sum_{i=3}^{k}{f_{k-i}} && \mbox{extract a term from the sum}\\
+    &= 2f_{k-1} - f_{k-1} + 2f_{k-2} + f_{k-2} + 2 \sum_{i=3}^{k}{f_{k-i}} && \mbox{manipulate using algebra}\\
+    &= 2f_{k-1} + 2f_{k-2} + f_{k-2} + 2 \sum_{i=3}^{k}{f_{k-i}} - (f_{k-2} + f_{k-3} + 2 \sum_{i=2}^{k-1}{f_{k-1-i}}) && \mbox{replace $f_{k-1}$ with it's recurrance}\\
+    &= 2f_{k-1} + 2f_{k-2} + 2 \sum_{i=3}^{k}{f_{k-i}} - f_{k-3} - 2 \sum_{i=2}^{k-1}{f_{k-1-i}} && \mbox{simplify using algebra}\\
+    &= 2f_{k-1} + 2f_{k-2} + 2 \sum_{i=3}^{k}{f_{k-i}} - f_{k-3} - 2 \sum_{i=3}^{k}{f_{k-i}} && \mbox{change indices of summation}\\
+    &= 2f_{k-1} + 2f_{k-2} - f_{k-3} && \mbox{simplify using algebra}
+\end{align*}
+
+Therefore: $$f_k = 2f_{k-1} + 2f_{k-2} - f_{k-3}$$
+
+\textbf{Prove a closed form of the recurrance in terms of the Fibonacci sequence.}\\
+$F_n$ is the $n^{th}$ term in the fibonnaci sequence.\\
+$F_0 = 1$\\
+$F_1 = 1$\\
+$F_n = F_{n-1} + F_{n-2}$\\
+\textbf{Claim:}\\
+For all $n \in \mathbb{N}$, $f_n = F_{n}^2$.
+
+\textbf{Base Case:}\\
+$f_0 = 1$ since there is one way to tile a 2x0 board, and that is to place 0 
+tiles on the board.\\
+$f_1 = 1$ since there is one way to tile a 2x1 board, and that is to place a 2x1
+red tile on the board.\\
+$f_2 = f_1 + f_0 + 2 \sum_{i=2}^{2}{f_{2-i}} = 1 + 1 + 2f_0 = 4$\\
+
+$F_{0}^2 = 1^2 = 1$\\
+$F_{1}^2 = 1^2 = 1$\\
+$F_{2}^2 = (F_{1} + F_{2})^2 = (1+1)^2 = 4$\\
+
+Therefore the claim holds for $n = 1,2,3$.
+
+\textbf{Inductive Hypothesis:}\\
+Assume for all $j \in \mathbb{N}$ upto some $k \in \mathbb{N}, k \geq 3$, $f_j = F_{j}^2$.
+
+\textbf{Inductive Step:}\\
+Consider $F_{k+1}$
+\begin{align*}
+\quad F_{k+1} &= F_{k} + F_{k-1}        &\text{def of $F_{n}$}\\
+\implies    \quad F_{k+1} - F_{k} &= F_{k-1}        &\text{algebra}\\
+\implies    \quad (F_{k+1} - F_{k})^{2} &= (F_{k-1})^{2}    &\text{square both sides}\\
+\implies    \quad (F_{k+1})^{2} - 2F_{k}F_{k+1} + (F_{k})^{2} &=
+(F_{k-1})^{2}        &\text{expand}\\
+\implies    \quad 2(F_{k+1})^{2} + 2(F_{k})^{2} - (F_{k-1})^{2} &=
+(F_{k+1})^{2} + 2F_{k}F_{k+1} + (F_{k})^{2}  &\text{algebra}\\
+\implies    \quad 2(F_{k+1})^{2} + 2(F_{k})^{2} - (F_{k-1})^{2} &= (F_{k}
++ F_{k+1})^{2}            &\text{factor}\\
+\implies    \quad 2f_{k} + 2f_{k-1} - f_{k-2} &= (F_{k} + F_{k+1})^{2}
+&\text{by the IH}\\
+\implies    \quad 2f_{k} + 2f_{k-1} - f_{k-2} &= (F_{k+2})^{2}
+&\text{def of $F_{n}$}\\
+\implies    \quad f_{k+1} &= (F_{k+2})^{2}           &\text{def of $f_{n}$}
+\end{align*}
+
+Therefore, by mathematical induction, the claim holds for all $n \in \mathbb{N}$.
+
+\end{question}
+
+
+
+\begin{question}{Extra Credit}
+\end{question}
+\end{document}

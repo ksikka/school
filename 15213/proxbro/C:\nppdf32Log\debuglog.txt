@@ -1,0 +1,91 @@
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_Initialize : called
+NPP_GetValue is called
+NPP_GetValue is called
+NPP_SetWindow : called for instance 9d72408
+Window from browser - 81788930
+NPP_SetWindow : called for instance 9d72408
+Window from browser - 81788930
+NPP_SetWindow : called for instance 9d72408
+Window from browser - 81788930
+NPP_NewStream : called for instance 9d72408, stream 9d72388, URL https://blackboard.andrew.cmu.edu/bbcswebdav/pid-315838-dt-content-rid-2357480_1/courses/F12-03121-A/L1_Two_Principles_F12.pdf, stream size 84380, seekable 1
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 0, length = 16384, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 16384, length = 16384, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 32768, length = 16384, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 49152, length = 16384, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 65536, length = 16384, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_Write : called for instance 9d72408, stream 9d72388, offset = 81920, length = 2460, streamlength = 84380
+Trying for window attributes
+Trying for query tree
+NPP_Write : will wait for NPP_StreamAsFile
+NPP_StreamAsFile : called for instance 9d72408 and stream 9d72388, filename /afs/andrew.cmu.edu/usr18/ksikka/.mozilla/firefox/iqrxnblr.default/Cache/6/D4/11488d01
+NPP_DestroyStream : called for instance 9d72408 and stream 9d72388
+NPP_SetWindow : called for instance 9d72408
+Window from browser - 81788930
+NPP_SetWindow : called for instance 9d72408
+Window from browser - 81788930
+NPP_Destroy : called for instance 9d72408
+NPP_Shutdown : called
+
+
+

@@ -1,0 +1,151 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{6}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+2/28/12 \\
+\end{center}
+
+
+\question{1}{Task 2.2}
+For all \emph{cs} :  $\mathtt{char list}$ and $k : \mathtt{char list} \rightarrow \mathtt{bool}$,
+if $\mathtt{match Wild}$ \emph{cs k} $\cong \mathtt{true}$
+then $\exists p, s$ such that $p@s \cong cs$ and $p \in L(\_)$ and \emph{k s} $\cong \mathtt{true}$.
+
+\textbf{Proof:}\\
+Assume \texttt{match Wild} \emph{cs k} $\cong$ \texttt{true}
+
+Then
+\begin{verbatim}
+case Wild of 
+  ... | Wild => case cs of 
+                     [] => false 
+                   | c'::cs' => k cs' 
+      | ...
+\end{verbatim}
+must be true, so by inversion, 
+
+\begin{verbatim}
+cs \cong c'::cs', and k cs' = true
+\end{verbatim}
+
+Let $p = c'$
+Let $s = cs'$
+
+Then we know 
+\begin{verbatim}
+cs = c'::cs' = p@s
+\end{verbatim}
+
+$p \in L(Wild)$ because $p = c'$ and c' is a character since it is an elem of a char list.
+
+\sml{k cs' $\cong$ k s $\cong$ true} as shown above.
+
+
+\question{2}{Task 2.4}
+Assume \texttt{match Both(r1,r2)} \emph{cs k} $\cong$ \texttt{true}
+Then
+\begin{verbatim}
+case Both(r1,r2) of
+  ... | Both (r1,r2) => match r1 cs (fn cs' => match r2 cs (fn cs'' =>
+          charlisteq(cs',cs'') andalso (k cs'') )) 
+      | ...
+\end{verbatim}
+must be true, so by inversion,
+\begin{verbatim}
+match r1 cs (fn cs' => match r2 cs (fn cs'' => charlisteq(cs',cs'') andalso (k cs'') )) 
+\end{verbatim}
+must be true.
+
+Invoke the IH for \sml{r1} where \sml{k $\cong$ (fn cs' => match r2 cs (fn cs'' => charlisteq(cs',cs'') andalso (k cs'') ))} 
+
+Therefore, there exists a p1 and s1 such that p $\in L(r1)$ and \sml{k s1 $\cong$ true}, for the k above.
+From the fact that \sml{k s1} is true:
+
+\sml {k s1 $\cong$ true\\
+$\cong$ (fn cs' => match r2 cs (fn cs'' => charlisteq(cs',cs'') andalso (k cs'') )) s1\\
+$\cong$ match r2 cs (fn cs'' => charlisteq(s1,cs'') andalso (k cs'') )}
+
+
+Now we can use the IH for r2 to say that there exists a p2 $\in L(r2)$ and an s2 such that k s2 $\cong$ true for the k above.
+
+\sml{k s2 $\cong$ true\\
+$\cong$(fn cs'' => charlisteq(s1,cs'') andalso (k cs'') ) s2\\
+$\cong$charlisteq(s1,s2) andalso (k s2)}
+
+Since this is true, we know that s1 and s2 are equal We can say that \sml{s1 = s2 = s}.
+
+Also, \sml{k s2} is true, so \sml{k s} is true.
+
+All that's left to show is that \sml{p@s $\cong$ cs}. 
+
+We know that \sml{p1@s1 $\cong$ cs} and \sml{p2@s2 $\cong$ cs}
+
+This means that \sml{p1@s $\cong$ p2@s $\cong$ cs}, and therefore \sml{p1 $\cong$ p2  $\cong$ p}.
+
+We have proven that \sml{p@s  $\cong$ cs} and \sml{k s $\cong$ true}.
+ 
+
+\question{3}{Task 2.6}
+\textbf{Claim:} For all \sml{cs : char list}, if \sml{matchany cs $\cong$ true} then
+$\exists$ \sml{p, s} such that \sml{p@s $\cong$ cs} with \sml{k s $\cong$ true}.
+
+We proceed by structural induction on cs.
+
+Case []:\\
+Assume \sml{matchany [] $\cong$ true}
+
+\sml{matchany [] $\cong$ true\\
+$\cong$ (case [] of [] => k cs | x::xs => k cs orelse match r xs matchany)\\
+$\cong$ k cs $\cong$ true\\}
+This works when we let \sml{p = []} and \sml{s = cs}. Therefore the base case holds.
+
+Case \sml{x::xs}:\\
+Inductive hypothesis: The claim holds for xs.\\
+Assume \sml{matchany x::xs $\cong$ true}\\
+
+\sml{(case x::xs of [] => k cs | x::xs => k cs orelse match r xs matchany)\\
+$\cong$ k cs orelse match r xs matchany\\}
+
+By inversion on orelse, either \sml{k cs} is true or \sml{match r xs matchany} is true.
+If \sml{k cs} is true, then let \sml{p = [], s = cs}, and you're done.
+
+If \sml{match r xs matchany} is true, invoke the IH.
+Let p = x and s = xs. Clearly, \sml{p@s $\cong$ cs}, and \sml{k s} by the IH. QED.
+
+\end{document}
+

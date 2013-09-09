@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\pagestyle{empty}
+
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+
+\newcounter{questionCounter}
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%
+    \setcounter{partCounter}{0}%
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+%%%%%%%%%%%%%%%%% Identifying Information %%%%%%%%%%%%%%%%%
+%% This is here, so that you can make your homework look %%
+%% pretty when you compile it.                           %%
+%%     DO NOT PUT YOUR NAME ANYWHERE ELSE!!!!            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwname}{Assignment 6}
+\newcommand{\myrecitation}{E}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{plain}
+
+\begin{center}
+{\Large \myhwname} \\
+\myname \\
+\myandrew \\
+\myrecitation \\
+\today
+\end{center}
+\begin{question}{Like a fly in a web}
+\textbf{Part a}
+
+Let $P(n) = $``For all simple graphs with $n$ vertices and $m$ edges, 
+this algorithm produces a bipartition in which 
+at least $\frac{m}{2}$ of the edges cross the partition."
+
+The proof is by induction on $n$.
+
+\textbf{Base case:} $(n=1)$\\
+$m$ must be 0 since there are no vertices to connect to. 
+The algorithm does nothing, and $\frac{m}{2} = 0$ so $P(1) =$ true.
+
+\textbf{Inductive Hypothesis:}
+For some $n \in \mathbb{N}$, for all simple graphs with $n$ vertices and $m$ edges, 
+this algorithm produces a bipartition in which 
+at least $\frac{m}{2}$ of the edges cross the partition.
+
+\textbf{Inductive Step:}
+Add a vertex and connect it to $k$ of the $n$ other vertices. Then there are 
+a total of $m+k$ edges
+
+Place $n$ vertices on the left or the right according to the algorithm. By the IH, 
+we know at least $\frac{m}{2}$ edges cross the center.
+
+You have two options for the $(n+1)^{th}$ vertex: place it on the left or on the right.
+If you place it on the left a set of edges $A$ will cross the center. If you place it
+on the right, a set of edges $B$ will cross the center. $A \cap B = \null$ since 
+no edge will cross the center in both cases (duh). Therefore, $|A| + |B| = k$.
+
+The algorithm says to place the last vertex on the left or right so that 
+the larger of $A$ and $B$ crosses the center. Without loss of generality, we'll
+say that $A$ is larger and therefore crosses the center. 
+\begin{align*}
+|A| + |B| &= k\\
+2|A| \geq |A| + |B| &= k\\
+|A| &\geq \frac{k}{2}
+\end{align*}
+
+Therefore, at least $\frac{m}{2}+\frac{k}{2} = \frac{m+k}{2}$ edges will be cut.
+
+\textbf{Part b}
+
+\textbf{Claim:}\\
+If the planar graph $G$ is isomorphic to its dual $G'$, then $G'$ has $2n-2$ edges.
+
+Let $G$ have $n$ vertices, $e$ edges, and $f$ faces.
+Let $G'$ have $n'$ vertices, $e'$ edges, and $f'$ faces.
+
+\textbf{Fun Facts:}
+\begin{enumerate}
+\item Since $G \simeq G'$, there is a bijection between their vertex sets, so $n=n'$.
+\item According to the definition stated in the problem, there is also a bijection 
+between the sets of edges, so $e=e'$.
+\item Since $G'$ is the dual of $G$, $n' = f$ because to form a dual of a graph, you 
+put one vertex for every face of the graph.
+\end{enumerate}
+
+\textbf{QEDmyGraph:}\\
+Since $G'$ is the dual of $G$, and $G$ is planar, we know that $G'$ is planar
+and therefore $n' + f' = e' + 2$
+\begin{align*}
+e' &= n' + f' - 2\\
+   &= n + f' - 2\\
+   &= n + n - 2\\
+e' &= 2n - 2
+\end{align*}
+QED
+\end{question}
+\begin{question}{Oh no, not again}
+WTS: Consider a regular, bipartite graph G whose edges go only between A and B. 
+Observe that the graph is regular (every node in G has the same degree). 
+Assuming G has at least one edge, show that G has a perfect matching.
+Also show that the edges of G are a union of disjoint perfect matchings.
+
+(part a is by the lecture notes.)
+
+say you have a set of all the perfect matchings
+
+claim 1 - 2 perfect matchings have no 
+ 
+claim 2
+
+\end{question}
+\begin{question}{The Blob}
+%%Put your answer here
+\end{question}
+\begin{question}{Running in Circles}
+%%Put your answer here
+\end{question}
+\begin{question}{Pizzadeliv'ryman}
+%%Put your answer here
+\end{question}
+\begin{question}{On the Run}
+%%Put your answer here
+\end{question}
+\end{document}

@@ -1,0 +1,48 @@
+/******************************************************************************
+ *                    15-122 Principles of Imperative Computation, Fall 2011
+ ******************************************************************************
+ *   This implements the Huffman decoding algorithm
+ *
+ * @author
+ ******************************************************************************/
+#use <string>
+#use "bitstring.c0"
+
+ /*********************************************************************
+              Interface
+ **********************************************************************/
+
+/* Task 6. */
+// Decodes the bit string  based on the Huffman tree H.
+string decode(htree H, bitstring bits)
+//@requires is_htree(H);
+//@requires is_htree_node(H);
+//@requires is_bitstring(bits);
+//@ensures string_equal(bits, encode(H,\result));
+;
+
+ /*********************************************************************
+              Your implementation
+ **********************************************************************/
+string decode(htree H, bitstring bits)
+//@requires is_htree(H);
+//@requires is_htree_node(H);
+//@requires is_bitstring(bits);
+//@ensures string_equal(bits, encode(H,\result));
+{
+  htree current = H;
+  bitstring btr = "";
+  for(int i = 0; i < string_length(bits); i++)
+  {
+    char bit = string_charat(bits, i);
+    if(bit == '0') current = current->left;
+    else current = current->right;
+    if(is_htree_leaf(current))
+    {
+      btr = string_join(btr, string_fromchar(current->value));
+      current = H;
+    }
+  }
+    
+  return btr;
+}

@@ -1,0 +1,149 @@
+typedef int pixel;
+
+// FUNCTIONS INCLUDED IN THIS FILE
+    //begin my helper functions
+bool    is_component    (pixel p);
+bool    index_in_bounds (int index, int width, int height);
+bool    safe_to_add     (int x, int y);
+    //end my helper functions
+int     get_red         (pixel p);
+int     get_green	    (pixel p);
+int     get_blue	    (pixel p);
+int     get_alpha	    (pixel p);
+pixel   make_pixel	    (int alpha, int red, int green, int blue);
+int     get_row         (int index, int width, int height);
+int     get_column	    (int index, int width, int height);
+bool    is_valid_pixel  (int row, int col, int width, int height);
+int     get_index	    (int row, int col, int width, int height);
+
+//Returns true if and only if the given pixel p
+//is an integer between 0 and 255, inclusive.
+bool is_component(pixel p)
+{
+    return (p >= 0) && (p<=0xFF);
+}
+
+//Return true if and only if the given index is 
+//valid for use in an array of pixels.
+bool index_in_bounds (int index, int width, int height)
+//@requires width>0 && height>0;
+{
+    return (index >= 0) && (index < (width*height));
+}
+
+//returns false if the addition causes overflow,
+//based on the signs of x, y, X+y
+bool safe_to_add(int x, int y)
+{
+    int signx = x >> 31;
+    int signy = y >> 31;
+    if(signx != signy) return true;
+    //else, find the sign of the sum and check if same
+    int signsum = (x + y) >> 31;
+    return (signx == signsum);
+}
+
+// Returns the red component of the given pixel p
+// as an integer between 0 and 255, inclusive.
+int get_red(pixel p)
+//@ensures is_component(\result);
+{
+    return (p >> 16) & 0xFF;  //shifts and masks
+}
+
+// Returns the green component of the given pixel p 
+// as an integer between 0 and 255, inclusive.
+int get_green(pixel p)
+//@ensures is_component(\result);
+{
+    return (p >> 8) & 0xFF;
+}
+
+// Returns the blue component of the given pixel p
+// as an integer between 0 and 255, inclusive.
+int get_blue(pixel p)
+//@ensures is_component(\result);
+{
+    return p & 0xFF;
+}
+
+// Returns the alpha component of the given pixel p
+// as an integer between 0 and 255, inclusive.
+int get_alpha(pixel p)
+//@ensures is_component(\result);
+{
+    return (p >> 24) & 0xFF;
+}
+
+// Returns an int representing an RGB pixel consisting 
+// of the given alpha, red, green and blue intensity
+// values. (All intensity values must be between 
+// 0 and 255, inclusive.)
+pixel make_pixel(int alpha, int red, int green, int blue)
+//@requires is_component(alpha);
+//@requires is_component(red);
+//@requires is_component(green);
+//@requires is_component(blue);
+//@ensures get_alpha(\result) == alpha;
+//@ensures get_red(\result) == red;
+//@ensures get_green(\result) == green;
+//@ensures get_blue(\result) == blue;
+{
+    //returns the shifted sum of the components
+    pixel p = 0;
+    p += alpha << 24;
+    p += red << 16;
+    p += green << 8;
+    p += blue;
+    return p;
+}
+
+// Returns the row number of a pixel 
+// in an image of size width * height stored as 
+// a one-dimensional array given the index 
+// of the pixel in the one-dimensional array. 
+int get_row(int index, int width, int height)
+//@requires index_in_bounds(index,width,height); //index within bounds
+//@requires (width > 0) && (height > 0); //width and height are in N
+//@ensures (\result >= 0) && (\result < height);
+{
+    return index / width;
+}
+
+// Returns the column number of a pixel 
+// in an image of size width * height stored as 
+// a one-dimensional array given the index 
+// of the pixel in the one-dimensional array. 
+int get_column(int index, int width, int height)
+//@requires index_in_bounds(index,width,height); //index within bounds
+//@requires (width > 0) && (height > 0); //width and height are in N
+//@ensures (\result >= 0)&&(\result < width);
+//@ensures get_index(get_row(index,width,height),\result,width,height)==index;
+{
+    return index % width;
+}
+
+// Given a valid width and height for an image,
+// returns true if the given row and column represent
+// a valid pixel location in an image of size width * height;
+// false otherwise.
+bool is_valid_pixel(int row, int col, int width, int height)
+//@requires width>0 && height>0;
+{
+    bool validRow = (row >= 0) && (row < height);
+    bool validCol = (col >= 0) && (col < width);
+    return validRow && validCol;
+}
+
+// Returns the index of a pixel in a 
+// one-dimensional array of pixels representing
+// a two-dimensional image of size width*height, 
+// given the row and column of the 
+// pixel in the two-dimensional image, as long as the
+// given row and column represent a valid pixel position. 
+int get_index(int row, int col, int width, int height)
+//@requires is_valid_pixel(row,col,width,height);
+//@ensures index_in_bounds(\result,width,height);
+{
+    return row * width + col;
+}

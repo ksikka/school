@@ -1,0 +1,176 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@andrew.cmu.edu}
+\newcommand{\myhwnum}{3}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-150}}
+\input{defs.tex}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-150 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+G \\
+2/7/12 \\
+\end{center}
+
+
+\question{1}{Task 2.3}
+
+Claim: For all \sml{l : (int * string) list,\hspace{1cm} zip(unzip l) $\cong$ l}\\
+
+Proof: The proof is by structural induction on \sml{l}.\\
+\begin{tabular}{lp{12cm}l}
+&\textbf{Case for []}&\\
+&To show \sml{zip(unzip([])) $\cong$ l}:&\\\\
+&\sml{zip(unzip([]))}&given\\
+$\cong$&\sml{zip(case [] of [] => ([],[]) | ...)}&step\\
+$\cong$&\sml{zip([],[])}&step\\
+$\cong$&\sml{case [] of [] => [] |...}&step\\
+$\cong$&\sml{[]}&step\\
+\\
+&\textbf{Case for x::xs.} Inductive hypothesis: \sml{zip(unzip(xs)) $\cong$ xs}&\\
+$\cong$&\verb!zip(unzip(x::xs))!&\\
+$\cong$&\begin{verbatim}
+zip(case x::xs of
+        [] => ([],[])
+      | x::xs => let val (pint, pstr) = x
+                     val (ints, strs) = unzip(xs)
+                 in (pint::ints,pstr::strs)
+                 end)\end{verbatim}&step\\
+$\cong$&\begin{verbatim}
+zip(let val (pint, pstr) = x
+        val (ints, strs) = unzip(xs)
+    in (pint::ints,pstr::strs)
+    end) \end{verbatim}&step, evaluate case\\
+$\cong$&\verb!zip(pint::ints,pstr::strs)!&step, evaluate let\\
+$\cong$&\begin{verbatim}
+case pint::ints of [] => []
+                 | pint::ints => let val y::ys = pstr::strs
+                                 in (pint,y)::zip(ints,ys)
+                                 end \end{verbatim}&step\\
+\end{tabular}
+\begin{tabular}{lp{10cm}l}
+$\cong$&\begin{verbatim}
+let val y::ys = pstr::strs
+in (pint,y)::zip(ints,ys)
+end \end{verbatim}&step, evaluate case\\
+$\cong$&\verb!(pint,pstr)::zip(ints,strs)!&step, evaluate let\\
+$\cong$&\verb!x::zip(unzip(xs))!&by definition in let\\
+$\cong$&\verb!x::xs!&IH\\
+\end{tabular}
+
+
+
+\question{2}{Task 2.4}
+\textbf{Claim:}\\
+For all \sml{l1 : int list} and \sml{l2 : string list},\\
+\sml{unzip(zip (l1,l2)) $\cong$ (l1,l2)}
+Counterexample:\\
+\\
+Let l1 be the value \sml{[]:int list}\\
+Let l2 be the value \sml{["7"]:string list}\\
+\\
+$\cong$ \sml{unzip(zip (l1,l2))}\\
+$\cong$ \sml{unzip(zip ([],["7"]))}\\
+$\cong$ \sml{unzip(case [] of
+       [] => []
+     | x::xs => ...)}
+$\cong$ \sml{unzip([])}\\
+$\cong$ \sml{case [] of [] => ([],[]) | x::xs...}\\
+$\cong$ \sml{([],[])}\\
+This is not equivalent to \sml{([],["7"])}\\
+\\
+Therefore, the claim is not true.
+
+
+\question{3}{Task 4.2}
+Let $W_n$ be the work of \sml{prefixSum}
+$$W_n = k_0 + W_{n-1} + k(n-1)$$
+$$W_n = k_0 + k_0 + W_{n-2} + k(n-2) + k(n-1)$$
+$$W_n = k_0 + k_0 + k_0 + W_{n-3} + k(n-3) + k(n-2) + k(n-1)$$
+$$.$$
+$$.$$
+$$.$$
+$$W_n = n(k_0) + \sum_{i=1}^{n}k(n-i)$$
+$$W_n \leq n(k_0) + \sum_{i=1}^{n}k(n)$$
+$$W_n \leq n(k_0) + n^2 k$$
+Therefore, $W_n$ has a $O(n^2)$ time complexity.
+
+
+\question{4}{Task 4.4}
+Let $W_n$ be the work of prefixSumFast for a list of length n, $n > 0$.
+$$W_n= k_0 + W_{prefixSumHelp(n)}$$
+
+Therefore, the work of prefixSumFast is bounded by the work of prefixSumHelp.\\
+Let $W_n$ be the work of prefixSumHelp for a list of length n, $n > 0$.
+
+$$W_n= k_0 + W_{n-1}$$
+
+This is because the function calls itself exactly once on a sublist of length $n-1$. The other operations which occur on the function are constant time and can be considered as $k_0$. The closed form for this recurrance is obvious, and has been shown many times before in class: 
+$$W_n= n k_0$$
+Therefore the function is bounded by $O(n)$.
+
+
+\question{5}{Task 5.1}
+$i \geq 0, \qquad k\geq 0, \qquad k\geq \msml{length(l)} -i $
+
+\question{6}{Task 6.4}
+If \sml{subset\_sum\_dc (s,t)} $\cong$ true, then there exists a subset of s which sums to t.\\
+Assume the hypothesis. The only way for \sml{subset\_sum\_dc (s,t)} to be equivalent to true, is if it returns true. Let's see when the function returns true:
+\begin{verbatim}
+fun subset_sum_dc (l : int list, s : int) : bool =
+    let val (sumP, yoU) = subset_sum_cert(l,s)
+    in
+      case sumP of
+           false => false
+         | true => (case ((sum_list(yoU) = s) andalso (contained(yoU,l))) of
+                        false => raise Fail "invalid certificate"
+                      | true => true)
+    end
+\end{verbatim}
+
+We can see that the function if the function returns true if and only if the following evaluates to true:
+\begin{verbatim}
+(case ((sum_list(yoU) = s) andalso (contained(yoU,l))) of
+     false => raise Fail "invalid certificate"
+   | true => true)
+\end{verbatim}
+This case statement will only return true if the logical condition:\\
+ \sml{(sum\_list(yoU) = t) andalso (contained(yoU,s))} is equivalent to true, where yoU is of type \sml{int list} .\\
+This occurs iff \sml{sum\_list(yoU)=t} is true and \sml{contained(yoU,l)} is true.\\
+Here we assume that sum\_list and contained behaved as described in the task.\\
+Since (contained(yoU,s) $\cong$ true), then according to the spec, yoU is a subset of s.\\
+Since (sum\_list(yoU) $\cong$ = t), then according to the spec, yoU sums to t.\\
+Therefore, there exists a subset of s which sums to t. $\blacksquare$
+
+\end{document}
+
+

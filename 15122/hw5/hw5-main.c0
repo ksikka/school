@@ -1,0 +1,80 @@
+/**
+ ******************************************************************************
+ *                    HOMEWORK  15-122
+ ******************************************************************************
+ *   	The main driver for testing purposes
+ *     Run
+ *              cc0 -d -x hw5-main.c0
+ *     See expected.txt for the expected output
+ *
+ ******************************************************************************/
+
+ /******************************************************************************
+                         DO NOT SUBMIT THIS FILE
+ ******************************************************************************/
+#use "board.c0"
+#use "lightsout.c0"
+
+int movelist_length(movelist m)
+{
+    int n = 0;
+    while (m != NULL)
+    {
+        n++;
+        m = m->next;
+    }
+    return n;
+}
+
+void print_movelist(movelist m)
+{
+    print("constructing winning move list: ");
+	if(m == NULL) {print("()"); return;}
+
+	movelist p = m;
+	while (p != NULL)
+	{
+		print("(");printint(p->x);print(",");printint(p->y);print(")");
+		p = p->next;
+	}
+	println("");
+}
+
+
+void test(string file)
+{
+    board B = read_board(file);
+	print_board(B);
+	movelist m = solve(B);
+
+	if (m != NULL)
+	{
+		print_movelist(m);
+		print("solved in ");
+		printint(movelist_length(m));
+		println(" moves");
+	}
+	else
+		println("not solved.");
+}
+
+int main()
+{
+	test("boards/2x2-1.txt");
+	
+  test("boards/3x2-1.txt"); //no solution
+	test("boards/3x3-1.txt");
+	test("boards/3x3-2.txt");
+	test("boards/3x3-2.txt");
+	test("boards/3x3-3.txt");
+	test("boards/3x3-4.txt");
+	test("boards/3x3-5.txt");
+	test("boards/3x3-6.txt");
+	test("boards/3x3-7.txt");
+	test("boards/4x4-1.txt");
+	test("boards/4x4-2.txt"); //no solution
+	test("boards/5x5-1.txt");
+  
+
+    return 0;
+}

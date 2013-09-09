@@ -1,0 +1,9 @@
+#use "common-main.c0"
+#use <string>
+#use <conio>
+
+int main() {
+    printint( common_test() );
+    print("\n");
+    return 0;
+}

@@ -1,0 +1,26 @@
+#use <conio>
+
+struct testingstruct {
+  int x;
+  int y;
+  string xy;
+  bool crazykiyare;
+};
+
+
+int main()
+{
+  struct testingstruct* test = alloc(struct testingstruct);
+  test->x = 1;
+  test->y = 0xdeadbeef;
+  test->xy = "Karan Sikka";
+  test->crazykiyare = true;
+  int fantastic = -1;
+  if(test->crazykiyare) fantastic = test->x * test->y;
+
+  println(test->xy);
+  printint(fantastic);
+  
+  return 0;
+}
+    
