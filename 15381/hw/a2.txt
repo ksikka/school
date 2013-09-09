@@ -1,0 +1,8 @@
+Some CSP abstract problem
+
+Part 1: Eliminating constraints by altering domain of variable - use example
+Part 2: Turn Ternary constraint into three Binary constraints
+            Trick: Consider a new variable that takes on values that are pairs of other values, and consider constraints such as “Y is the first element of the pair Z”.)
+Part 3: Generalize and determine number of binary constraints needed for n CSP.
+Part 4: Give an example and explain why you might want to do this.
+

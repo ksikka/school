@@ -1,0 +1,31 @@
+B
+M
+S
+H
+P
+C
+
+circular table
+seat 1 is next to seat 6
+
+constraints:
+animals can't share seat
+animals can't be next to empty seat
+B - M must sit together
+P, S, H not next to C
+C in seat 1
+
+Part 1: Formulate the problem as AC3 in two ways
+
+What is AC3?
+How do I get variables, domains, constraints (use modulo)?
+
+Part 2: Run AC3 where values are number and give resulting domains of the variables.
+
+Part 3: Run AC3 where values are not numbers, restrict domains to possibilities fond in previous part
+        Draw the search tree for DFS. Priority is alphabetical. Stop when Hepsiba value found. What causes you to keep backgracking?
+
+Part 4: What happens if you ran same search with forward checking? How does it prevent excessive backtracking?
+
+Part 5: Use Minimum Remaining Values heuristic - What do you discover?
+
