@@ -1,8 +1,32 @@
 Some CSP abstract problem
 
-Part 1: Eliminating constraints by altering domain of variable - use example
-Part 2: Turn Ternary constraint into three Binary constraints
-            Trick: Consider a new variable that takes on values that are pairs of other values, and consider constraints such as “Y is the first element of the pair Z”.)
+Part 1:
+    If X_i has constraint X_i = c, let its domain D_i = { c } (the singleton set containing C)
+
+Part 2:
+    X1 + X2 = X3
+
+    Make a variable called Z, and let it's domain be a pair of values, where the first value may be in the domain of X1 and the second in the domain of X2.
+    Then the three equivalent binary constraints are:
+        Z[1] = X1
+        Z[2] = X2
+        Z[1] + Z[2] = X3
+
 Part 3: Generalize and determine number of binary constraints needed for n CSP.
+    X1 + X2 + ... + X_n-1 = Xn
+
+    Let Z be an n-1 tuple. <TODO domain>
+    Then you need n constraints:
+        Z[1] = X1
+        Z[2] = X2
+        ...
+        Z[n-1] = X_n-1
+        Z[1] + Z[2] + ... + Z[n-1] = Xn
+
 Part 4: Give an example and explain why you might want to do this.
+    Given an n-ary constraint, stuff n-1 of the variables into a new variable, let that be Z in this discussion.
+    Then, create n-1 constraints, where Z[i] = Xi for i = 1 to n-1
+    Then create an additional constraint, which is the original constraint, but substitute the variables with Z and a positional index. (Xi -> Z[i])
+
+    Why? #TODO
 
