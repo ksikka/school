@@ -1,0 +1,23 @@
+N-Queens, with weights on the squares
+
+Place N chess Queens on a board, minimize that big ugly function
+
+Write a program to minimize loss function.
+
+WeightedQueens -N [num_queens] -W [weight_function_id]
+
+Sample output:
+
+N=8
+W=1
+L=28
+T=15.3    # sim anneal
+alpha=0.2    # sim anneal
+(0,0)
+(1,1)
+(2,2)
+(3,3)
+(4,4)
+(5,5)
+(6,6)
+(7,7)

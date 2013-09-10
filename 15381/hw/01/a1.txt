@@ -1,0 +1,59 @@
+B
+M
+S
+H
+P
+C (animal)
+
+circular table
+seat 1 is next to seat 6
+
+constraints:
+animals can't share seat
+animals can't be next to empty seat
+B - M must sit together
+P, S, H not next to C
+C in seat 1
+
+Part 1: Formulate the problem as AC3 in two ways
+
+    Formulation one:
+
+        Variables:
+            B, M, S, H, P, C, where each variable has domain {1,2,3,4,5,6}
+
+        Constraints:
+            (define m(n) = (n mod 6) + 1)
+            1. B M S H P C must be distinct values
+            2. m(B-M) == 1
+            3. m(S-H) == 1
+            4. m(H-P) == 1
+            5. m(P-C) != 1, m(S-C) != 1, m(H-C) != 1
+            6. C == 1
+
+    Formulation two:
+
+        Variables:
+            1, 2, 3, 4, 5, 6, where each variable has domain {A, B, C, D, E, F}
+
+        Constraints:
+            (define m(n) = (n mod 6) + 1)
+            1. B M S H P C must be distinct values
+            2. m(B-M) == 1
+            3. m(S-H) == 1
+            4. m(H-P) == 1
+            5. m(P-C) != 1, m(S-C) != 1, m(H-C) != 1
+            6. C == 1
+
+    Lastly, (What is AC3?)
+
+
+Part 2: Run AC3 where values are number and give resulting domains of the variables.
+
+Part 3: Run AC3 where values are not numbers, restrict domains to possibilities fond in previous part
+        Draw the search tree for DFS. Priority is alphabetical. Stop when Hepsiba value found. What causes you to keep backgracking?
+
+Part 4: What happens if you ran same search with forward checking? How does it prevent excessive backtracking?
+
+Part 5: Use Minimum Remaining Values heuristic - What do you discover?
+
