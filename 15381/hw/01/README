@@ -1,0 +1,15 @@
+ksikka
+
+I implemented a pretty basic Random-restart hill climbing.
+
+First the board is initialized with n-queens.
+Then, in a loop:
+  for each queen
+    get a list of available positions the queen could move to, and their losses.
+    find the position with the minimum loss, including the current position
+      if there are multiple positions with the least loss, the choice is arbitrary
+    move the queen to that position
+
+If a local minimum is detected in the loop, the queens are randomly arranged and I restart
+If no state is found where loss = 0 after n*20 restarts, I give up and assume the minimum loss state so far is a global minimum.
+
