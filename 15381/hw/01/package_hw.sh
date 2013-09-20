@@ -1,1 +1,1 @@
-tar cvf ksikka-hw01.tar WeightedQueens Makefile README results.txt theory.pdf
+tar zcvf ksikka-hw01.tar.gz WeightedQueens Makefile README results.txt theory.pdf
