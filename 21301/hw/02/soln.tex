@@ -60,7 +60,9 @@ Therefore we know when $n$ is odd, this sum is 0, due to the additive canceling 
 However, when $n$ is even, there are an odd number of terms and the terms with matching coefficients have the same sign. So we'll have to do some more math to figure out what the value is in the even case.
 
 \textbf{Case $n$ is even:}
-pass
+
+There is something going on here with inclusion exclusion but I couldn't figure it out in the given time.
+
 
 
 
@@ -99,6 +101,8 @@ For any integer $n \geq 1, n! \leq e \sqrt{n} \frac{n}{e}^n$. The proof is by in
 
 For $ n = 1 $, the LHS is 1 and the RHS is $e \frac{1}{e} = 1$, therefore the claim holds.
 Now, we assume that the claim holds where $i=k$ for some integer $k$ greater than 1.
+
+Induction step incomplete.
 
 
 
@@ -148,6 +152,7 @@ Some more algebra and you'll eventually get the answer.
 
 \question{5}{5}
 
+Incomplete
 
 \question{6}{6}
 Using inclusion exclusion, we can ask this problem a little differently.
@@ -167,11 +172,9 @@ ${ 4 \choose 3 }$ (fix three variables as six and solve the problem on 1 variabl
 How many exist where four x variables get 6?
 0
 
-Now the anse
 Using P.I.E. we ascertain the answer:
 $${ 23 \choose 3 } - 4 * { 17 \choose 2 } + { 4 \choose 2 } { 9 \choose 1 } - { 4 \choose 3 }$$
-$$=42$$
-
+$$=1277$$
 
 
 
@@ -186,7 +189,7 @@ occurs for any $i$, which well determine using the P. I. E.
 
 How many arrangements are there where a couple is sitting next to each other?
 
-$$\sum_{i=1}^{2n} -1^{i+1} (\text{the number of arrangements where at least} i \text{couples are together}) $$
+$$\sum_{i=1}^{n} -1^{i+1} (\text{the number of arrangements where at least } i \text{ couples are together}) $$
 
 Total number of arrangements in a line would be $(2n)!$ but since it's in a circle, for each unique arrangement
 there will be $2n$ ways to rotate it around that are equivalent, so the number of arrangements in a circle are:
@@ -204,9 +207,11 @@ $$ 2n!{n \choose i}^2 $$
 
 So the summation for the final answer is:
 
-$$(2n-1)! - \sum_{i=1}^{i=2n} (-1^{i+1}) [2n!{n \choose i}^2]$$
+$$(2n-1)! - \sum_{i=1}^{i=n} (-1^{i+1}) [2n!{n \choose i}^2]$$
 
 \question{8}{8}
+
+Incomplete
 
 
 \end{document}
