@@ -39,8 +39,174 @@
 \end{center}
 
 
-\question{1}{Task 1.1}
-Jie Ma had a dream
+\question{1}{1}
+\textbf{Case $n$ is odd:}
+
+You can observe by expanding a few examples that the $i$-th and $n-i$th term term in the sum cancel out.
+The proof behind this is that the $i$-th and $n-i$th term are additive inverses:
+
+$n-1$th term:
+
+$ -1^{n-i} { n \choose n - i } { n \choose r - (n-i) }$
+$=  -1^{n-i} { n \choose i } { n \choose n - (r-i) }$
+$=  -1^{n-i} { n \choose i } { n \choose r - i }$
+
+This final expression looks a lot like the $i$th term. We can deduce that these terms have opposite signs when $n$ is odd through more algebra.
+One explanation is that there are $n + 1$ terms, which is even since $n$ is odd, and since the parities alternate, the $i$th and $n-i$th term have opposite signs.
+
+Therefore we know when $n$ is odd, this sum is 0, due to the additive canceling out of terms in the sum.
+
+
+However, when $n$ is even, there are an odd number of terms and the terms with matching coefficients have the same sign. So we'll have to do some more math to figure out what the value is in the even case.
+
+\textbf{Case $n$ is even:}
+pass
+
+
+
+\question{2}{2}
+$$\langle 1, 1, 1, 1 ... \rangle$$
+has a known generating function, expressed as
+$$ 1 + x + x^2 + x^3 ... $$
+We can take the derivative to cause the sequence to increase, like so
+$$ 1 + 2x + 3x^2 + 4x^3 ... $$
+which corresponds to the sequence
+$$\langle 1, 2, 3, 4 ... \rangle$$
+We desire the generating function for the sequence where $a_n = n(n+1)/2$ so let's take the derivative again to get closer to that.
+$$ 2 + 6x + 12x^2 + 20x^3 ... $$
+this corresponds to
+$$\langle 2, 5, 12, 20 ... \rangle$$
+which is $(1*2), (2*3), (3*4)$ etc. Now we want to shift the sequence to the right so that $a_0 = 0 and a_1 = 2$, so we multiply by $x$
+$$ 0 + 2x + 6x^2 + 12x^3 + 20x^4 ... $$
+and now the only remaining step is to divide by two, and this would result in our target sequence.
+
+In sum, the operations we performed to go from the sequence of ones to our target sequence
+were to take the derivative twice, multiply by x, and divide by two.
+
+So to go from the generating function of $\langle 1, 1, 1, 1 ... \rangle$ to the generating function of our target sequence,
+we can simply apply the same operations in order to the generating function of $\langle 1, 1, 1, 1 ... \rangle$, which is $\frac{1}{1-x}$.
+
+$$\frac{1}{2} * x * deriv( deriv( \frac{1}{1-x} ) ) $$
+$$=\frac{1}{2} * x * deriv( \frac{1}{(1-x)^2} ) $$
+$$=\frac{1}{2} * x * \frac{1}{(1-x)^3} $$
+$$=\frac{x}{2(1-x)^3} $$
+
+
+\question{3}{3}
+Claim:
+
+For any integer $n \geq 1, n! \leq e \sqrt{n} \frac{n}{e}^n$. The proof is by induction.
+
+For $ n = 1 $, the LHS is 1 and the RHS is $e \frac{1}{e} = 1$, therefore the claim holds.
+Now, we assume that the claim holds where $i=k$ for some integer $k$ greater than 1.
+
+
+
+\question{4}{4}
+
+\textbf{(a)}
+Claim:
+$1 + x \leq e^x$
+
+First, we observe the fist derivative of the LHS and RHS: $1$ and $e^x$. Note that the latter is greater than or equal to the former.
+That is that the rate of growth of the function on the RHS matches if not exceeds the rate of growth of the function on the LHS.
+
+Case $x \geq 0$:
+
+When $x=0$, the claim holds true. That is, the RHS is at least the LHS. Combined with the fact that
+the rate of growth of the RHS is faster than the LHS at all points on the curve, there is no possibility
+that the LHS will grow faster than the RHS and exceed it's value for a given x value greater than or equal to zero.
+
+Case $x \leq -1$:
+
+Here it is clear that $1+x$ will always be negative, where as $e^x$ will be positive.
+
+Case $-1 \leq x \leq 0$
+At $x=-1$ the claim holds. Then the same argument made in the first case can be made here.
+
+\textbf{(b)}
+
+Claim:
+
+$n! \geq e \frac{n}{e}^n $ for all natural numbers $n$.
+
+When $n=1$, the LHS is 1 and the RHS is 1 so the claim holds.
+Now we assume the claim holds for some natural number $n > 1$ and prove that this implies the claim holds for $n+1$.
+
+$$n! \geq e \frac{n}{e}^n$$
+Now we multiply by $n+1$ on each side:
+$$(n+1)n! \geq e \frac{n}{e}^n (n+1)$$
+We multiply the RHS by $\frac{e}{e} = 1$:
+$$(n+1)n! \geq \frac{e^2}{e^{n+1}} n^{n} (n+1)$$
+We can do some more algebra on the RHS to get this:
+$$(n+1)n! \geq \frac{e^2}{e^{n+1}} [n^{n+1}+ n^{n}]$$
+$$(n+1)n! \geq e^2 \frac{n}{e}^{n+1} + \frac{e^2}{e^{n+1}}  n^{n} \geq e \frac{n}{e}^{n+1}$$
+
+Some more algebra and you'll eventually get the answer.
+
+
+
+\question{5}{5}
+
+
+\question{6}{6}
+Using inclusion exclusion, we can ask this problem a little differently.
+
+How many integer solutions exist? 
+${ 23 \choose 3 }$ (using common pirates and gold formula in combinatorics)
+
+How many exist where a single x variable gets 6?
+$4 * { 17 \choose 2 }$ (fix one variable as six and solve the problem on 3 variables summing to $20-1*6 = 14$)
+
+How many exist where two x variables get 6?
+${ 4 \choose 2 } { 9 \choose 1 }$ (fix two variables as six and solve the problem on 2 variables summing to $20-2*6 = 8$)
+
+How many exist where three x variables get 6?
+${ 4 \choose 3 }$ (fix three variables as six and solve the problem on 1 variables summing to $20-3*6 = 2$)
+
+How many exist where four x variables get 6?
+0
+
+Now the anse
+Using P.I.E. we ascertain the answer:
+$${ 23 \choose 3 } - 4 * { 17 \choose 2 } + { 4 \choose 2 } { 9 \choose 1 } - { 4 \choose 3 }$$
+$$=42$$
+
+
+
+
+\question{7}{7}
+Given $n$ couples, let event $A_i$ be the event such that couple $i$ is sitting together.
+The complete set of arrangements can be partitioned per $A_i$ into the arrangement where $A_i$ occurs
+and where it doesn't occur. We want to count the size of the intersection of the arrangements
+where $A_i$ does not occur for all valid $i$.
+
+We can first count the total number of arrangements, then substract out the number of arrangments where $A_i$
+occurs for any $i$, which well determine using the P. I. E.
+
+How many arrangements are there where a couple is sitting next to each other?
+
+$$\sum_{i=1}^{2n} -1^{i+1} (\text{the number of arrangements where at least} i \text{couples are together}) $$
+
+Total number of arrangements in a line would be $(2n)!$ but since it's in a circle, for each unique arrangement
+there will be $2n$ ways to rotate it around that are equivalent, so the number of arrangements in a circle are:
+$$\frac{(2n)!}{2n} = (2n-1)!$$
+
+Now, we want to know the number of arrangements where at least $i$ couples sit together.
+\begin{enumerate}
+\item Pick i of the n couples: ${n \choose i}$
+\item Pick i couple-seats of n (group seats into 2): ${n \choose i}$
+\item Assign couples to seats: $ (n-1)! $
+\item Tell the couples to sit in both orientations: $2n$.
+\end{enumerate}
+By the product rule, the number of arrangements where $i$ couples sit together is:
+$$ 2n!{n \choose i}^2 $$
+
+So the summation for the final answer is:
+
+$$(2n-1)! - \sum_{i=1}^{i=2n} (-1^{i+1}) [2n!{n \choose i}^2]$$
+
+\question{8}{8}
 
 
 \end{document}
