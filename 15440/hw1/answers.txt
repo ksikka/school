@@ -1,0 +1,58 @@
+1. Networks
+-----------
+a*. Assuming that the reduction in maximum allowable run of cable results in latency being halved, the sliding window size can be doubled.
+Then, since from 100 Mbps to 1 Gbps allows 10x improvement in the bandwidth, 10x more frames can be transmitted at a time, so the window sized can be multiplied by 10.
+In total, we have a 20x increase, so the optimum window size should now be 20488 bytes, or approximately 20.5 KB.
+
+b. A few reasons.
+First, framing allows the receiver of the data to be able to note the beginning and end of the transmission.
+Second, framing allows isolation of the effects of errors in transmission.
+Third, frames incorporates sequence information which allow data to be received out of order and assembed back in order.
+
+c. No and no. In IP multicast, the sender sends UDP messages and it's up to the network to get them to where they need to be.
+If a host is very far away, it will get the message later than on close to the sender.
+IP multicast relies on the UDP protocol which does not encode sequence information accross multiple messages.
+
+d. No, because it's unreliable (packets may be dropped), and global-scale distributed systems can't afford to be unreliable.
+
+2. Middleware/RPC/RMI
+---------------------
+a. It's possible if the thing the reference refers to can be made available to both machines.
+Ie if you want to pass-by-reference a string, you could make the string available on a server and pass the reference to the string as the value.
+Or, you could pass a special "remote reference" type, with instructions on how to retreive the string. So it's essentially pass by value with the semantics of pass-by-reference.
+
+b. i. Little endian vs big endian could cause value errors
+ii. Struct packing and string encoding could vary
+iii-iv. The interpretation of complex data types is generally not possible accross programming languages unless you serialize/deserialize to a common protocol.
+
+c. Yes but you lose the benefits of compile-time error checking. It's just not the "Java way" to do method lookups at runtime.
+The disadvantage of this method is that you can run into runtime errors, like method-not-found, and other oddities like that. But all of these can be abstracted to make it look and feel like the compiled version.
+
+Could you instead of compile Java, run it in a Java Interpreter? Sure you can, but you lose out on the compile-time checks, like checking for type consistency and that thrown errors are caught
+
+d. For simple operations, it's possible. Just mmap the address space to another node. But add subprocesses, threads, IO, any dependency outside of the address space and this becomes very hard.
+File descripters ae not really serializable, neither are running subprocesses.
+
+3. Distributed Concurrency Control
+----------------------------------
+
+pass
+
+4. Logical Time
+---------------
+
+5. Databases and Friends
+------------------------
+
+c. ACID stands for:
+Atomic
+Consistent
+Isolated
+Durable
+
+Atomic - each operation is all-or-nothing, no intermediate state can occur.
+Consistent - state S is always state S. the data doesn't change unless an operation causes it to change. data is not corrupted.
+Isolated - two concurrent operations do not have a different effect compared to if they were executed serially
+Durable - data is not lossed on untimely process-termination or system reload
+
+
