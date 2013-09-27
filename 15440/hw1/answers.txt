@@ -1,6 +1,6 @@
 1. Networks
 -----------
-a*. Assuming that the reduction in maximum allowable run of cable results in latency being halved, the sliding window size can be doubled.
+a. Assuming that the reduction in maximum allowable run of cable results in latency being halved, the sliding window size can be doubled.
 Then, since from 100 Mbps to 1 Gbps allows 10x improvement in the bandwidth, 10x more frames can be transmitted at a time, so the window sized can be multiplied by 10.
 In total, we have a 20x increase, so the optimum window size should now be 20488 bytes, or approximately 20.5 KB.
 
@@ -26,9 +26,9 @@ ii. Struct packing and string encoding could vary
 iii-iv. The interpretation of complex data types is generally not possible accross programming languages unless you serialize/deserialize to a common protocol.
 
 c. Yes but you lose the benefits of compile-time error checking. It's just not the "Java way" to do method lookups at runtime.
-The disadvantage of this method is that you can run into runtime errors, like method-not-found, and other oddities like that. But all of these can be abstracted to make it look and feel like the compiled version.
-
-Could you instead of compile Java, run it in a Java Interpreter? Sure you can, but you lose out on the compile-time checks, like checking for type consistency and that thrown errors are caught
+The disadvantage of this method is that you can run into runtime errors, like method-not-found,
+argument not serializable, and other oddities like that.
+But all of these can be abstracted to make it look and feel like the compiled version.
 
 d. For simple operations, it's possible. Just mmap the address space to another node. But add subprocesses, threads, IO, any dependency outside of the address space and this becomes very hard.
 File descripters ae not really serializable, neither are running subprocesses.
@@ -36,13 +36,36 @@ File descripters ae not really serializable, neither are running subprocesses.
 3. Distributed Concurrency Control
 ----------------------------------
 
-pass
+a. Token Ring, as it requires only 1 message per request
+b. Voting - up to 3*N messages per request where N is the number of nodes
+c. Token Ring is one of the most fault tolerant if there is a known timeout period for acquiring the token.
+d. The coordinator can assign ranks to the nodes to break arbitrarily but consistently break ties.
+e. In both problems, one machine is given access to a resource while the others are blocked from using it.
+The difference is that in coordinator election, the emphasis is placed on fault tolerance.
+f. ?
 
 4. Logical Time
 ---------------
 
+a. Lamport's time lets you know the total ordering of events accross hosts, where as the per-host time does not.
+However, it's possible for a machine to send a message to another machine, and during transmission, something happens on the recipients machine that conflicts with the message incoming.
+
+b. You can discern potential causality violations, ie when a message is sent from A -> B and during that time frame, C send a message to B, incrementing it's logical clock.
+
+c. No, because the quality and reliability of wires is always unknown and out of the control of the nodes.
+
+
 5. Databases and Friends
 ------------------------
+
+a. It is impossible for a distributed system to satisfy consistency, availability, and partition tolerance.
+If a partition occurs and both partitions are available,
+then it's intuitively impossible for the data to be consistent, since two conflicting requests can be made and the partitions can't communicate, thus violating consistency.
+
+b. Basic Availability, Soft state, Eventual consistency.
+BA - data will always be available
+S - The data may change over time without user input
+E - Not necessarily consistent immediately, but over time it will reach a state of consistency.
 
 c. ACID stands for:
 Atomic
@@ -55,4 +78,12 @@ Consistent - state S is always state S. the data doesn't change unless an operat
 Isolated - two concurrent operations do not have a different effect compared to if they were executed serially
 Durable - data is not lossed on untimely process-termination or system reload
 
+d. BASE is recommended for highly scalable distributed systems where consistency can be sacrificed. ACID is recommended for highly consistent databases, but performance suffers as a result.
+BASE would be good for tweets, comments, and pictures (high volume, not too urgent for state to be updated) ACID good for bank transactions (where user can wait a second, but hard, consistent state is critical).
 
+e. By rolling back any state changes in the transaction.
+
+f. It becomes unavailable during the actual state change (this might be during the COMMIT phase). It's required for atomicity because you don't want anyone to see an intermediate state. It becomes available once the state changes are done (end of COMMIT).
+
+g. A node acquires locks for everything it needs at once, then mutates state, then releases them.
+The all-at-once acquiring and releasing ensures that locks acquire/release serially.
