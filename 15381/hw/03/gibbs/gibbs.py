@@ -63,7 +63,7 @@ class BayesNet(object):
 """ Uncomment the lines below if you want to get a feel for what the net's
     attributes are. """
 
-# net = BayesNet('small_graph.txt', env={'eps': .1})
+net = BayesNet('small_graph.txt', env={'eps': .1})
 # print 'nodes:', net.nodes
 # print 'parents:', net.parents
 # print 'children:', net.children
@@ -104,6 +104,8 @@ class GibbsSampler(object):
         self.vars_state.update(evidence)
         self.counts = defaultdict(int)
 
+        self._iterations = 0
+
     def get_parent_values(self, var_name):
         """ Returns a tuple of the current values of the specified node's parents. """
         return tuple(self.vars_state[parent]
@@ -127,14 +129,7 @@ class GibbsSampler(object):
     def record_sample(self):
         """ Records a sample in self.counts. """
         self.counts[self.get_values()] += 1
-
-    def estimate_joint(self):
-        """ Runs Gibbs sampling and populates self.counts with the observed
-            variable values. """
-
-        ### TODO: FILL THIS METHOD IN ###
-        # (should use self.stopping_criterion to determine when to stop)
-        raise NotImplementedError
+        self._iterations += 1
 
     def get_estimated_cpt(self, variables):
         """ Uses self.counts to compute a CPT for the variables specified.
@@ -145,8 +140,58 @@ class GibbsSampler(object):
                          in the CPT.
             Returns: a CPT in the same format as BayesNet.cpts. """
 
-        ### TODO: FILL THIS METHOD IN ###
-        raise NotImplementedError
+        jdt = {}
+        for sample, count in self.counts.iteritems():
+            jdt[sample] = count / self._iterations
+
+        def get_index_of_var_name(var_name):
+            pass
+
+        for v in var
+
+        return jdt
+
+
+    def estimate_joint(self):
+        """ Runs Gibbs sampling and populates self.counts with the observed
+            variable values. """
+        self.update_var('A', 1)
+        print "setted to 1, heres cpt"
+        print self.net.cpts
+        self.update_var('A', 0)
+        print "setted to 0, heres cpt"
+        print self.net.cpts
+        sys.exit(0)
+        while not self.stopping_criterion(self):
+            for var_name in self.mutable_vars:
+                def get_p_node_given_mb(var_name):
+                    probability_given_parents = self.net.cpts[var_name][self.get_parent_values(var_name)]
+                    print "PP = %d" % probability_given_parents
+                    children_product_prob = 1
+                    try:
+                        children_var_names = self.net.children[var_name]
+                    except KeyError:
+                        children_var_names = []
+                    for child_var_name in children_var_names:
+                        pprob = self.net.cpts[child_var_name][self.get_parent_values(child_var_name)]
+                        children_product_prob *= pprob
+                    return probability_given_parents * children_product_prob
+
+                self.update_var(var_name, 1)
+                smpl_prob_1 = get_p_node_given_mb(var_name)
+                self.update_var(var_name, 0)
+                smpl_prob_2 = get_p_node_given_mb(var_name)
+                assert (smpl_prob_1 + smpl_prob_2) == 1, "%d and %d don't sum to 1" % (smpl_prob_1, smpl_prob_2)
+
+                # normalize if the assertion fails
+
+                new_value = 0 if random.random() < smpl_prob_1 else 1
+
+                self.update_var(var_name, new_value)
+
+
+
+            self.record_sample()
 
 
 # Utility functions to help with parsing command line options
