@@ -147,51 +147,50 @@ class GibbsSampler(object):
         def get_index_of_var_name(var_name):
             pass
 
-        for v in var
-
         return jdt
 
+
+    def prob_true_given_mb(self, var_name):
+        """ Gets the probability that var_name would be set to true given its markov blanket"""
+
+        def get_mb_alpha_product(var_name):
+            probability_given_parents = self.net.cpts[var_name][self.get_parent_values(var_name)]
+            children_product_prob = 1
+            try:
+                children_var_names = self.net.children[var_name]
+            # I hope this means no children
+            except KeyError:
+                children_var_names = ()
+            for child_var_name in children_var_names:
+                pprob = self.net.cpts[child_var_name][self.get_parent_values(child_var_name)]
+                children_product_prob *= pprob
+            return probability_given_parents * children_product_prob
+
+        old_value = self.mutable_vars[var_name]
+
+        self.update_var(var_name, 1)
+        c1 = self.get_mb_alpha_product(var_name)
+        self.update_var(var_name, 0)
+        c2 = self.get_mb_alpha_product(var_name)
+        prob_var_name_true = c1 / (c1 + c2)
+
+        self.mutable_vars[var_name] = old_value
+
+        return prob_var_name_true
+
+    def sample_var_given_mb(self, var_name):
+        """ Samples a value for var_name at random, given its markov blanket """
+        p = self.prob_true_given_mb(var_name)
+        new_value = 0 if random.random() < p else 1
+        self.update_var(var_name, new_value)
 
     def estimate_joint(self):
         """ Runs Gibbs sampling and populates self.counts with the observed
             variable values. """
-        self.update_var('A', 1)
-        print "setted to 1, heres cpt"
-        print self.net.cpts
-        self.update_var('A', 0)
-        print "setted to 0, heres cpt"
-        print self.net.cpts
-        sys.exit(0)
         while not self.stopping_criterion(self):
             for var_name in self.mutable_vars:
-                def get_p_node_given_mb(var_name):
-                    probability_given_parents = self.net.cpts[var_name][self.get_parent_values(var_name)]
-                    print "PP = %d" % probability_given_parents
-                    children_product_prob = 1
-                    try:
-                        children_var_names = self.net.children[var_name]
-                    except KeyError:
-                        children_var_names = []
-                    for child_var_name in children_var_names:
-                        pprob = self.net.cpts[child_var_name][self.get_parent_values(child_var_name)]
-                        children_product_prob *= pprob
-                    return probability_given_parents * children_product_prob
-
-                self.update_var(var_name, 1)
-                smpl_prob_1 = get_p_node_given_mb(var_name)
-                self.update_var(var_name, 0)
-                smpl_prob_2 = get_p_node_given_mb(var_name)
-                assert (smpl_prob_1 + smpl_prob_2) == 1, "%d and %d don't sum to 1" % (smpl_prob_1, smpl_prob_2)
-
-                # normalize if the assertion fails
-
-                new_value = 0 if random.random() < smpl_prob_1 else 1
-
-                self.update_var(var_name, new_value)
-
-
-
-            self.record_sample()
+                self.sample_var_given_mb(var_name)
+                self.record_sample()
 
 
 # Utility functions to help with parsing command line options
