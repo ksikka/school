@@ -143,7 +143,7 @@ class GibbsSampler(object):
         # joint distribution table, which is a map from sample to probability
         jdt = {}
         for sample, count in self.counts.iteritems():
-            jdt[sample] = count / self._iterations
+            jdt[sample] = float(count) / self._iterations
 
         def get_index_of_var(var_name):
             """ Given a var name, return its index in the sample vector """
@@ -217,7 +217,6 @@ class GibbsSampler(object):
             for var_name in self.mutable_vars:
                 self.sample_var_given_mb(var_name)
                 self.record_sample()
-            break
 
 
 # Utility functions to help with parsing command line options
