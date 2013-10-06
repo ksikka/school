@@ -81,8 +81,20 @@ def stop_small_graph_almost_true(epsilon):
         of every outcome for the tiny Bayes net A->B is within 5% of the true
         probability."""
     def should_stop(sampler):
-        ### TODO: Fill in this function. ###
-        raise NotImplementedError
+        expected_v1 = 0.5*epsilon
+        expected_v2 = 0.5*(1-epsilon)
+        expected_v3 = 0.5*(1-epsilon)
+        expected_v4 = 0.5*epsilon
+        cpt = sampler.get_estimated_cpt({"A":None, "B": None})
+        v1 = cpt.get((0,0), 0)
+        v2 = cpt.get((0,1), 0)
+        v3 = cpt.get((1,0), 0)
+        v4 = cpt.get((1,1), 0)
+        def within_five(a,b):
+            "True iff a is within 5% of b"
+            import math
+            return (math.fabs(a-b) / float(b)) <= 0.05
+        return within_five(v1, expected_v1) and within_five(v2, expected_v2) and within_five(v3, expected_v3) and within_five(v4, expected_v4)
     return should_stop
 
 class GibbsSampler(object):
