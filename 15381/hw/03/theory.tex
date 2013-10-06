@@ -1,0 +1,94 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{03}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-381}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 15-381 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+
+\question{1}{Task 1.1}
+$S, B, P$
+
+\question{2}{Task 1.2}
+Incomplete
+
+\question{3}{Task 1.3}
+Incomplete
+
+\question{4}{Task 1.4}
+Incomplete
+
+\question{5}{Task 1.5}
+Incomplete
+
+\question{6}{Task 1.6}
+Incomplete
+
+\question{6}{Task 3.1}
+\begin{table}
+    \begin{tabular}{lll}
+    ~   & $B=0$     & B=1     \\
+    $A=0$ & $.5(\epsilon)$   & $.5(1-\epsilon)$ \\
+    $A=1$ & $.5(1-\epsilon)$ & $.5(\epsilon)$   \\
+    \end{tabular}
+\end{table}
+
+\question{6}{Task 3.2}
+In the code
+
+\question{6}{Task 3.3}
+The runtime increases. As epsilon gets smaller, it takes longer to get from a random sample
+to the true sample, because the true sample is farther away from an average random sample.
+
+Had you direct sampled, it would have taken much much longer. But because Gibbs is an MCMC algorithm,
+we don't throw away the samples - we merely improve them. So even though the runtime increases when you
+reduce epsilon, it's not as bad as it would be with direct sampling.
+
+\question{6}{Task 3.4}
+a. \\
+A  0.0018 \\
+B  0.0140 \\
+C  0.0092 \\
+D  0.0086 \\
+E  0.0091 \\
+F  0.0020 \\
+G  0.0089 \\
+
+b. 0.0399\\
+c. 0.351\\
+
+\end{document}
+
