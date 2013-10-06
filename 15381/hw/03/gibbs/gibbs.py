@@ -162,8 +162,8 @@ class GibbsSampler(object):
         def get_new_key(sample, variables):
             """ Filter the sample tuple to only give the values required by the input variables """
             indexes_we_like = [get_index_of_var(v) for v in variables]
-            filtered_tuple = [s_val for idx, s_val in enumerate(sample) if idx in indexes_we_like]
-            return filtered_tuple
+            filtered_tuple = (s_val for idx, s_val in enumerate(sample) if idx in indexes_we_like)
+            return tuple(filtered_tuple)
 
         # first get all the samples in the joint distribution that match the query
         # then relabel the keys to match the query
@@ -180,7 +180,7 @@ class GibbsSampler(object):
         """ Gets the probability that var_name would be set to true given its markov blanket"""
 
         def get_mb_alpha_product(var_name):
-            probability_given_parents = self.net.cpts[var_name][self.get_parent_values(var_name)]
+            probability_given_parents = self.net.cpts[var_name].get(self.get_parent_values(var_name), None)
             children_product_prob = 1
             try:
                 children_var_names = self.net.children[var_name]
@@ -192,15 +192,15 @@ class GibbsSampler(object):
                 children_product_prob *= pprob
             return probability_given_parents * children_product_prob
 
-        old_value = self.mutable_vars[var_name]
+        old_value = self.vars_state[var_name]
 
         self.update_var(var_name, 1)
-        c1 = self.get_mb_alpha_product(var_name)
+        c1 = get_mb_alpha_product(var_name)
         self.update_var(var_name, 0)
-        c2 = self.get_mb_alpha_product(var_name)
+        c2 = get_mb_alpha_product(var_name)
         prob_var_name_true = c1 / (c1 + c2)
 
-        self.mutable_vars[var_name] = old_value
+        self.vars_state[var_name] = old_value
 
         return prob_var_name_true
 
@@ -217,6 +217,7 @@ class GibbsSampler(object):
             for var_name in self.mutable_vars:
                 self.sample_var_given_mb(var_name)
                 self.record_sample()
+            break
 
 
 # Utility functions to help with parsing command line options
