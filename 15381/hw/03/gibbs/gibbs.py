@@ -63,7 +63,7 @@ class BayesNet(object):
 """ Uncomment the lines below if you want to get a feel for what the net's
     attributes are. """
 
-net = BayesNet('small_graph.txt', env={'eps': .1})
+# net = BayesNet('small_graph.txt', env={'eps': .1})
 # print 'nodes:', net.nodes
 # print 'parents:', net.parents
 # print 'children:', net.children
@@ -81,11 +81,13 @@ def stop_small_graph_almost_true(epsilon):
         of every outcome for the tiny Bayes net A->B is within 5% of the true
         probability."""
     def should_stop(sampler):
-        expected_v1 = 0.5*epsilon
+        expected_v1 = 0.5*(1-epsilon)
         expected_v2 = 0.5*(1-epsilon)
-        expected_v3 = 0.5*(1-epsilon)
+        expected_v3 = 0.5*epsilon
         expected_v4 = 0.5*epsilon
+        #print (expected_v1, expected_v2, expected_v3, expected_v4, )
         cpt = sampler.get_estimated_cpt({"A":None, "B": None})
+        #print cpt
         v1 = cpt.get((0,0), 0)
         v2 = cpt.get((0,1), 0)
         v3 = cpt.get((1,0), 0)
@@ -219,7 +221,7 @@ class GibbsSampler(object):
     def sample_var_given_mb(self, var_name):
         """ Samples a value for var_name at random, given its markov blanket """
         p = self.prob_true_given_mb(var_name)
-        new_value = 0 if random.random() < p else 1
+        new_value = 1 if random.random() < p else 0
         self.update_var(var_name, new_value)
 
     def estimate_joint(self):
@@ -228,6 +230,7 @@ class GibbsSampler(object):
         while not self.stopping_criterion(self):
             for var_name in self.mutable_vars:
                 self.sample_var_given_mb(var_name)
+                #print self.get_values()
                 self.record_sample()
 
 
