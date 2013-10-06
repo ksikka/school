@@ -140,14 +140,40 @@ class GibbsSampler(object):
                          in the CPT.
             Returns: a CPT in the same format as BayesNet.cpts. """
 
+        # joint distribution table, which is a map from sample to probability
         jdt = {}
         for sample, count in self.counts.iteritems():
             jdt[sample] = count / self._iterations
 
-        def get_index_of_var_name(var_name):
-            pass
+        def get_index_of_var(var_name):
+            """ Given a var name, return its index in the sample vector """
+            return self.net.nodes.index(var_name)
 
-        return jdt
+        def matches_query(sample, variables):
+            """ True iff a sample matches the conditions required by the input variables """
+            for var_name, expected_value in variables.iteritems():
+                if expected_value is None:
+                    continue
+                idx = get_index_of_var(var_name)
+                if sample[idx] != expected_value:
+                    return False
+            return True
+
+        def get_new_key(sample, variables):
+            """ Filter the sample tuple to only give the values required by the input variables """
+            indexes_we_like = [get_index_of_var(v) for v in variables]
+            filtered_tuple = [s_val for idx, s_val in enumerate(sample) if idx in indexes_we_like]
+            return filtered_tuple
+
+        # first get all the samples in the joint distribution that match the query
+        # then relabel the keys to match the query
+        filtered_jdt = {}
+        for sample, prob in jdt.iteritems():
+            if matches_query(sample, variables):
+                new_key = get_new_key(sample, variables)
+                filtered_jdt[new_key] = prob
+
+        return filtered_jdt
 
 
     def prob_true_given_mb(self, var_name):
