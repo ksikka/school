@@ -3,6 +3,7 @@
 from collections import defaultdict
 import itertools, random
 from optparse import OptionParser, OptionValueError, BadOptionError
+from pprint import pprint
 
 class BayesNet(object):
     """ A BayesNet object contains four useful attributes characterizing the net:
@@ -85,9 +86,7 @@ def stop_small_graph_almost_true(epsilon):
         expected_v2 = 0.5*(1-epsilon)
         expected_v3 = 0.5*epsilon
         expected_v4 = 0.5*epsilon
-        #print (expected_v1, expected_v2, expected_v3, expected_v4, )
         cpt = sampler.get_estimated_cpt({"A":None, "B": None})
-        #print cpt
         v1 = cpt.get((0,0), 0)
         v2 = cpt.get((0,1), 0)
         v3 = cpt.get((1,0), 0)
@@ -221,7 +220,12 @@ class GibbsSampler(object):
     def sample_var_given_mb(self, var_name):
         """ Samples a value for var_name at random, given its markov blanket """
         p = self.prob_true_given_mb(var_name)
-        new_value = 1 if random.random() < p else 0
+        r = random.random()
+        if r < p:
+            new_value = 1
+        else:
+            new_value = 0
+
         self.update_var(var_name, new_value)
 
     def estimate_joint(self):
@@ -230,7 +234,6 @@ class GibbsSampler(object):
         while not self.stopping_criterion(self):
             for var_name in self.mutable_vars:
                 self.sample_var_given_mb(var_name)
-                #print self.get_values()
                 self.record_sample()
 
 
