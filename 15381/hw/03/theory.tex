@@ -43,21 +43,98 @@
 $S, B, P$
 
 \question{2}{Task 1.2}
-Incomplete
+$|X| = 3$, so there are $3!$ different orderings, which is $9$.
 
 \question{3}{Task 1.3}
-Incomplete
+\begin{table}
+    \begin{tabular}{l|l|l|l|l}
+    W & R & I & K & Probablity \\ \hline
+    W & W & W & W & 0.4608     \\
+    W & W & W & S & 0.1152     \\
+    W & W & S & W & 0.1152     \\
+    W & W & S & S & 0.0288     \\ \hline
+    W & S & W & W & 0.0162     \\
+    W & S & W & S & 0.0378     \\
+    W & S & S & W & 0.0378     \\
+    W & S & S & S & 0.0882     \\ \hline
+    S & W & W & W & 0.0192     \\
+    S & W & W & S & 0.0048     \\
+    S & W & S & W & 0.0048     \\
+    S & W & S & S & 0.0012     \\ \hline
+    S & S & W & W & 0.0063     \\
+    S & S & W & S & 0.0147     \\
+    S & S & S & W & 0.0147     \\
+    S & S & S & S & 0.0343     \\
+    \end{tabular}
+\end{table}
 
 \question{4}{Task 1.4}
-Incomplete
+$Pr(K=w) = 0.675$
+$Pr(K=s) = 0.325$
 
 \question{5}{Task 1.5}
-Incomplete
+$3*8=24$ multiplications, and $7$ summations.
 
 \question{6}{Task 1.6}
-Incomplete
+$Pr(K) = \sum_{R,W,I} Pr(K,R,W,I)$
 
-\question{6}{Task 3.1}
+$Pr(K=w) = \sum_{r \in R} Pr(K=w | R=r)[\sum_{w \in W}Pr(W=w)Pr(R=r|W=w)]$
+$      = 0.3(0.9*0.2 + 0.7*0.1) + 0.8(0.9*0.8 + 0.7*0.1)$
+$      = 0.675$
+
+and from this result, we derive
+
+$Pr(K=s) = 1 - Pr(K=w) = 1-0.675 = 0.325$
+
+
+\question{7}{Task 1.7}
+4 multiplications and 3 additions.
+
+Variable elimination results in fewer multiplications and divisions.
+
+\question{8}{Task 1.8}
+We would have increased the number of calculations since the summing wouldn't have been as efficient.
+
+\question{9}{Task 2.1}
+$z = f(x,y) = -(x-3)^3 - (y-17)^2 + 200$\\
+$\nabla f(x,y) = g(x,y) = \langle -2(x-3), -2(y-17) \rangle $\\
+$       = (6-2x, 34-2y)$
+
+\question{10}{Task 2.2}
+$0.4*g(x,y) = 0.4*g(-2, 10) = 0.4 \langle 10,14 \rangle = \langle 4, 5.6 \rangle$\\
+$\Updelta x= 4, \Updelta y = 5.6$\\
+Therefore, $x=2, y=15.6$
+
+Repeating the above procedure with the results as the inputs, we get,\\
+$x = 2.8, y=16.72$
+
+And once more,\\
+$x = 2.98, y=16.944$
+
+The end resulting locations are\\
+$$\langle (-2, 10), (2, 15.6), (2.8, 16.72), (2.96, 16.944) \rangle$$
+
+
+\question{11}{Task 2.3}
+With this large step size, the hobbit goes in a cycle $\langle (-2, 10),(8,24),(-2,10) \rangle$
+
+If the step size were smaller, the hobbit would take many more steps to reach the same position.
+But if the step size is too small, they will meet the stopping condition too quickly, and stop at
+less optimal position.
+
+\question{12}{Task 2.4}
+To get the max x and y, we solve the following eqns:
+
+$6-2x = 0$ and $34-2y = 0$
+
+The maximum is at $(3,17)$
+
+Here, the gradients are exactly 0, whereas the other points are not exactly at 0 and could be bettered by moving further.
+
+
+
+
+\question{13}{Task 3.1}
 \begin{table}
     \begin{tabular}{lll}
     ~   & $B=0$     & B=1     \\
@@ -66,10 +143,10 @@ Incomplete
     \end{tabular}
 \end{table}
 
-\question{6}{Task 3.2}
+\question{14}{Task 3.2}
 In the code
 
-\question{6}{Task 3.3}
+\question{15}{Task 3.3}
 The runtime increases. As epsilon gets smaller, it takes longer to get from a random sample
 to the true sample, because the true sample is farther away from an average random sample.
 
@@ -77,7 +154,7 @@ Had you direct sampled, it would have taken much much longer. But because Gibbs 
 we don't throw away the samples - we merely improve them. So even though the runtime increases when you
 reduce epsilon, it's not as bad as it would be with direct sampling.
 
-\question{6}{Task 3.4}
+\question{16}{Task 3.4}
 a. \\
 A 0.181\\
 B 0.5002\\
