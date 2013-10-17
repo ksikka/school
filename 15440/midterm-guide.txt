@@ -1,0 +1,39 @@
+Network layer stack
+==============================
+
+RPC vs RMI
+==============================
+
+Distributed Concurrency Control
+==============================
+
+Physics and logical time
+==============================
+
+2PC/Multicast
+==============================
+
+Distributed Transactions
+==============================
+
+ACID/BASE/CAP
+==============================
+
+Consistency and Replication
+==============================
+
+Quorums and managements (best effort)
+==============================
+
+Fault Tolerance- Agreement
+==============================
+
+Fault Tolerance- Logging
+==============================
+
+Fault Tolerance- Checkpointing
+==============================
+
+Fault Tolerance- Systemic lock
+==============================
+
