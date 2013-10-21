@@ -72,13 +72,38 @@ We can denote $B_{i,j}$ as the $j^{th}$ element of $B_i$ again assuming an arbit
 
 Then the statement "in $A_i$, there exist $d_i$ elements which can be labeled as $B_i$" is the same as "there exists a perfect matching in the following bipartite graph".
 
-We constructe a bipartite graph so that the first set of vertices is
+We construct a bipartite graph so that the first set of vertices is
 $Z_j$ and the second set is $B_{i,j}$, and there is an edge from $Z_j$ to $B_{i,j}$ if $Z_j \in A_i$.
 To clarify, the edge signifies that it is possible to label $Z_j$ as $B_i$.
 
 Notice that the size of the first bipartition is $z$ by definition of $Z$ and the size of the second bipartition is $\sum |B_i| = \sum |d_i| = z$.
 The sizes of the bipartitions are equal and the first condition of Hall's condition is true.
 
+Hawldap.
+
+We denote $Z_j$ as the $j^{th}$ element of $A$ assuming some arbitrary ordering.
+We denote $B_{i,j}$ as the $j^{th}$ element of $B_i$ again assuming an arbitrary ordering $(1 \leq j \leq d_i)$.
+
+We construct a bipartite graph so that the first set of vertices is
+$B_{i,j}$
+and the second set is
+$Z_j$
+and there is an edge from $B_{i,j}$ to $Z_j$ if $Z_j \in A_i$.
+As a result, the presence of an edge signifies that it is possible to put $Z_j$ in $B_i$.
+
+Since $A$ and $B$ are used in the problem statement, we will refer to these sets of vertices in the graph as $X$ and $Y$.
+We notice that if we show that an A-perfect matching exists in this graph, we've shown that we can form disjoint $B_i$ where $|B_i| = d_i$.
+
+An A-perfect matching exists iff Hall's condition holds. That is, $\forall S \subseteq X, |N(S)| \geq |S|$.
+
+Given any subset $S$ of $X$, group the $B_{i,j}$ by same $i$, and call the set of $i$ for nonempty $B_i$ to be $I$.
+There are two cases. In the case that we get all the $B_i$s for a given $i$ for all the $i$s in the subset,
+we can see that the size of the subset is the sum of the $d_i$s, which corresponds to given inequality in the problem statement.
+
+Consider the $N(S)$. We can see that this consists of all the elements that could be in $B_i$ for all $i$s being considered,
+which is precisely the size of the union of the $A_i$s. This corresponds to given inequality in the problem statement.
+
+We've mapped the problem statement to the bipartite graph and proved the inequality via Hall's condition.
 
 
 \question{3}
