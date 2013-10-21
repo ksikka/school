@@ -40,20 +40,51 @@
 
 
 \question{1}
+Consider a d-regular bipartite graph.
+
+Find it's perfect matching
+Take it out. Now we have a $d-1$-regular bipartite graph. Claim holds for all $d$ by induction.
 
 \question{2}
 
 \question{3}
-
-\question{4}
-
-\question{5}
 First note that a graph with $|E| = m$ and $|V| = n$ where $m = {n choose 2} = n*(n - 1)/2$ is maximally connected, and therefore a connected graph with $n$ vertices has at most $m$ edges.
 
 If you then add a vertex to a maximally connected graph, you get a disconnected graph with the largest possible number of edges: $m = {n-1 \ choose 2} = (n-1)(n-2)/2$.
 This is because if you add a single edge to the graph, it's connected again, since it must connect to the new vertex (all other possible edges already exist).
 
 Therefore, any graph with $m > (n-1)(n-2)/2$ must be connected.
+
+\question{4}
+Assume for sake of contradiction that there exists a tree $T$ where two paths of max-length did not have any vertices in common.
+
+We know that the tree is connected.
+Therefore there must exist a path from a vertex in one of the max-length paths to a vertex in the other.
+However, then we've found a longer path than either of the two that first assumed were max-length.
+
+This is a contradiction and therefore there does not exists a tree satisfying the assumed condition and in any tree, two max-length paths must share at least one vertex.
+
+\question{5}
+Call a tree with exactly one vertex of degree $i$ for any $2 \leq i \leq k$ for some $k > 0$ a $k$-weird tree.
+We denote the number of edges in a $k$-weird tree as $S_k$.
+
+$S_1 = 1$. This is because if $k=1$, then the tree has no vertices of degree 2 or greater, and the only such tree is the tree with two vertices and one edge.
+
+$S_2 = 3$. You can see this from the tree with three vertices, where one is the root and two are leaves.
+
+For $k>1$, we can form a $k$-weird tree using the following inductive approach. Create a vertex with degree $k$ by connecting it to $k-1$ leaves and a root vertex of a $(k-1)$-weird subtree.
+This tree is indeed $k$-weird since it has exactly one vertex of degree $k$, and it has a $k-1$ subtree which shows the weird property holds for all values $k-1$ down till 2.
+
+In this case $S_k = 1 + (k-1) + S_{k-1}$. This is because there is one $k$-degree vertex, $k-1$ of its leaves, and a $k-1$-weird subtree.
+
+$S_k = 1 + (k-1) + S_{k-1}$\\
+$    = k + S_{k-1}$\\
+$    = k + (k-1) + ... + S_3$\\
+$    = k + (k-1) + ... + 3 + S_2$\\
+$    = k + (k-1) + ... + 3 + 3$\\
+$    = \frac{(k-2)(k+3)}{2} + 3$\\
+
+We've determined the values of $S_k$ for $k=1$, $k=2$, and arbitrary $k$.
 
 \question{6}
 For any vertex $v$ of degree $d$ in a tree where $d \geq 3$, there are $d$ neighbors, by definition of degree.
