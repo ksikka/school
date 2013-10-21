@@ -62,6 +62,24 @@ The resulting graph is $d-1$ regular. You can do this $d$ times until you've rem
 Therefore there are $d$ perfect matchings, and since we can remove them serially from the $d$ regular graph, they are disjoint.
 
 \question{2}
+The statement "there are disjoint subsets $B_i$ of $A_i$ with sizes of $d_i$" is also saying "in $A_i$, there exist $d_i$ elements which can be labeled as $B_i$".
+This is the same statement because giving an element one label implies that it only exists in the set for that label, and does not exist in the sets of the other labels, and therefore the labels' sets are disjoint given this.
+
+Furthermore we know an element in A can be assigned the label $B_i$ only if the element is a member of $A_i$.
+
+In general, say the sum of all $d_i$ is $z$. More formally, let $z = \sum_{i=1}^k d_i$. Then $z$ elements will be assigned $B_i$ labels. Assume these elements exist and are arbitrarily ordered. Then we denote $Z_j$ as the $j^{th}$ element $1\leq j \leq z$.
+We can denote $B_{i,j}$ as the $j^{th}$ element of $B_i$ again assuming an arbitrary ordering $(1 \leq j \leq d_i)$.
+
+Then the statement "in $A_i$, there exist $d_i$ elements which can be labeled as $B_i$" is the same as "there exists a perfect matching in the following bipartite graph".
+
+We constructe a bipartite graph so that the first set of vertices is
+$Z_j$ and the second set is $B_{i,j}$, and there is an edge from $Z_j$ to $B_{i,j}$ if $Z_j \in A_i$.
+To clarify, the edge signifies that it is possible to label $Z_j$ as $B_i$.
+
+Notice that the size of the first bipartition is $z$ by definition of $Z$ and the size of the second bipartition is $\sum |B_i| = \sum |d_i| = z$.
+The sizes of the bipartitions are equal and the first condition of Hall's condition is true.
+
+
 
 \question{3}
 First note that a graph with $|E| = m$ and $|V| = n$ where $m = {n \choose 2} = n*(n - 1)/2$ is maximally connected, and therefore a connected graph with $n$ vertices has at most $m$ edges.
