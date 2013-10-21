@@ -1,0 +1,91 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{04}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{21-301}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 21-301 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+
+\question{1}
+
+\question{2}
+
+\question{3}
+
+\question{4}
+
+\question{5}
+First note that a graph with $|E| = m$ and $|V| = n$ where $m = {n choose 2} = n*(n - 1)/2$ is maximally connected, and therefore a connected graph with $n$ vertices has at most $m$ edges.
+
+If you then add a vertex to a maximally connected graph, you get a disconnected graph with the largest possible number of edges: $m = {n-1 \ choose 2} = (n-1)(n-2)/2$.
+This is because if you add a single edge to the graph, it's connected again, since it must connect to the new vertex (all other possible edges already exist).
+
+Therefore, any graph with $m > (n-1)(n-2)/2$ must be connected.
+
+\question{6}
+For any vertex $v$ of degree $d$ in a tree where $d \geq 3$, there are $d$ neighbors, by definition of degree.
+At most one of these neighbors is a parent vertex (not a leaf). The other $d-1$ neighbors must either be leaves or the roots of disjoint subtrees.
+In the subtree case, you can apply this argument inductively, to show the number of leaves will always be greater than the number of vertexes of degree at least 3.
+(And as a formality, you see the base case holds with 0 vertexes and 1 vertex satisfying this condition.)
+
+
+\question{7}
+(this was shown in class)
+
+The proof is by induction on the number of vertices.
+
+In the base case $|V| = 1$ the claim obviously holds.
+
+Consider a graph $G$ with some $k \geq 1$ vertices which has no cycle and satisfies $|V| = |E| + 1$.
+We assume that this is a tree.
+
+If you add a vertex to the graph, the graph is disconnected and is no longer a tree. We seek to add edges in order to make it a tree.
+
+You must add an edge to make the graph connected. You can add an edge in such a way that it does not create
+a cycle, by simply extending off of a leaf. However, you cannot add more than that because it would have to connect
+to another node in $G$ which was already maximal (given that it was a tree), and it would create a cycle.
+
+Therefore, if you add 1 vertex, you must add exactly 1 edge to create a tree from a tree.
+
+$|V'| = |V| + 1 = |E| + 1 + 1 = |E'| + 1$
+
+and more succinctly
+
+$|V'| = |E'| + 1$
+
+
+\end{document}
+
