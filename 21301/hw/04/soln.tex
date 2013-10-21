@@ -40,10 +40,26 @@
 
 
 \question{1}
-Consider a d-regular bipartite graph.
+Consider a $d$-regular bipartite graph. We will show that it has a perfect matching, and that if you remove it, you get a $d-1$-regular graph. Therefore, inductively, you can find $d$ disjoint perfect matchings in a $d$-regular bipartite graph.
 
-Find it's perfect matching
-Take it out. Now we have a $d-1$-regular bipartite graph. Claim holds for all $d$ by induction.
+\textbf{Perfect Matching}\\
+First, we seek to show a $d$-regular bipartite graph has a perfect matching.
+We claim it satisfies Hall's condition, that is that $|A| = |B|$ and
+$\all S \subseteq A , |S| < |N(S)|$.
+
+Since the graph is bipartite, all the edges connect vertices in $A$ to vertices in $B$.
+Then $|E| = d|A|$. However, we can say the same about $B$.
+Then $|E| = d|B| = d|A|$ which implies that $|A| = |B|$.
+
+Now we consider any subset $S$ of $A$, and it's neighborset, $N(S)$.
+There are $d|S|$ edges going out of $S$, connected to $N(S)$ vertices in $B$.
+We know every vertex in $B$ has $d$ incoming edges, so the size of $N(S)$ is $d|S|/d = |S|$.
+Therefore $|N(S)| = |S| \geq |S|$ and Hall's condition holds. Therefore a $d$-regular bipartite graph has a perfect matching.
+
+\textbf{Induction}\\
+Remove the perfect matching from the $d$-regular bipartite graph. The effect is that the number of outgoing edges on every vertex decreases by exactly one.
+The resulting graph is $d-1$ regular. You can do this $d$ times until you've removed all the edges from the graph resuling in a 0-regular graph.
+Therefore there are $d$ perfect matchings, and since we can remove them serially from the $d$ regular graph, they are disjoint.
 
 \question{2}
 
