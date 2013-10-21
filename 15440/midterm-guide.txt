@@ -1,6 +1,10 @@
 Network layer stack
 ==============================
 
+-Physical
+-Link (frames, collision management)
+-Network 
+
 RPC vs RMI
 ==============================
 
