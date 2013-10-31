@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{05}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{21-301}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 21-301 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+
+\question{1}
+We know that a maximal chain of $[n]$ contains $n+1$ sets, and there is exactly one set of every size from 0 to $n$.
+
+We know that the sizes of $A_i$ strictly increase in the order they are given (from 1 to $k$). That is that $A_1$ is the smallest and $A_k$ is the largest $A_i$.
+
+We can construct all maximal chains of $[n]$ containing all $A_i$ by the following method:
+
+Let your chain contain all $A_i$. This is a chain given the subset relationship of all the $A_i$.
+Notice that this chain may not be maximal if there is not a set of every size from 0 to $n$.
+We know that we have sets of sizes $|A_1|, |A_2|, ..., |A_k|$.
+\begin{enumerate}
+\item Now, add a maximal chain of $2^{A_1}$.
+\item Then find $|A_j| - |A_i|$ sets in $2^{[x]}$ of all sizes strictly between $(|A_i|, |A_j|)$ such that they form a chain, and add them to the chain.
+\item Finally find $n - |A_k|$ sets in $2^{[x]}$ of all sizes strictly between $(|A_k|, n)$ such that they form a chain, and add them to the chain.
+\end{enumerate}
+
+Note that by this method, you can form any maximal chain of $2^{[x]}$ which contains all the $A_i$.
+Now we count how many distinct outcomes there are of performing the above procedure.
+
+\begin{enumerate}
+\item There are $|A_1|!$ ways of doing step 1.
+\item There are $\product_{i,j | j-i = 1} (|A_j| - |A_i|)!$ ways of doing step 2. This is because you can choose from $(|A_j| - |A_i|)$ elements for the first set you add, one fewer element for the next set, up til there is only one way to form the last set (then you have $A_j$).
+\item There are $(n - |A_k|)!$ ways of doing step 3 by the same logic.
+\end{enumerate}
+
+The product of those three quantities gives the answer.
+
+
+\question{2}
+
+\question{3}
+
+\question{4}
+
+\question{5}
+
+\question{6}
+
+\question{7}
+
+
+\end{document}
+
