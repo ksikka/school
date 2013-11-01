@@ -120,14 +120,14 @@ We know from lecture that the maximum number of edges in a bipartite graph that 
 $$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = c_{3}n\sqrt{n} $$
 
 We wish to find an upper bound on the degree of the smallest $S_i$ in $B$, because doing so would prove that an $S_i$ exists such that the claim in the problem is true.
-To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = c_{3}n\sqrt{n}$, and we distribute the edges evenly accross vertexes in $B$, because giving any vertex more edges than another gives the other vertex a smaller degree.
-In the above scenario, each vertex in $B$ would have degree $\frac{c_{3}n\sqrt{n}}{n} = c_{3}\sqrt{n}$. Thus we've shown that the maximum degree of the minimum degree vertex is $c_{3}\sqrt{n}$.
+To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = c_{3}n\sqrt{n}$, and we distribute the edges evenly accross vertexes in $B$.
+In the above scenario, each vertex in $B$ would have degree $\frac{c_{3}n\sqrt{n}}{n} = c_{3}\sqrt{n}$. Thus we've shown that the degree of the minimum-degree vertex is upper-bounded by $c_{3}\sqrt{n}$.
 
-In any scenario such as the one given in the question, there will always exist an $S_i$ such that $d(S_i) = |S_i| \leq C \sqrt{n}$.
+Therefore, in any scenario such as the one given in the question, there will always exist an $S_i$ such that $d(S_i) = |S_i| \leq C \sqrt{n}$.
+
+Note: $C = c_3 = c_1 + c_2 = 2^{3/2} + 2 \approx 4.83$
 
 \question{6}
-
-\question{7}
 
 
 \end{document}
