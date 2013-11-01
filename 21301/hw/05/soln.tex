@@ -117,15 +117,16 @@ and it would violate the problem statement. Therefore, our bipartite graph does 
 
 We know from lecture that the maximum number of edges in a bipartite graph that does not have $K_{2,2}$ is $|V|^{3/2} + |V|$. We'll write this in terms of $n$ and label constants for sake of clarity.
 
-$$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = c_{3}n\sqrt{n} $$
+$$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = n(c_3 \sqrt{n} + c_2) $$
 
 We wish to find an upper bound on the degree of the smallest $S_i$ in $B$, because doing so would prove that an $S_i$ exists such that the claim in the problem is true.
-To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = c_{3}n\sqrt{n}$, and we distribute the edges evenly accross vertexes in $B$.
-In the above scenario, each vertex in $B$ would have degree $\frac{c_{3}n\sqrt{n}}{n} = c_{3}\sqrt{n}$. Thus we've shown that the degree of the minimum-degree vertex is upper-bounded by $c_{3}\sqrt{n}$.
+To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = n(c_3 \sqrt{n} + c_2)$, and we distribute the edges evenly accross vertexes in $B$.
+In the above scenario, each vertex in $B$ would have degree $\frac{n(c_3 \sqrt{n} + c_2)}{n} = c_3 \sqrt{n} + c_2$. Thus we've shown that the degree of the minimum-degree vertex is upper-bounded by $c_3 \sqrt{n} + c_2$.
 
-Therefore, in any scenario such as the one given in the question, there will always exist an $S_i$ such that $d(S_i) = |S_i| \leq C \sqrt{n}$.
+Therefore, in any scenario such as the one given in the question, there will always exist an $S_i$ such that $d(S_i) = |S_i| \leq c_3 \sqrt{n} + c_2$.
+Since $n$ is a positive integer, we can do the following algebra:
+$|S_i| \leq c_3 \sqrt{n} + c_2 \leq c_3 \sqrt{n} + c_4 \sqrt{n} = c_5 \sqrt{n} = C \sqrt{n}$
 
-Note: $C = c_3 = c_1 + c_2 = 2^{3/2} + 2 \approx 4.83$
 
 \question{6}
 
