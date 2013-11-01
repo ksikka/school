@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.3.16)  1 NOV 2013 06:50
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.3.16)  1 NOV 2013 08:43
 entering extended mode
  %&-line parsing enabled.
 **soln.tex
@@ -143,7 +143,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 82.
+(amsmath)                 on input line 85.
 
 
 Package Fancyhdr Warning: \headheight is too small (13.59999pt): 
@@ -155,7 +155,7 @@ Package Fancyhdr Warning: \headheight is too small (13.59999pt):
 Here is how much of TeX's memory you used:
  1239 strings out of 256216
  13297 string characters out of 1917072
- 64913 words of memory out of 1500000
+ 63913 words of memory out of 1500000
  4560 multiletter control sequences out of 10000+200000
  8903 words of font info for 34 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
@@ -167,11 +167,10 @@ are/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/bluesk
 y/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/t
 exmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/c
 mr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/f
-onts/type1/bluesky/cm/cmsy6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy8.
-pfb>
-Output written on soln.pdf (3 pages, 63887 bytes).
+onts/type1/bluesky/cm/cmsy8.pfb>
+Output written on soln.pdf (3 pages, 61374 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 56 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
