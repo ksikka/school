@@ -85,6 +85,20 @@ Which implies that $\mathcal{F} \geq 2{n \choose \lfloor \frac{n}{2} \rfloor }$ 
 
 
 \question{3}
+Consider the $n$-length sequence where if $n$ is even, every element is 1, but if $n$ is odd, $n-2$ elements are 1, 1 element is -1, and 1 element is 1.5.
+
+\textbf{Proof:}
+
+Case $n$ is even:\\
+All numbers in the sequence are 1. Choose half of them to get $\echelon = -1$, and naturally the other half get $\echelon = 1$.
+Then the dot product of the echelon vector and the sequence will be $0$. There are ${n \choose \frac{n}{2}}$ ways to do this.
+
+Case $n$ is odd:\\
+Put the $n-2$ 1s and the $-1$ in a bag. Note that this forms $n-1$ elements, which is even since $n$ is odd.
+If you choose half of them to get $\echelon = -1$ and the other half to get $\echelon = 1$, the sum will either be 1 or -1.
+If the sum is 1, choose the 1.5 to be multipled by $\echelon = -1$. Else, $\echelon = 1$. In the first case, the sum will be $1-1.5 = -0.5$, and in the second case, the sum will be $-1+1.5 = 0.5$.
+There are ${n \choose \frac{n-1}{2}}$ ways to construct this $\echelon$ vector, and since $n$ is odd, this is equal to ${n \choose \lfloor \frac{n}{2} \rfloor}$ ways.
+
 
 \question{4}
 Since every set has a nonempty intersection with every other set, we realize that there must be at least 1 element which is common to all sets in $\mathcal{F}$.
@@ -93,7 +107,6 @@ Then the upper bound on the size of an intersecting family is:
 $$ |\mathcal{F}| \leq 1 \prod_{i=2}^{n} 2 = 2^{n-1}$$
 
 \question{5}
-Hello
 
 \question{6}
 
