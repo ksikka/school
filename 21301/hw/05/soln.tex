@@ -90,14 +90,14 @@ Consider the $n$-length sequence where if $n$ is even, every element is 1, but i
 \textbf{Proof:}
 
 Case $n$ is even:\\
-All numbers in the sequence are 1. Choose half of them to get $\echelon = -1$, and naturally the other half get $\echelon = 1$.
-Then the dot product of the echelon vector and the sequence will be $0$. There are ${n \choose \frac{n}{2}}$ ways to do this.
+All numbers in the sequence are 1. Choose half of them to get $\epsilon = -1$, and naturally the other half get $\epsilon = 1$.
+Then the dot product of the epsilon vector and the sequence will be $0$. There are ${n \choose \frac{n}{2}}$ ways to do this.
 
 Case $n$ is odd:\\
 Put the $n-2$ 1s and the $-1$ in a bag. Note that this forms $n-1$ elements, which is even since $n$ is odd.
-If you choose half of them to get $\echelon = -1$ and the other half to get $\echelon = 1$, the sum will either be 1 or -1.
-If the sum is 1, choose the 1.5 to be multipled by $\echelon = -1$. Else, $\echelon = 1$. In the first case, the sum will be $1-1.5 = -0.5$, and in the second case, the sum will be $-1+1.5 = 0.5$.
-There are ${n \choose \frac{n-1}{2}}$ ways to construct this $\echelon$ vector, and since $n$ is odd, this is equal to ${n \choose \lfloor \frac{n}{2} \rfloor}$ ways.
+If you choose half of them to get $\epsilon = -1$ and the other half to get $\epsilon = 1$, the sum will either be 1 or -1.
+If the sum is 1, choose the 1.5 to be multipled by $\epsilon = -1$. Else, $\epsilon = 1$. In the first case, the sum will be $1-1.5 = -0.5$, and in the second case, the sum will be $-1+1.5 = 0.5$.
+There are ${n \choose \frac{n-1}{2}}$ ways to construct this $\epsilon$ vector, and since $n$ is odd, this is equal to ${n \choose \lfloor \frac{n}{2} \rfloor}$ ways.
 
 
 \question{4}
