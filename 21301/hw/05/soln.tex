@@ -109,7 +109,7 @@ $$ |\mathcal{F}| \leq 1 \prod_{i=2}^{n} 2 = 2^{n-1}$$
 \question{5}
 
 Consider a bipartite graph $(A,B)$ where $A$ is the set of $n$ elements and $B$ is the set of $S_1...S_n$. Notice that $|A| + |B| = 2n$.
-An edge exists from a vertex in $A$ to $B$ if an element in $A$ is a member of a subset $S_i$ in $B$.
+An edge exists from a vertex in $A$ to $B$ if an element in $A$ is a member of a subset $S_i$ in $B$. Notice that the degree of a vertex representing $S_i$ in $B$ is equal to $|S_i|$, since it is the number of incoming edges, or number of elements which are members of $S_i$.
 
 The problem states that two distinct $S_i, S_j$ may not have an intersection of more than one element.
 In our bipartite graph, if $S_i, S_j$ in $B$ had an intersection of their neighbor sets of two vertexes in $A$, it would look like $K_{2,2}$,
@@ -119,7 +119,11 @@ We know from lecture that the maximum number of edges in a bipartite graph that 
 
 $$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = c_{3}n\sqrt{n} $$
 
+We wish to find an upper bound on the degree of the smallest $S_i$ in $B$, because doing so would prove that an $S_i$ exists such that the claim in the problem is true.
+To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = c_{3}n\sqrt{n}$, and we distribute the edges evenly accross vertexes in $B$, because giving any vertex more edges than another gives the other vertex a smaller degree.
+In the above scenario, each vertex in $B$ would have degree $\frac{c_{3}n\sqrt{n}}{n} = c_{3}\sqrt{n}$. Thus we've shown that the maximum degree of the minimum degree vertex is $c_{3}\sqrt{n}$.
 
+In any scenario such as the one given in the question, there will always exist an $S_i$ such that $d(S_i) = |S_i| \leq C \sqrt{n}$.
 
 \question{6}
 
