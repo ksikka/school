@@ -60,7 +60,7 @@ Now we count how many distinct outcomes there are of performing the above proced
 
 \begin{enumerate}
 \item There are $|A_1|!$ ways of doing step 1.
-\item There are $\product_{i,j | j-i = 1} (|A_j| - |A_i|)!$ ways of doing step 2. This is because you can choose from $(|A_j| - |A_i|)$ elements for the first set you add, one fewer element for the next set, up til there is only one way to form the last set (then you have $A_j$).
+\item There are $\prod_{i,j | j-i = 1} (|A_j| - |A_i|)!$ ways of doing step 2. This is because you can choose from $(|A_j| - |A_i|)$ elements for the first set you add, one fewer element for the next set, up til there is only one way to form the last set (then you have $A_j$).
 \item There are $(n - |A_k|)!$ ways of doing step 3 by the same logic.
 \end{enumerate}
 
@@ -75,13 +75,13 @@ With 2, you do not break the constraint.
 
 The total number of sets in $\mathcal{F}$ that also exist in some maximal chain is at most $2n!$ (two in a maximal chain, and there are $n!$).
 
-We can also count this quantity by counting the number of maximal chains containing $A$ for all $A \in \mathcal{F}$. This quantity is $\sum_{A \in \mathcal{F} |A|!(n-|A|)!$, as shown in the proof of Sperner's Theorem in lecture.
+We can also count this quantity by counting the number of maximal chains containing $A$ for all $A \in \mathcal{F}$. This quantity is $\sum_{A \in \mathcal{F}} |A|!(n-|A|)!$, as shown in the proof of Sperner's Theorem in lecture.
 
 Then, we do some algebra:
 
-$$ 1 \geq \sum_{A \in \mathcal{F}} \frac{|A|!(n-|A|)!}{2n!} = \sum_{A \in \mathcal{F}} \frac{1}{2{n}\choose{\floor{\frac{n}{2}}}} = \frac{\mathcal{F}}{2{n}\choose{\floor{\frac{n}{2}}}}$$
+$$ 1 \geq \sum_{A \in \mathcal{F}} \frac{|A|!(n-|A|)!}{2n!} = \sum_{A \in \mathcal{F}} \frac{1}{2{n \choose \lfloor \frac{n}{2} \rfloor }} = \frac{\mathcal{F}}{2{n \choose \lfloor \frac{n}{2} \rfloor }}$$
 
-Which implies that $\mathcal{F} \geq 2{n}\choose{\floor{\frac{n}{2}}}$ and since $n$ is even, $\mathcal{F} \geq 2{n}\choose{\frac{n}{2}}$.
+Which implies that $\mathcal{F} \geq 2{n \choose \lfloor \frac{n}{2} \rfloor }$ and since $n$ is even, $\mathcal{F} \geq 2{n \choose \frac{n}{2}}$.
 
 
 \question{3}
