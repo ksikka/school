@@ -65,7 +65,7 @@ Now we count how many distinct outcomes there are of performing the above proced
 \end{enumerate}
 
 The product of those three quantities gives the answer:
-$$|A_1|!\prod_{i,j | j-i = 1} (|A_j| - |A_i|)!(n - |A_k|)!$$
+$$|A_1|!(n - |A_k|)!\prod_{i,j | j-i = 1} (|A_j| - |A_i|)!$$
 
 \question{2}
 We observe that the size of intersection of $\mathcal{F}$ and any maximal chain of $2^{[n]}$,
@@ -88,7 +88,7 @@ Which implies that $\mathcal{F} \geq 2{n \choose \lfloor \frac{n}{2} \rfloor }$ 
 
 
 \question{3}
-Consider the $n$-length sequence where every element is 1, but if $n$ is odd, $n-2$ elements are 1, 1 element is -1, and 1 element is 1.5.
+Consider the $n$-length sequence where every element is 1.
 
 \textbf{Proof:}
 
@@ -115,7 +115,7 @@ and it would violate the problem statement. Therefore, our bipartite graph does 
 
 We know from lecture that the maximum number of edges in a bipartite graph that does not have $K_{2,2}$ is $|V|^{3/2} + |V|$. We'll write this in terms of $n$ and label constants for sake of clarity.
 
-$$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = n(c_3 \sqrt{n} + c_2) $$
+$$ |E| \leq \frac{1}{2}((2n)^{3/2} + 2n) = c_1 n^{3/2} + c_2n = n(c_3 \sqrt{n} + c_2) $$
 
 We wish to find an upper bound on the degree of the smallest $S_i$ in $B$, because doing so would prove that an $S_i$ exists such that the claim in the problem is true.
 To maximize the degree of the smallest $S_i$, we consider the graph with the maximum possible number of edges such that $|E| = n(c_3 \sqrt{n} + c_2)$, and we distribute the edges evenly accross vertexes in $B$.
@@ -131,6 +131,10 @@ Thus, we have proven the claim.
 
 \question{6}
 
+Let S be the set containing all 3-tuples $(\lbrace u_1, u_2 \rbrace =,v)$ where $u_i$ are vertices in $A$ and $v$ is a vertex in $B$.
+Then $|S| = \sum_{v \in A}{ d(v) \choose 2 }$
+
+The rest is incomplete.
 
 \end{document}
 
