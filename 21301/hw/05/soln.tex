@@ -73,9 +73,12 @@ is at most 2, since if there were 3 sets in common with the chain,
 those 3 sets would form a chain which would break the constraint on $\mathcal{F}$ given in the problem.
 With 2, you do not break the constraint.
 
-The total number of sets in $\mathcal{F}$ that also exist in some maximal chain is at most $2n!$ (two in a maximal chain, and there are $n!$).
+We will use double-counting on the number of (maximal chain, set in $\mathcal{F}$) pairs such that the set is contained in the maximal chain.
 
-We can also count this quantity by counting the number of maximal chains containing $A$ for all $A \in \mathcal{F}$. This quantity is $\sum_{A \in \mathcal{F}} |A|!(n-|A|)!$, as shown in the proof of Sperner's Theorem in lecture.
+An upper bound on this quantity is $2n!$, since there are $n!$ maximal chains, and at most 2 sets in $\mathcal{F}$ can be found in each of them.
+
+We can count this quantity more precisely by counting the number of maximal chains containing $A$ for all $A \in \mathcal{F}$.
+This quantity is $\sum_{A \in \mathcal{F}} |A|!(n-|A|)!$, as shown in the proof of Sperner's Theorem in lecture.
 
 Then, we do some algebra:
 
@@ -85,19 +88,13 @@ Which implies that $\mathcal{F} \geq 2{n \choose \lfloor \frac{n}{2} \rfloor }$ 
 
 
 \question{3}
-Consider the $n$-length sequence where if $n$ is even, every element is 1, but if $n$ is odd, $n-2$ elements are 1, 1 element is -1, and 1 element is 1.5.
+Consider the $n$-length sequence where every element is 1, but if $n$ is odd, $n-2$ elements are 1, 1 element is -1, and 1 element is 1.5.
 
 \textbf{Proof:}
 
 Case $n$ is even:\\
-All numbers in the sequence are 1. Choose half of them to get $\epsilon = -1$, and naturally the other half get $\epsilon = 1$.
+All numbers in the sequence are 1. Choose half of them to be multiplied by $\epsilon = -1$, and naturally the other half will be multiplied by $\epsilon = 1$.
 Then the dot product of the epsilon vector and the sequence will be $0$. There are ${n \choose \frac{n}{2}}$ ways to do this.
-
-Case $n$ is odd:\\
-Put the $n-2$ 1s and the $-1$ in a bag. Note that this forms $n-1$ elements, which is even since $n$ is odd.
-If you choose half of them to get $\epsilon = -1$ and the other half to get $\epsilon = 1$, the sum will either be 1 or -1.
-If the sum is 1, choose the 1.5 to be multipled by $\epsilon = -1$. Else, $\epsilon = 1$. In the first case, the sum will be $1-1.5 = -0.5$, and in the second case, the sum will be $-1+1.5 = 0.5$.
-There are ${n \choose \frac{n-1}{2}}$ ways to construct this $\epsilon$ vector, and since $n$ is odd, this is equal to ${n \choose \lfloor \frac{n}{2} \rfloor}$ ways.
 
 
 \question{4}
