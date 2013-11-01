@@ -68,6 +68,21 @@ The product of those three quantities gives the answer.
 
 
 \question{2}
+We observe that the size of intersection of $\mathcal{F}$ and any maximal chain of $2^{[n]}$,
+is at most 2, since if there were 3 sets in common with the chain,
+those 3 sets would form a chain which would break the constraint on $\mathcal{F}$ given in the problem.
+With 2, you do not break the constraint.
+
+The total number of sets in $\mathcal{F}$ that also exist in some maximal chain is at most $2n!$ (two in a maximal chain, and there are $n!$).
+
+We can also count this quantity by counting the number of maximal chains containing $A$ for all $A \in \mathcal{F}$. This quantity is $\sum_{A \in \mathcal{F} |A|!(n-|A|)!$, as shown in the proof of Sperner's Theorem in lecture.
+
+Then, we do some algebra:
+
+$$ 1 \geq \sum_{A \in \mathcal{F}} \frac{|A|!(n-|A|)!}{2n!} = \sum_{A \in \mathcal{F}} \frac{1}{2{n}\choose{\floor{\frac{n}{2}}}} = \frac{\mathcal{F}}{2{n}\choose{\floor{\frac{n}{2}}}}$$
+
+Which implies that $\mathcal{F} \geq 2{n}\choose{\floor{\frac{n}{2}}}$ and since $n$ is even, $\mathcal{F} \geq 2{n}\choose{\frac{n}{2}}$.
+
 
 \question{3}
 
