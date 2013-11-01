@@ -108,6 +108,19 @@ $$ |\mathcal{F}| \leq 1 \prod_{i=2}^{n} 2 = 2^{n-1}$$
 
 \question{5}
 
+Consider a bipartite graph $(A,B)$ where $A$ is the set of $n$ elements and $B$ is the set of $S_1...S_n$. Notice that $|A| + |B| = 2n$.
+An edge exists from a vertex in $A$ to $B$ if an element in $A$ is a member of a subset $S_i$ in $B$.
+
+The problem states that two distinct $S_i, S_j$ may not have an intersection of more than one element.
+In our bipartite graph, if $S_i, S_j$ in $B$ had an intersection of their neighbor sets of two vertexes in $A$, it would look like $K_{2,2}$,
+and it would violate the problem statement. Therefore, our bipartite graph does not have $K_{2,2}$.
+
+We know from lecture that the maximum number of edges in a bipartite graph that does not have $K_{2,2}$ is $|V|^{3/2} + |V|$. We'll write this in terms of $n$ and label constants for sake of clarity.
+
+$$ |E| \leq (2n)^{3/2} + 2n = c_1 n^{3/2} + c_2n = c_{3}n\sqrt{n} $$
+
+
+
 \question{6}
 
 \question{7}
