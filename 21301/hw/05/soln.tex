@@ -98,10 +98,12 @@ Then the dot product of the epsilon vector and the sequence will be $0$. There a
 
 
 \question{4}
-Since every set has a nonempty intersection with every other set, we realize that there must be at least 1 element which is common to all sets in $\mathcal{F}$.
-Then to construct an intersecting family, we have at most the freedom to decide for $n-1$ elements whether or not they are in a set in $\mathcal{F}$. In other words, at the very least, one element's fate is decided (it is in every set by default).
+Since every set has a nonempty intersection with every other set, we realize that there must be at least 1 element which must exist in the set, so it can intersect with another set in the family.
+Then to construct an intersecting family, we have at most the freedom to decide for $n-1$ elements whether or not they are in a set in $\mathcal{F}$. In other words, at the very least, one element's fate is decided (it is in the set by constraint of interesting set).
 Then the upper bound on the size of an intersecting family is:
 $$ |\mathcal{F}| \leq 1 \prod_{i=2}^{n} 2 = 2^{n-1}$$
+
+An intersecting family which matches this bound is (when $n=3$) ${ {1,2}, {2,3}, {2}, {1,2,3} }$.
 
 \question{5}
 
