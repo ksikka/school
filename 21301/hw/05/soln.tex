@@ -64,8 +64,8 @@ Now we count how many distinct outcomes there are of performing the above proced
 \item There are $(n - |A_k|)!$ ways of doing step 3 by the same logic.
 \end{enumerate}
 
-The product of those three quantities gives the answer.
-
+The product of those three quantities gives the answer:
+$$|A_1|!\prod_{i,j | j-i = 1} (|A_j| - |A_i|)!(n - |A_k|)!$$
 
 \question{2}
 We observe that the size of intersection of $\mathcal{F}$ and any maximal chain of $2^{[n]}$,
