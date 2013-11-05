@@ -75,11 +75,13 @@ class KNNClassifier(Classifier):
         self.training_instances = instances
         self.training_labels = labels
 
+        """
         # perform PCA to reduce number of dimensions
         print instances
         new_instances = numpy.array([numpy.array([float(i) for i in inst]) for inst in instances])
         self.training_instances_pca = self.mdp.pca(new_instances, var_abs=1e-9)
         print self.training_instances_pca.explained_variance
+        """
 
 
 
@@ -93,44 +95,58 @@ class KNNClassifier(Classifier):
 
         t1 = self.time.time()
         instance_dists = []
-        for i, neighbor in enumerate(self.training_instances_pca):
-            instance_dists.append( (i, numpy.linalg.norm(neighbor-instance)) )
+        #for i, neighbor in enumerate(self.training_instances_pca):
+        for neighbor in self.training_instances:
+            d = numpy.sum(numpy.square(neighbor-instance))
+            instance_dists.append(d)
         t2 = self.time.time()
 
-        print t2-t1
+        #print t2-t1
 
-        ksmallest = [(1000, 1000)]*self.k # k-sized list
-        for i, dist in enumerate(instance_dists):
-            ksmallest.append((i,dist))
-            ksmallest.remove(max(ksmallest, key=lambda x:x[1]))
-            assert len(ksmallest) == self.k
+        ksmallest = sorted(enumerate(instance_dists), key=lambda x: x[1])[:self.k]
 
         label_votes = self.defaultdict(int)
         for i, dist in ksmallest:
             label_votes[self.training_labels[i]] += 1
 
-        return max(label_votes, key=lambda x: label_votes[x])
+        m = max(label_votes, key=lambda x: label_votes[x])
+        return m
 
 class LRClassifier(Classifier):
     """ Linear regression classifier. """
     def train(self, instances, labels):
         """ See Classifier.train. """
 
-        # create a linear regressor for each label
-        # for each label:
-        #   targets = [true if labels[inst] == label for inst in instances]
-        #   linear regressor for this label = numpy.linalg.lstsq(instances, targets)
+        class Regressor(object):
+            def __init__(self, dim):
+                self.w0 = None
+                self.wv = numpy.array()
+                self.dim = dim
+            def train(self, input_vects, targets):
+                pass
+            def estimate(self, input_vect):
+                return self.v0 + numpy.dot(self.wv, input_vect)
 
-        raise NotImplementedError
+        # create a linear regressor for each label
+        regressors = []
+        for label in labels:
+            targets = numpy.array([True if labels[i] == label else False for i in xrange(len(instances))])
+            r.train(instances, targets)
+            regressors.append(regressor)
+
+        self.labels = labels
+        self.regressors = regressors
 
     def classify(self, instance):
         """ See Classifier.classify. """
 
         # input the instance on each regressor, get out the label 1 or 0
         # take the argmax over the label, value of label's regressor pairs
-        raise NotImplementedError
+        predicted_values = [r.estimate(instance) for r in self.regressors]
+        index_of_label = numpy.argmax(predicted_values)
+        return self.labels[index_of_label]
 
-class AlwaysZeroClassifier(Classifier) : 
+class AlwaysZeroClassifier(Classifier):
     """ Always outputs Label as one """
 
     def train(self, instances, labels):
