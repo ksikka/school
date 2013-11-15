@@ -1,0 +1,233 @@
+<h1>Fun RMI</h1>
+
+<p>Invode methods on remote methods, have a fun time.</p>
+
+<h2>Building and Testing</h2>
+
+<p>To compile all source files, run:
+    ./compile.sh</p>
+
+<p>The pettingzoo package is an example application which uses this RMI framework.
+To run it and watch it in action, run:
+    ./test.sh</p>
+
+<h2>Overview of Project</h2>
+
+<pre><code>rmi.
+    RemoteMarker            (objects which implement this are Remote objects)
+    ROR                     (Reference to a Remote object on a host)
+
+    Stub                    (client/proxy object for a Remote object)
+    RMIServer               (endpoint for invocation Remote objects on a host)
+    RMIException            (Exception which may be raised by calling a stub method, since network is unreliable)
+
+
+    registry.
+        Registry                (Registry server, keeps track of key-ROR mapping)
+        RegistryClient
+
+    messaging.              (internal library for messages over sockets)
+        RMIMessage
+        MessageType
+
+pettingzoo.                 (example application utilizing rmi)
+    Animal
+    Dog
+    Cat
+    Monkey
+
+    ZooServer
+    PettingClient
+
+    TestRunner              (Contains main function, sets up and runs system)
+</code></pre>
+
+<h2>Example Use Case: PettingZoo</h2>
+
+<p>In this PettingZoo, you have Animals, specifically Dogs, Cats, and Monkeys.</p>
+
+<p>Animals live on long-running ZooServers, and short-lived PettingClients can use RMI to remotely invoke methods on the animals.</p>
+
+<p>See pettingzoo/PettingClient.java
+    pettingzoo/ZooServer.java
+    for code examples, and pettingzoo/TestServer.java to see how the whole system is setup.</p>
+
+<h3>TestRunner Details</h3>
+
+<p>The setup and operation of the system is demonstrated in pettingzoo.TestRunner. Although it runs on a single host,
+the usage of Hostnames and Ports for server connections suggests the same setup strategy would work if implemented on multiple hosts.
+The following is a breakdown of the steps involved:</p>
+
+<ol>
+<li>Start a long-running rmi.registry.Registry server</li>
+<li>Start two ZooServers
+<ol>
+<li>Each ZooServer creates an RMIServer</li>
+</ol></li>
+<li>Tell ZooServers to create a few Dogs and Cats
+<ol>
+<li>Each ZooServer instantiates objects</li>
+<li>Then they register the objects with the RMIServer using the RMIServer.addObj</li>
+</ol></li>
+<li>Start two PettingClients
+<ol>
+<li>Each creates one RegistryClient</li>
+<li>ZooClients get references to created objects</li>
+</ol></li>
+</ol>
+
+<h2>External API</h2>
+
+<h3>Registry</h3>
+
+<h4>rmi.registry.Registry</h4>
+
+<p>To start the registry server on a host, you can write a simple Java class with a main function,
+in which you instantiate a rmi.registry.Registry (you can provide a port number to bind on).
+To start it on the same thread, call the serveForever method.
+Registry objects implement Runnable so you can also start the Registry in another thread.</p>
+
+<h3>Server</h3>
+
+<h4>rmi.RMIServer(String hostname, int port, String registryHost, int registryPort)</h4>
+
+<p>You can create an RMIServer when you want to expose objects on a host to clients via the RMI facility.
+You can create multiple RMIServers across multiple hosts,
+and the registry running at the given host and port will keep track of all objects.</p>
+
+<h4>Methods</h4>
+
+<h5>rmi.RMIServer.addObj(String name, Object obj)</h5>
+
+<p>Call this method when you want to expose an object via the RMI Server so that a client may invoke a method on it remotely.
+Give it a name for propective clients to be able to refer to it as (see RegistryClient.lookupStub).</p>
+
+<h3>Client</h3>
+
+<h5>rmi.registry.RegistryClient(String registryHost, int registryPort)</h5>
+
+<p>This is an object a client can use to communicate with an RMI Registry, potentially on another host.
+Note that this object is also used by the RMI server to communicate with the registry - but the application programmer need not care about this implementation detail.</p>
+
+<h4>Methods</h4>
+
+<h5>rmi.registry.RegistryClient.lookupStub(String name)</h5>
+
+<h3>Stub system</h3>
+
+<p>When you call RegistryClient.lookupStub, you get back a subclass Stub object representing a proxy of remote object.
+Therefore, for every class of objects you want to make RMI-available, you'll need to write Stub classes.</p>
+
+<p>For example, to make pettingzoo.Dog available to RMI, you have to make a class called pettingzoo.DogStub
+that implements the RemoteMarker interface. The naming rule matters, it has to be className + "Stub".
+The RemoteMarker interface doesn't define any methods, it's just to mark the stub as a stub for a remote object.</p>
+
+<p>Writing a stub class is more thoroughly documented in pettingzoo/CatStub.java and DogStub.java.</p>
+
+<h5>Known limitations</h5>
+
+<p>All the arguments must be serializable objects (they should implement Serializable).
+Primitive types are not supported but you can use Wrapper classes to work around this limitation (ie. int -> Integer).
+Since RORs are Serializable, you can send RORs or return RORs over RMI if you want.</p>
+
+<h2>Internal Design and Implementation</h2>
+
+<p>Our design allows multiple RMI Servers to register their objects with a central registry server,
+and multiple clients to locate and fetch stubs for the objects listed in the registry.</p>
+
+<h3>System Architecture</h3>
+
+<p>Stub: (used by a client)</p>
+
+<ul>
+<li>Proxy object for a Remote object.</li>
+<li>Has the same method interface as the remote object.</li>
+<li>Has a ROR for the real object.</li>
+<li>A method call actually invokes Socket communication to the RMI Server of the host (given by the ROR) where the object is located.</li>
+<li>Returns result of the method invocation on the RMI Server, may raise an exception.</li>
+<li>In addition to the exceptions raised by the real object, this may also raise RMIException, which occurs in the case of an error caused by unreliability of the network.</li>
+</ul>
+
+<p>Remote Object Reference (ROR): (used throughout the system)</p>
+
+<ul>
+<li>Object which encodes the hostname, port, object, object class name, of a Remote object.</li>
+<li>Remote object means that the real object is on a host where a RMI Server is awaiting a method invocation message for the object.</li>
+</ul>
+
+<p>RMI Server: (used by a server)</p>
+
+<ul>
+<li>Communication endpoint for a Remote object.</li>
+<li>Receives a Message to invoke a method on an object.</li>
+<li>Dynamically invokes method, returns result/exception to the requester.</li>
+</ul>
+
+<p>Registry: (run as a daemon, Singleton in a system)</p>
+
+<ul>
+<li>Global record of Remote objects, with unique names.</li>
+<li>Allows an RMIServer to register it's object as available.</li>
+<li>Allows a client to locate an object by name, and henceforth get a stub with a ROR.</li>
+<li>Uses Remote Object Reference to encode the location of an object.</li>
+</ul>
+
+<h3>rmi.RMIServer</h3>
+
+<h4>rmi.RMIServer(String hostname, int port, String registryHost, int registryPort)</h4>
+
+<p>This constructor creates an RMIServer, which is a socket server that listens for Remote Method Invocation messages
+by an Remote object Stub. When the constructor is called, it attempts to connect to the Registry server to validate that it's running.</p>
+
+<h4>rmi.RMIServer.addObj(String name, Object obj)</h4>
+
+<p>This method creates a Remote Object Reference (ROR), adds the (ROR, obj) to a HashMap, tells the Registry about (name, ROR).</p>
+
+<h4>rmi.registry</h4>
+
+<p>The Registry is a server/service that keeps track of the RORs exposed via RMI, and the key / ROR association.
+It currently runs on one host, as an Inet Socket Server. It supports registering and looking up a ROR by key/name.
+It does not support de-registering an object (so no garbage collection).
+Details about Messages (marshalling etc) is somewhere else in this report.</p>
+
+<p>The RegistryClient is a class you can use to easily communicate with a Registry
+via java methods which encapsulate Socket message communication.</p>
+
+<h4>rmi.registry.Registry</h4>
+
+<h5>rmi.registry.Registry(int port)</h5>
+
+<p>Tell the Registry which port it will bind to when you run it. It implements Runnable so you can run it in a Thread,
+and it has a serveForever method which will start the server and server until killed externally.</p>
+
+<p>Communicate with the registry via a RegistryClient.</p>
+
+<h4>rmi.registry.RegistryClient</h4>
+
+<h5>rmi.registry.RegistryClient(String registryHost, int registryPort)</h5>
+
+<p>Contains methods for performing socket communication with a Registry.</p>
+
+<h5>rmi.registry.RegistryClient.lookupStub(String key)</h5>
+
+<p>Uses inet socket communication to ask Registry for the remote object reference with the given key/name.
+Then creates a stub from the remote object reference and returns it.
+The resulting stub should have the same method interface as the class it stubs for.</p>
+
+<h5>rmi.registry.RegistryClient.registerRor(String key, ROR ror)</h5>
+
+<p>Uses inet socket communication to tell Registry about the given remote object reference and associate it with the given key/name.</p>
+
+<h3>rmi.messaging</h3>
+
+<p>This packages contains a few utility classes used internally by RMI to implement Inet socket-based message passing.</p>
+
+<h5>rmi.messaging.MessageType</h5>
+
+<p>Contains enums of all the different types</p>
+
+<h5>rmi.messaging.RMIMessage</h5>
+
+<p>The Message class we pass around over the sockets for consistency.
+It has a variety of constructors, which are not written with the best style,
+but we implicitly remember which attributes are set for each MessageType.</p>
