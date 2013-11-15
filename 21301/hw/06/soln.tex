@@ -1,0 +1,85 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{06}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{21-301}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 21-301 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+\question{1}
+We will construct a sequence of $kl$ by constructing $l$ increasing sequences each of length $k$.
+
+Starting from some starting number, which we will call $a$, consider the increasing sequence $\langle a, a+1, ... , a + k \rangle$.\\
+Consider another similarly constructed sequence, but instead start from $a - 1 - k $\\
+Do it again, but instead start from $a - 1 - 2k $\\
+Repeat until you construct a sequence starting from $a - 1 - lk $. Note that we constructed $l$ sequences of length $k$.
+
+The longest increasing subsequence is an individual increasing sequence of length $k$,
+and the longest decreasing subsequence consists of one from every such sequence of which there are $l$.
+
+
+\question{2}
+At most, a Hasse diagram of a poset can have $\alpha * \alpha$ edges between two levels,
+and the number of times this can occur is equal to the height $\gamma$. This is because
+you can't have edges which cross levels, since that would break the property that edges must be predecessors.
+
+Then we invoke the Erdos-Szekeres theorem to get the following intermediate result:
+
+$$ |E| \leq \gamma \alpha \alpha \leq n \alpha$$
+
+We see that the maximum number of edges depends on the $n$ and width of the poset.
+We know that a large poset is either tall or wide, and to maximize number of edges, this equation tells us it must be as wide as possible.
+Therefore, we know that a poset of maximum size should have height of 1.
+
+Visually, this poset looks like a bipartite graph. To maximize the number of edges, we wish the bipartitions to be of equal size.
+Therefore, each bipartition is of size $\frac{n}{2}$, and the maximum number of edges occurs in the complete graph case where every node
+in $A$ is connected to every node in $B$. The maximum number of edges in this graph is $$\frac{n}{2} \frac{n}{2} = \frac{n^2}{4}$$.
+
+To see an example, we define the poset where $X$ is $n/2$ distinct sets of size 1, and $n/2$ distinct sets of size 2.
+We define the relation to be $xRy$ iff $|x| < |y| \vee x = y$. We see that it is reflexive, antisymmetric, and transitive.
+The Hasse diagram resembles a complete bipartite graph such as the one in the proof,
+since all the sets of size 1 are predecessors of all the sets of size 2.
+
+\question{3}
+
+\question{4}
+
+\question{5}
+
+\question{6}
+
+
+\end{document}
+
