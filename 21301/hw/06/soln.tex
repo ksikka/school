@@ -51,19 +51,17 @@ and the longest decreasing subsequence consists of one from every such sequence 
 
 
 \question{2}
-At most, a Hasse diagram of a poset can have $\alpha * \alpha$ edges between two levels,
-and the number of times this can occur is equal to the height $\omega$. This is because
-you can't have edges which cross levels, since that would break the property that edges must be predecessors.
+At most, a Hasse diagram of a poset can have $\alpha * \alpha$ edges between two levels.
+The maximum number of times this can occur is equal to the height $\omega$.
+This is because you can't have edges which cross levels, since that would break the property that edges must be predecessors.
 
-Then we invoke the Erdos-Szekeres theorem to get the following intermediate result:
+The addition of a vertex in order to increase the height only increases the number of edges by the width. 
+The addition of a vertex in order to increase the width increases the number of edges by the width, and also increases the width for future vertexes.
 
-$$ |E| \leq n \alpha \leq \omega \alpha \alpha$$
+Therefore, given $n$ vertices, it always produces more edges by having greater width than by having greater height.
 
-We see that the maximum number of edges depends on the $n$ and width of the poset.
-We know that a large poset is either tall or wide, and to maximize number of edges, this equation tells us it must be as wide as possible.
-Therefore, we know that a poset of maximum size should have height of 1.
-
-Visually, this poset looks like a bipartite graph. To maximize the number of edges, we wish the bipartitions to be of equal size.
+Therefore we want to maximize the width and minimize the height.
+The minimum height is 1. Visually, this poset looks like a bipartite graph. To maximize the number of edges, we wish the bipartitions to be of equal size.
 Therefore, each bipartition is of size $\frac{n}{2}$, and the maximum number of edges occurs in the complete graph case where every node
 in $A$ is connected to every node in $B$. The maximum number of edges in this graph is $$\frac{n}{2} \frac{n}{2} = \frac{n^2}{4}$$.
 
@@ -73,12 +71,89 @@ The Hasse diagram resembles a complete bipartite graph such as the one in the pr
 since all the sets of size 1 are predecessors of all the sets of size 2.
 
 \question{3}
+Given some $k$, consider $R(k,k) = N$. This means that in $K_{N}$ with edges colored either red or blue,
+there exists a $K_k$ where all edges are red or blue.
+
+Now consider a sequence of $R(k,k)$ distinct real numbers and construct a complete graph from them.
+Color the edge between $(v_i, v_j)$ blue iff $(i < j) \wedge (v_i < v_j)$.
+Then color the uncolored edges red.
+
+Given Ramsey's theorem, we know there must exist a red or blue colored $K_k$ in this graph.
+If blue, we know there exists a strictly decreasing subsequence of length $k$ given the definition of our coloring.
+If red, we know that all $(v_i, v_j)$ in the red clique do not satisfy $v_i < v_j$,
+and since the real numbers are distinct, we must have that $v_j > v_j$ for all $i < j$.
+This implies there is a strictly increasing subsequence of length $k$.
+
+Combined, we see that there must exist a monotone sequence of length $k$
+in a sequence of length $R(k, k)$, which concludes the proof.
 
 \question{4}
+Let $n = R(k-1, l) + R(k, l-1)$. Consider a complete graph with $n$ vertices.
+We know each vertex is connected to every other vertex, so any vertex $v$ has $n-1$ neighbors,
+and therefore $n-1$ incident edges. If all $n-1$ have to be colored red or blue,
+then $R(k-1, l)$ of the edges may be colored red.
+
+If not, there must be at least $R(k, l-1)$ blue edges, since we must maintain that there are $n-1$ edges.
+
+Case $R(k-1, l)$ red edges:\\
+Consider the $R(k-1, l)$ vertexes connected to $v$ by red edges. They are all connected to each other since
+this is a complete graph, and therefore form a sub-complete-graph, which we know must contain an all-red $K_{k-1}$ or an all-blue $K_{l}$.
+In the all-red case, we connect that clique with $v$, and this forms a $K_{k}$. Then $n$ is at least $R(k, l)$.
+
+The proof is symmetric for the blue case.
+
+Therefore, $R(k, l) \leq R(k-1, l) + R(k, l-1)$
 
 \question{5}
+For any integers $k, l, m > 2$, consider $N = R(R(k,l), m)$.
+
+Consider a complete graph with $N$ vertexes.
+
+By Ramsey's theorem we know there exists either a monochromatic $K_{R(k,l)}$ or a monochromatic $K_{m}$.
+
+Within the monochromatic $K_{R(k,l)}$, we know there must exist a monochromatic $K_{k}$ or $K_{l}$.
+
+Therefore, there is an integer $N$ such that there must be a monochromatic $K_k$, $K_l$, or $K_m$.
 
 \question{6}
+We first try to use the inequality from (4):
+
+$R(3, 4) \leq R(k-1, l) + R(k, l-1) = R(2, 4) + R(3, 3) = 4 + 6$
+
+
+We notice that the terms in the sum are even, and we recall that in lecture, a tighter inequality was mentioned:
+
+We seek to prove that for integers $k, l > 2$, when $R(k-1, l)$, $R(k, l-1)$ are even:
+
+$R(k, l) \leq R(k-1, l) + R(k, l-1) - 1$
+
+(Begin attempt to prove:)
+
+$a = R(k-1, l)   (even)$\\
+$b = R(k, l-1)   (even)$\\
+$c = a + b       (even)$\\
+
+$X = [c-1]       (odd)$\\
+
+We need to prove that X contains a blue $K_k$ or a red $K_l$.
+
+Let all blue edges denote people know each other, red that they don't.
+
+Let $d_v$ be the number of people that person $v$ knows (number of outgoing blue edges).
+
+The sum of all $d_v$ is even since "knowing" person is mutual, and the sum of the $d_v$ over count $a \implies b$ and $b \implies a$ as distinct.
+
+Since the number of people is odd, then $d_v$ must be even for at least one person.
+
+(End attempt)
+
+I could not prove it in time, but assuming that the inequality is true, you get the following result:
+
+$$R(3, 4) \leq 4 + 6 - 1 = 9$$
+
+Note that we proved the lower bound $R(3,4) \leq 9$ in class.
+
+
 
 
 \end{document}
