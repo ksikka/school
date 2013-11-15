@@ -1,0 +1,88 @@
+Vishalsai Daswani
+15-381 Homework 4
+
+1) Vampire Decision Trees
+
+1.
+Total (V=+) count = 8 + 5 + 2 + 0 = 15
+Total (V=-) count = 1 + 3 + 1 + 6 = 11
+Total count = 26
+
+H(V) = - (15/26) * log_2(15/26) - (11/26) * log_2(11/26) = 0.9828586897
+
+----------------------------------------------------------------
+
+2. 
+Total (V=+) count for (P=T) = 8 + 5 = 13
+Total (V=-) count for (P=T) = 1 + 3 = 4
+Total (V=+) count for (P=F) = 2 + 0 = 2
+Total (V=-) count for (P=F) = 1 + 6 = 7
+
+H(V|P) = 17/26 * E(13,4) + 9/26 * E(2,7)
+E(13,4) = -13/17 log_2(13/17) - 4/17 log_2(4/17) = 0.78712658620126893
+E(2,7) = -2/9 log_2(2/9) - 7/9 log_2(7/9) = 0.7642045065086202793415
+
+H(V|P) = 0.7791920201538136278
+
+IG(P) = H(V) - H(V|P)
+IG(P) =  0.20366667
+
+
+------------------------------------------------------------------
+
+Total (V=+) count for (T=T) = 8 + 2 = 10
+Total (V=-) count for (T=T) = 1 + 1 = 2
+Total (V=+) count for (T=F) = 5 + 0 = 5
+Total (V=-) count for (T=F) = 3 + 6 = 9
+
+H(V|T) = 12/26 * E(10,2) + 14/26 * E(5,9)
+E(10,2) = -10/12 log_2(10/12) - 2/12 log_2(2/12) = 0.650022421648354224895
+E(5,9) = -5/14 log_2(5/14) - 9/14 log_2(9/14) = 0.940285958670631
+
+H(V|T) = 0.80631817235265710379769
+
+IG(T) = H(V) - H(V|T)
+IG(T) = 0.176540517347342896
+
+
+------------------------------------------------------------------
+
+3. 
+
+We decide to split on P because it gives us greater information gain than T.
+In the second round, we split on T because there is no other thing we can split on.
+
+Each node is labelled in some format: AV(B+,C-), where A is the number of vampire nodes at that point in the tree, and B is the number of positive vampire nodes, and C the number of negative vampire nodes. i.e. A=B+C
+
+                       26V(15+, 11-)
+                       /           \
+split on P          T /             \ F
+                     /               \
+                17V(13+, 4-)      9V(2+, 7-)
+                   /   \              /    \
+split on T      T /     \  F        T/      \  F
+                 /       \          /        \
+            9V(8+,1-)  8V(5+,3-)  3V(2+,1-)  6V(0+,6-)
+
+------------------------------------------------------------------
+
+4.
+
+If we collected more features that do not relate to vampire-hood, it would be more likely to overfit. This is because it would be describing components that don't really help in deciding whether it is a vampire or not. Also, since the sample size is small, it is more important to avoid overfitting the information.
+
+If we made paleness a continuous attribute, again it would be too specific on its attributes and probably would cause overfitting. 
+
+-------------------------------------------------------------------
+
+5. 
+
+If you stop growing the decision tree early, you are less likely to fit noise in the data. This is because you don't end up fitting the outlier data, but rather just place it into some broader data.
+
+6.
+
+                     V
+Strength      Less       More
+Paleness    Less  More  Less More
+            -      +     +      -
+
+Yes there does exist a decision tree that can classify this. The way to handle this is to make this continuous distribution a discrete distribution, but having cutoff values to determine true or false conditions, i.e. less than x and greater than x. And according to this diagram, the distribution can easily be partitioned into four quadrants. Therefore, it is possible.

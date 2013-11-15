@@ -1,0 +1,54 @@
+ksikka
+
+2.1 (a)
+
+Let i and j be n-dimensional instance vectors. The we defined Distance as:
+
+Distance(i, j) = (i_1 - j_1)^2 + ... + (i_n - j_n)^2
+
+We chose this distance function for it's simplicity. It resembles Mean Squared Error, but dividing by n was not necessary since all instance vectors are of length n.
+
+2.1 (b)
+
+Results of K-NN for k=1, test=0.25, and train percent as follows:
+
+Train % | Train Acc. | Test Acc.
+================================
+  0.03  |    1.0     |   0.922
+  0.06  |    1.0     |   0.922
+  0.09  |    1.0     |   0.934
+  0.12  |    1.0     |   0.944
+  0.15  |    1.0     |   0.943
+
+These results look great, although performance was slow.
+This is overfitting, due to k=1. The training accuracy is all perfect, while the testing accuracy is not perfect.
+Note that if you had a 9 that looked like 7 the training data, trying to classify a similar-looking 7 would likely overfit and be classified as 9.
+It's not too much of a problem though given the high test accuracy!
+
+2.2 (a)
+
+We used one-hot encoding. We had 10 regressors (one for each label),
+and the target for an instance was defined as being 1 if the label for the instance was equal to the label of the regressor and 0 otherwise.
+
+The 10 regressors were trained on the input data.
+
+Then given an instance, 10 function estimates were given by the regressors,
+and the argmax was used to select the label which the input instance was most likely to be labelled.
+
+2.2 (b)
+
+Results of Linear Regression based classifier for test=0.25, and train percent as follows:
+
+Train % | Train Acc. | Test Acc.
+================================
+  0.17  |    0.880   |   0.846
+  0.33  |    0.867   |   0.854
+  0.50  |    0.863   |   0.855
+  0.67  |    0.859   |   0.860
+  1.00  |    0.858   |   0.871
+
+Surprisingly, train accuracy decreases as we train with more data.
+This is because with little training data, the function fits the training data specifically well.
+As we train with more data, the line generalizes more to fit the general case better.
+
+Given the high test accuracy, this is not overfitting.
