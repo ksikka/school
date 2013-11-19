@@ -12,8 +12,6 @@ from learningAgents import ValueEstimationAgent
 
 class ValueIterationAgent(ValueEstimationAgent):
   """
-      * Please read learningAgents.py before reading this.*
-
       A ValueIterationAgent takes a Markov decision process
       (see mdp.py) on initialization and runs value iteration
       for a given number of iterations using the supplied
@@ -36,8 +34,16 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.iterations = iterations
     self.values = util.Counter() # A Counter is a dict with default 0
      
-    "*** YOUR CODE HERE ***"
-    
+    for i in xrange(self.iterations):
+      self.run_value_iteration()
+
+  def run_value_iteration(self):
+      for state in self.mdp.getStates():
+          possibleActions = self.mdp.getPossibleActions(state)
+          if len(possibleActions) != 0:
+              new_value = max([self.getQValue(state, action) for action in possibleActions])
+              self.values[state] = new_value
+
   def getValue(self, state):
     """
       Return the value of the state (computed in __init__).
@@ -53,8 +59,10 @@ class ValueIterationAgent(ValueEstimationAgent):
       necessarily create this quantity and you may have
       to derive it on the fly.
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    s_i = state
+    a = action
+    r = lambda x: self.mdp.getReward(s_i, a, x)
+    return sum([ p * (r(s_j) + (self.discount * self.values[s_j])) for s_j, p in self.mdp.getTransitionStatesAndProbs(state, action) ])
 
   def getPolicy(self, state):
     """
@@ -65,7 +73,17 @@ class ValueIterationAgent(ValueEstimationAgent):
       terminal state, you should return None.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    if self.mdp.getPossibleActions(state) == [] or self.mdp.isTerminal(state):
+        return None
+
+    first = lambda x: x[0]
+    argmax = lambda keys, values: max(zip(keys, values), key=first)[1]
+
+    qvalues, actions = zip(* [ (self.getQValue(state, action), action) for action in self.mdp.getPossibleActions(state) ])
+
+    return argmax(qvalues, actions)
+
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
