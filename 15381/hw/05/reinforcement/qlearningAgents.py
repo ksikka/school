@@ -154,24 +154,26 @@ class ApproximateQAgent(PacmanQAgent):
   def __init__(self, extractor='IdentityExtractor', **args):
     self.featExtractor = util.lookup(extractor, globals())()
     PacmanQAgent.__init__(self, **args)
-    self.weight = util.Counter()
+    self.weights = util.Counter()
 
   def getQValue(self, state, action):
     """
       Should return Q(state,action) = w * featureVector
       where * is the dotProduct operator
     """
-    features = self.featExtractor.getFeatures()
-    return sum([ self.weight[featName] * featVal for featName, featVal in features.iteritems() ])
+    features = self.featExtractor.getFeatures(state, action)
+    return sum([ self.weights[featName] * featVal for featName, featVal in features.iteritems() ])
 
   def update(self, state, action, nextState, reward):
     """
        Should update your weights based on transition
     """
     correction = reward + (self.discount * self.getValue(nextState)) - self.getQValue(state, action)
+    features = self.featExtractor.getFeatures(state, action)
+    features = self.featExtractor.getFeatures(state, action)
     new_weights = []
     for featName, featVal in features.iteritems():
-        old_weight = self.weight[featName]
+        old_weight = self.weights[featName]
         new_weight = old_weight + self.alpha * correction * featVal
         new_weights.append((featName, new_weight))
     self.weights.update(new_weights)
