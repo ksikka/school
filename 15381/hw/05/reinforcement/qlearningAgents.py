@@ -67,9 +67,13 @@ class QLearningAgent(ReinforcementAgent):
       are no legal actions, which is the case at the terminal state,
       you should return None.
     """
+    legalActions = self.getLegalActions(state)
+    if len(legalActions) == 0:
+        return None
     first = lambda x: x[0]
     argmax = lambda keys, values: max(zip(keys, values), key=first)[1]
-    return argmax(zip(*[ (self.getQValue(state, action), action) for action in self.getLegalActions(state) ]))
+    qvals, actions = zip(* [ (self.getQValue(state, action), action) for action in legalActions ])
+    return argmax(qvals, actions)
 
   def getAction(self, state):
     """
@@ -82,11 +86,12 @@ class QLearningAgent(ReinforcementAgent):
       HINT: You might want to use util.flipCoin(prob)
       HINT: To pick randomly from a list, use random.choice(list)
     """
-    if len(legalActions) == 0 or self.mdp.isTerminal(state):
+    legalActions = self.getLegalActions(state)
+    if len(legalActions) == 0:
         return None
 
     if util.flipCoin(self.epsilon):
-        return random.choice(self.getLegalActions(state))
+        return random.choice(legalActions)
 
     return self.getPolicy(state)
 
@@ -100,7 +105,7 @@ class QLearningAgent(ReinforcementAgent):
       it will be called on your behalf
     """
     old_qvalue = self.getQValue(state, action)
-    correction = reward + (self.discount * self.getValue(nextState))
+    correction = reward + (self.discount * self.getValue(nextState)) - old_qvalue
     new_qvalue = old_qvalue + (self.alpha * correction)
 
     self.q_values[(state, action)] = new_qvalue
@@ -149,24 +154,28 @@ class ApproximateQAgent(PacmanQAgent):
   def __init__(self, extractor='IdentityExtractor', **args):
     self.featExtractor = util.lookup(extractor, globals())()
     PacmanQAgent.__init__(self, **args)
-
-    # You might want to initialize weights here.
-    "*** YOUR CODE HERE ***"
+    self.weight = util.Counter()
 
   def getQValue(self, state, action):
     """
       Should return Q(state,action) = w * featureVector
       where * is the dotProduct operator
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    features = self.featExtractor.getFeatures()
+    return sum([ self.weight[featName] * featVal for featName, featVal in features.iteritems() ])
 
   def update(self, state, action, nextState, reward):
     """
        Should update your weights based on transition
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    correction = reward + (self.discount * self.getValue(nextState)) - self.getQValue(state, action)
+    new_weights = []
+    for featName, featVal in features.iteritems():
+        old_weight = self.weight[featName]
+        new_weight = old_weight + self.alpha * correction * featVal
+        new_weights.append((featName, new_weight))
+    self.weights.update(new_weights)
+
 
   def final(self, state):
     "Called at the end of each game."
