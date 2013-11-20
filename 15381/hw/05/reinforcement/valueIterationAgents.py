@@ -38,10 +38,16 @@ class ValueIterationAgent(ValueEstimationAgent):
       self.run_value_iteration()
 
   def run_value_iteration(self):
-      for state in self.mdp.getStates():
+      new_values = []
+      states = self.mdp.getStates()
+      for state in states:
           possibleActions = self.mdp.getPossibleActions(state)
           if len(possibleActions) != 0:
-              new_value = max([self.getQValue(state, action) for action in possibleActions])
+              new_values.append(max([self.getQValue(state, action) for action in possibleActions]))
+          else:
+              new_values.append(None)
+      for state, new_value in zip(states, new_values):
+          if new_value is not None:
               self.values[state] = new_value
 
   def getValue(self, state):
@@ -72,7 +78,6 @@ class ValueIterationAgent(ValueEstimationAgent):
       there are no legal actions, which is the case at the
       terminal state, you should return None.
     """
-    "*** YOUR CODE HERE ***"
 
     if self.mdp.getPossibleActions(state) == [] or self.mdp.isTerminal(state):
         return None
