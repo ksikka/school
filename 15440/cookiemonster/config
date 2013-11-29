@@ -1,0 +1,17 @@
+# registry
+
+registry_host 127.0.0.1
+registry_port 6666
+
+# map/reduce worker config
+
+map_slots 3
+reduce_slots 3
+
+# file system
+
+dfs_working_dir /tmp/cookiemonster/
+record_size 600
+max_node_size 120000000
+replication_factor 3
+heartbeat_interval 5
