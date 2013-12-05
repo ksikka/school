@@ -1,0 +1,87 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{06}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-381}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 21-301 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+\question{1.1}
+Yes. Steal, Steal. If player 1 steals, player 2's optimum decision is to steal, and vice versa..
+
+\question{1.2}
+Yes. Steal, steal. We know the players both steal at the last iteration since there is no social punishment for doing so.
+Given that knowledge, (Steal, Steal) is the subgame equilibrium for the subgame before that, and the one before that, and so on.
+So by backwards induction, the players will (Steal, Steal) at every iteration.
+
+\question{1.3}
+
+Yes. Consider the singleton subgame of just the last game in the finite series of games.
+Recall that by Nash's Existence Theorem, every finite game has at least one Nash equilibrium.
+Therefore there must exist a subgame perfect Nash Equilibrium.
+
+\question{2}
+
+Prove:
+
+                                Col Player picks strategy q
+                                ===========================
+Row Player picks strategy p     |
+                                |
+                                ===========================
+                                |
+                                |
+                                ===========================
+
+max p min q M <= min q max p M
+
+AFSOC
+
+max p min q M > min q max p M
+
+
+
+Assume that "not knowing" your opponents strategy in advance
+is strictly better than "knowing it".
+
+However, there's no way this is possible,
+since "not knowing" something
+can't give you an advantage over "knowing it"
+because "knowing it" potentially gives you the advantage
+to pick a strategy that is as good if not better.
+
+
+\end{document}
+

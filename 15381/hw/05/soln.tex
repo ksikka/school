@@ -42,7 +42,8 @@
 The main difference in exploration/exploitation and UCB is that exploration affords
 us an opportunity to discover unknown properties of the arms, and UCB goes straight to exploitation.
 
-Consider the case where an arm A's reward increases linearly but arm B's reward increases exponentially (as a function of the number of pulls).
+Consider the case where an arm A's reward increases linearly but arm B's reward increases exponentially
+(as a function of the number of pulls).
 Note that initially, the rewards look quite similar.
 In UCB, you'd initially see arm A have higher reward than arm B, so you'd pull arm A more frequently
 and eventually you'd be so confident that A is the better arm so you'd only pull arm A. Note that here you

@@ -1,0 +1,6 @@
+git commit soln.tex -m "tex changes"
+git pull
+git push
+ssh cmu "cd ~/private && git pull && cd ~/private/15381/hw/05 && pdflatex soln.tex && git commit -am \"pdf\" && git push"
+git pull
+open soln.pdf
