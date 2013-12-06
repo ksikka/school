@@ -18,6 +18,8 @@ values specified here.
 
 """
 
+import math
+
 
 
 def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
@@ -41,7 +43,7 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
     num_rows = len(matrix)
     num_cols = len(matrix[0])
 
-    weights = [1] * num_cols # weight vector
+    weights = [10000] * num_cols # weight vector
 
     # a map from row num to number of times that move was picked.
     row_move_counter = { i: 0 for i in xrange(num_rows) }
@@ -61,24 +63,32 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
             return sum([ p * payoff for p, payoff in zip(col_profile, row_payoff) ])
 
         row_expected_values_of_moves = [ expected_value_of_move(matrix[i], col_profile) for i in xrange(num_rows) ]
+        print row_expected_values_of_moves
         best_move_index, best_move_value = max(enumerate(row_expected_values_of_moves), key=lambda x: x[1])
+        print best_move_index, best_move_value
         row_move_counter[best_move_index] += 1
 
-        best_move_payoff = matrix[best_move_index]
+        row_players_row = matrix[best_move_index]
 
         minM = min([min(row) for row in matrix])
         maxM = max([max(row) for row in matrix])
-        col_losses = [ (best_move_payoff[j] - minM) / float(maxM - minM) for j in xrange(num_cols) ]
+        col_losses = [ (loss - minM) / float(maxM - minM) for loss in row_players_row ]
 
-        new_weights = [ w * (1 - (penalty_eps * l)) for w, l in zip(col_profile, col_losses) ]
+        # update weights
+        #new_weights = [ w * (1 - (penalty_eps * l)) for w, l in zip(weights, col_losses) ]
+        new_weights = [ w * math.pow(math.e, -1 * penalty_eps * l) for w, l in zip(weights, col_losses) ]
         weights = new_weights
 
+        # check terminating condition
+        sum_weights = sum(weights)
+        col_profile = [ (w / float(sum_weights)) for w in weights ]
         row_profile = compute_row_profile()
 
         row_expected_gain = sum([ p * min(row) for p, row in zip(row_profile, matrix) ])
         col_expected_loss = sum([ p * max([matrix[i][j] for i in xrange(num_rows)]) for p, j in zip(col_profile, xrange(num_cols)) ])
 
 
+        # print (row_expected_gain,col_expected_loss)
         if abs(row_expected_gain + col_expected_loss) < stopping_eps:
             break
 
