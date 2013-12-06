@@ -41,8 +41,10 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
     num_rows = len(matrix)
     num_cols = len(matrix[0])
 
-    weights = [1] * num_cols
-    row_move_counter = { i: 0 for i in xrange(num_rows) } # a map from row num to number of times that move was picked.
+    weights = [1] * num_cols # weight vector
+
+    # a map from row num to number of times that move was picked.
+    row_move_counter = { i: 0 for i in xrange(num_rows) }
 
     def compute_row_profile():
         sum_counter = sum(row_move_counter.values())
@@ -62,26 +64,28 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
         best_move_index, best_move_value = max(enumerate(row_expected_values_of_moves), key=lambda x: x[1])
         row_move_counter[best_move_index] += 1
 
-        best_move_payoff = matrix[best_move]
+        best_move_payoff = matrix[best_move_index]
 
         minM = min([min(row) for row in matrix])
         maxM = max([max(row) for row in matrix])
         col_losses = [ (best_move_payoff[j] - minM) / float(maxM - minM) for j in xrange(num_cols) ]
 
         new_weights = [ w * (1 - (penalty_eps * l)) for w, l in zip(col_profile, col_losses) ]
+        weights = new_weights
 
         row_profile = compute_row_profile()
-        ## TODO check convergence
 
-        if converged:
+        row_expected_gain = sum([ p * min(row) for p, row in zip(row_profile, matrix) ])
+        col_expected_loss = sum([ p * max(col) for p, col in zip(col_profile, best_move_payoff) ])
+
+
+        if abs(row_expected_gain + col_expected_loss) < stopping_eps:
             break
 
-    def expected_payoff(row_profile, matrix, col_profile):
-        # TODO
-        pass
-
     row_profile = compute_row_profile()
-    game_value = expected_payoff(row_profile, matrix, col_profile)
+    sum_weights = sum(weights)
+    col_profile = [ (w / float(sum_weights)) for w in weights ]
+    game_value = [ row_profile[i] * matrix[i][j] * col_profile[j] for i in xrange(num_rows) for j in xrange(num_cols) ]
 
     return (row_profile, col_profile, game_value)
 
