@@ -43,7 +43,7 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
     num_rows = len(matrix)
     num_cols = len(matrix[0])
 
-    weights = [10000] * num_cols # weight vector
+    weights = [1] * num_cols # weight vector
 
     # a map from row num to number of times that move was picked.
     row_move_counter = { i: 0 for i in xrange(num_rows) }
@@ -54,32 +54,28 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
         return row_profile
 
     while True:
+        # col profile based on weights
         sum_weights = sum(weights)
         col_profile = [ (w / float(sum_weights)) for w in weights ]
 
-        def expected_value_of_move(row_payoff, col_profile):
-            # given a row pure strategy (ith row of matrix) and a column mixed strategy,
-            # compute the expected value of the row pure strategy
-            return sum([ p * payoff for p, payoff in zip(col_profile, row_payoff) ])
-
-        row_expected_values_of_moves = [ expected_value_of_move(matrix[i], col_profile) for i in xrange(num_rows) ]
-        print row_expected_values_of_moves
+        # adversarial row pure strategy
+        row_expected_values_of_moves = [ sum([ p * payoff for p, payoff in zip(row, col_profile)]) for row in matrix ]
         best_move_index, best_move_value = max(enumerate(row_expected_values_of_moves), key=lambda x: x[1])
-        print best_move_index, best_move_value
         row_move_counter[best_move_index] += 1
 
         row_players_row = matrix[best_move_index]
 
+        # compute losses to column player
         minM = min([min(row) for row in matrix])
         maxM = max([max(row) for row in matrix])
         col_losses = [ (loss - minM) / float(maxM - minM) for loss in row_players_row ]
 
         # update weights
-        #new_weights = [ w * (1 - (penalty_eps * l)) for w, l in zip(weights, col_losses) ]
-        new_weights = [ w * math.pow(math.e, -1 * penalty_eps * l) for w, l in zip(weights, col_losses) ]
+        new_weights = [ w * (1 - (penalty_eps * l)) for w, l in zip(weights, col_losses) ]
         weights = new_weights
 
         # check terminating condition
+        #                          ======  NOTE THIS IS NOT WORKING  ======
         sum_weights = sum(weights)
         col_profile = [ (w / float(sum_weights)) for w in weights ]
         row_profile = compute_row_profile()
@@ -87,15 +83,20 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
         row_expected_gain = sum([ p * min(row) for p, row in zip(row_profile, matrix) ])
         col_expected_loss = sum([ p * max([matrix[i][j] for i in xrange(num_rows)]) for p, j in zip(col_profile, xrange(num_cols)) ])
 
-
-        # print (row_expected_gain,col_expected_loss)
+        """
+        print (row_expected_gain,col_expected_loss)
         if abs(row_expected_gain + col_expected_loss) < stopping_eps:
+            break
+        """
+        #                                   ======  END NOTE  ======
+        # TENTATIVE HACK:
+        if sum(row_move_counter.values()) > 2000:
             break
 
     row_profile = compute_row_profile()
     sum_weights = sum(weights)
     col_profile = [ (w / float(sum_weights)) for w in weights ]
-    game_value = [ row_profile[i] * matrix[i][j] * col_profile[j] for i in xrange(num_rows) for j in xrange(num_cols) ]
+    game_value = sum([ row_profile[i] * matrix[i][j] * col_profile[j] for i in xrange(num_rows) for j in xrange(num_cols) ])
 
     return (row_profile, col_profile, game_value)
 
