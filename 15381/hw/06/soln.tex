@@ -61,19 +61,19 @@ $$\max_p \min_q M(p, q) > \min_q \max_p M(p, q)$$
 Let's call the max p on the left hand side $p^*$. This is the row player's best guess of the maximizing strategy.
 Let's call the max p on the right hand side $p^*(q)$. This is the best row maximizing strategy given any q. Then we get:
 
-$$\min_q M(p*, q) > \min_q M(p*(q), q)$$
+$$\min_q M(p^*, q) > \min_q M(p^*(q), q)$$
 
-By the definition of p*, we know that for all p, q:
+By the definition of $p^*(q)$, we know that for all p, q:
 
-$$M(p*(q), q) \geq M(p, q)$$
+$$M(p^*(q), q) \geq M(p, q)$$
 
 and therefore
 
-$$M(p*(q), q) \geq M(p*, q)$$
+$$M(p^*(q), q) \geq M(p^*, q)$$
 
 but this implies
 
-$$\min_q M(p*, q) > \min_q M(p*, q)$$
+$$\min_q M(p^*, q) > \min_q M(p^*, q)$$
 
 Which is a contradiction.
 
