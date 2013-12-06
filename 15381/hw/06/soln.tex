@@ -48,40 +48,34 @@ So by backwards induction, the players will (Steal, Steal) at every iteration.
 
 \question{1.3}
 
-Yes. Consider the singleton subgame of just the last game in the finite series of games.
-Recall that by Nash's Existence Theorem, every finite game has at least one Nash equilibrium.
+Yes. Recall that by Nash's Existence Theorem, every finite game has at least one Nash equilibrium.
+So you can find one for the last subgame. Then by backwards induction continue to find them all the way up the tree.
 Therefore there must exist a subgame perfect Nash Equilibrium.
 
 \question{2}
 
-Prove:
+AFSOC:
 
-                                Col Player picks strategy q
-                                ===========================
-Row Player picks strategy p     |
-                                |
-                                ===========================
-                                |
-                                |
-                                ===========================
+$$\max_p \min_q M(p, q) > \min_q \max_p M(p, q)$$
 
-max p min q M <= min q max p M
+Let's call the max p on the left hand side $p^*$. This is the row player's best guess of the maximizing strategy.
+Let's call the max p on the right hand side $p^*(q)$. This is the best row maximizing strategy given any q. Then we get:
 
-AFSOC
+$$\min_q M(p*, q) > \min_q M(p*(q), q)$$
 
-max p min q M > min q max p M
+By the definition of p*, we know that for all p, q:
 
+$$M(p*(q), q) \geq M(p, q)$$
 
+and therefore
 
-Assume that "not knowing" your opponents strategy in advance
-is strictly better than "knowing it".
+$$M(p*(q), q) \geq M(p*, q)$$
 
-However, there's no way this is possible,
-since "not knowing" something
-can't give you an advantage over "knowing it"
-because "knowing it" potentially gives you the advantage
-to pick a strategy that is as good if not better.
+but this implies
 
+$$\min_q M(p*, q) > \min_q M(p*, q)$$
+
+Which is a contradiction.
 
 \end{document}
 
