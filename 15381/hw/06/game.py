@@ -76,7 +76,7 @@ def weighted_majority(matrix, penalty_eps=0.15, stopping_eps=0.01):
         row_profile = compute_row_profile()
 
         row_expected_gain = sum([ p * min(row) for p, row in zip(row_profile, matrix) ])
-        col_expected_loss = sum([ p * max(col) for p, col in zip(col_profile, best_move_payoff) ])
+        col_expected_loss = sum([ p * max([matrix[i][j] for i in xrange(num_rows)]) for p, j in zip(col_profile, xrange(num_cols)) ])
 
 
         if abs(row_expected_gain + col_expected_loss) < stopping_eps:
