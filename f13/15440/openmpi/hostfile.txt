@@ -1,0 +1,1 @@
+ghc40.ghc.andrew.cmu.edu   slots=6

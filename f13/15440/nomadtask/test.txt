@@ -1,0 +1,46 @@
+To facilitate migrating processes with open files, you will need to implement a transactional I/O library. 
+For those working in Java, you might want to implement TransactionalFileInputStream and 
+TransactionalFileOutputStream classes which extend java.io.InputStream and java.io.OutputStream, 
+respectively, as well as implement the java.io.Serializable interface. 
+ 
+When a read or write is requested via the library, it should open the file, seek to the requisite location, 
+perform the operation, and close the file again. In this way, they will maintain all the information 
+required in order to continue performing operations on the file, even if the process is transferred to 
+another node. In order to improve performance, you can also choose to “cache” these connections by 
+reusing them, unless a “migrated” flag is set, etc, in which case you wold set the flag upon migration and 
+reset it any time a file handle is created or renewed. 
+ 
+Note that you may assume that all of the nodes share a common distributed filesystem, such as AFS, 
+where all of the files to be accessed will be located. And, since you are writing the framework – you 
+don’t want to interrupt these methods with migration. Youj might find mutexes or monitors (Serialided 
+objects and methods in Java) helpful for this. 
+
+3.3 Launching Processes 
+You should create a ProcessManager to monitor for requests to launch, remove, and migrate processes. 
+You can have it poll to determine when processes die, receive periodic updates from them, and/or rely 
+upon them to tell you as part of their depth. Think about the trade-offs of each method. Can a process 
+always tell you before it does? What is the cost of polling or heartbeating? 
+ When asking the ProcessManager to create new processes, you probably want it to accept (or return) a 
+name for the instance. This way, you have a way to identify it later. Remember, it might be banaging 
+several instance sof the same type at the saem time. 
+ 
+Your ProcessManager should be able to handle any MigratableProcess that conforms to your interface, 
+abstract base class, and/or other requirements -- not just the examples you provided. 
+ 
+This means that you will not know what class you are instantiating until runtime. Thus, you will likely 
+need to use something like Java’s java.lang.Class<T> class and java.lang.reflect.Constructor<T> class 
+to handle this at runtime. 
+ 
+4. Example 
+We’ve provided an example of a MigratableProcess, specifically a grep, for whatever value it might 
+have to you. 
+ 
+5. Report 
+We should be able to grade your entire project by reading the report. Please follow the following format: 
+I. Clearly explain your design and illustrate its use, being sure to highlight any special features 
+or abilities 
+II. Describe the portions of the design that are correctly implemented, that have bugs, and that 
+remain unimplemented. 
+III. Tell us how to cleanly build, deploy, and run your project 
+IV. Highlight any dependencies and software or system requirements. 
+V. Tell us how to run and test your framework with your two examples.
