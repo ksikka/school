@@ -1,0 +1,28 @@
+1.15.14
+
+central dogma of molecular bio
+
+prokaryote dna/rna transcription translation
+    circular chromosomes
+    sequence motifs, operons
+    precursor proteins
+
+eukaryote
+    gene = 1 pp seq
+    TATA box
+    RNA polymerase II
+    pre-mRNA (RNA splicing, spliceosome)
+    cap + poly A tail = mature mRNA
+    5' UTR, 3' UTR has some info, it may tell longevity of mRNA
+    alternative splicing
+
+    Sanger sequencing, automation
+
+protein sequencing
+    Edman Degradation
+        Use PTC to attach to the Amino end,
+        pull it off along w the first base, recurse.
+        However, errors accumulate, best case is about 10 at a time
+        so split your protein using a protease, then do ED
+    In a database, the sequence is predicted from DNA
+    Experimental- mass spectrometry
