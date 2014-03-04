@@ -1,0 +1,66 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{06}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{80-311}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 80-311 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+\question{1}
+First let us recall that a set is Inductive iff the empty set is in the set, and for all elements in the set, their successors are also in the set.
+
+In this proof, we will assume the existence of two arbitrary inductive sets $x$ and $y$. Then we'll consider the set $x \cap y$ and show that it is inductive, by showing the empty set is its member, and for all its elements, their successors are also in the set.
+
+Assume we have two arbitrary inductive sets $x$ and $y$. Consider the set $x \cap y$.
+We know the empty set is a member of $x \cap y$ because the empty set is a member of all sets and the intersection of two sets is a set.
+
+Now, given an arbitrary element $z$ of $x \cap y$, is its successor $S(z)$ in $x \cap y$?
+By the definition of the binary intersection, if $z$ is a member of $x \cap y$, then it's a member of $x$ and it's a member of $y$ (and vice versa since the definition is a biconditional). We know $S(z)$ must be in $x$ since $x$ is inductive, and it must be in $y$ for the same reason. Since $S(z)$ is in both $x$ and $y$, it's in $x \cap y$.
+
+Thus we've proved that the intersection of two inductive sets is inductive.
+
+
+\question{2}
+The empty set is in $N$ since every set contains the empty set. Now, assuming $x$ is an arbitrary element in $N$, the successor $S(x)$ is in $N$ by definition.
+The previous facts satisfy the definition of an inductive set, so $N$ is inductive.
+
+\question{3}
+Assume an arbitrary set $a$ is inductive. We'll show that $N$ is a subset of $a$ by induction. The empty set is in $N$, and in $a$ since $a$ is an inductive set. Assuming an element $x \in N$ is in $a$, we know the successor $S(x)$ is also in $a$ since $a$ is inductive. Therefore all elements of $N$ are elements of $a$.
+
+
+
+
+\end{document}
+
