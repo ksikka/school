@@ -52,14 +52,23 @@ $$ ZF \vdash (\psi \iff \varphi('\psi')) $$
 Obtaining Godel's sentence G: \\
 Let $\psi = G$ and $\varphi = \neg \mathtt{THM}$. Then we substitute into the self reference lemma to obtain:
 
-$$ ZF \vdash (G \iff \neg \mathtt{THM}(G)) $$
-(what is it?)
+$$ ZF \vdash (G \iff \neg \mathtt{THM}('G')) $$
 
 \question{1.3}
+Assume that ZF is consistent, and assume for sake of contradiction that $ZF \vdash \mathtt{THM}('G') \implies G$.
 
-\question{2}
+Then by the defn of G:
+$ZF \vdash \mathtt{THM}('G') \implies \neg \mathtt{THM}('G')$.
 
-\question{3}
+Which is basically saying for some formula $\varpsi$ where $\varpsi$ is $G$:
+$ZF \vdash \varpsi \implies \neg \varpsi$.
+
+Which is saying that it's provable in ZF that ZF is inconsistent, and this is contradictory to our assumption that ZF is consistent. Therefore
+if ZF is consistent then our assumption that $ZF \vdash \mathtt{THM}('G') \implies G$ is false.
+
+\question{2.1}
+\question{2.2}
+
 
 
 
