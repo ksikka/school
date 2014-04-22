@@ -1,6 +1,6 @@
 git commit soln.tex -m "tex changes"
 git pull
 git push
-ssh cmu "cd ~/private/80311/09 && git pull && pdflatex soln.tex && git add soln.pdf && git commit -m \"pdf\" && git push"
+ssh cmu "cd ~/private/80311/10 && git pull && pdflatex soln.tex && git add soln.pdf && git commit -m \"pdf\" && git push"
 git pull
 open soln.pdf

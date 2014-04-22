@@ -22,6 +22,8 @@ public class NGramCount {
     private Text word = new Text();
 
     public static String[] nGrams(String[] tokens, int n) {
+        if (n > tokens.length)
+            return new String[0];
         int nglength = tokens.length - n + 1;
         String[] ngrams = new String[nglength];
         for (int i = 0; i < nglength; i++) {
@@ -96,9 +98,10 @@ public class NGramCount {
     Job job = new Job(conf, "ngcount");
     
     job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
         
     job.setMapperClass(Map.class);
+    job.setCombinerClass(Reduce.class);
     job.setReducerClass(Reduce.class);
         
     job.setInputFormatClass(TextInputFormat.class);
