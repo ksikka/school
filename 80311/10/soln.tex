@@ -40,116 +40,74 @@
 \end{center}
 
 \question{1.1}
-$$ \mathtt{THM}(\varphi) \iff (\exists \triangle (\mathtt{PRF}(\triangle, \varphi))) $$
+Addition can be recursively defined as follows:\\
+$x + 0 = U_1^1(x)$\\
+$x + (y + 1) = S(x + y).$\\
 
 \question{1.2}
-Self-reference lemma: \\
-If $\varphi(x)$ is any formula in the language of ZF
-with exactly the indicated free variable then there is a sentence $\psi$
-such that:
+The principle of induction is that if you have a well ordered set and you show that a statement is true for the least element of the set, and you show that "if the statement holds for an element then it holds for the successor of the element" then the statement holds for all elements in the set.
 
-$$ ZF \vdash (\psi \iff \varphi('\psi')) $$
+The statement we aim to prove is "$x + y = y + x$" for all $x$ and $y$ in the natural numbers.
 
-Obtaining Godel's sentence G: \\
-Let $\psi = G$ and $\varphi = \neg \mathtt{THM}$. Then we substitute into the self reference lemma to obtain:
+Since equality works in both directions, we may fix $y$ to be some arbitrary natural number without loss of generality.
+This allows us to prove the statement we aim to prove for all $x$ and for some $y$, and the proven statement implies that $y + x$ is equal to $x + y$ for all $y$ and some $x$ where $y$, the first variable in this statement is fixed.
 
-$$ ZF \vdash (G \iff \neg \mathtt{THM}('G')) $$
+So we proceed by induction on $x$, assuming that $y$ is arbitrary some natural number.
 
-\question{1.3}
-Assume that ZF is consistent, and assume for sake of contradiction that $ZF \vdash \mathtt{THM}('G') \implies G$.
+The base case is true, since $x + y = 0 + y = y = y + 0 = y + x$.
+Now we assume that $x + y = y + x$ for some $x$ and $y$ in the natural numbers.
+We want to show that $S(x) + y = y + S(x)$. By the associativity of the successor function, we see that
+We observe that $S(x) + y = S(x + y)$ (A TA said we could assume this in office hours).
 
-Then by the defn of G:
-$ZF \vdash \mathtt{THM}('G') \implies \neg \mathtt{THM}('G')$.
+Then we can solve the inductive step by the following line of logic:
+$S(x) + y$\\
+$= S(x + y)$\\
+$= S(y + x)$ (by the induction hypothesis)\\
+$= y + S(x)$\\
 
-Which is basically saying for some formula $\varphi$ where $\varphi$ is $G$:
-$ZF \vdash \varphi \implies \neg \varphi$.
+And thus we have proved the commutativity of addition by induction.
 
-Which is saying that it's provable in ZF that ZF is inconsistent, and this is contradictory to our assumption that ZF is consistent. Therefore
-if ZF is consistent then our assumption that $ZF \vdash \mathtt{THM}('G') \implies G$ is false.
+\question{2}
+We describe a turing machine for $N$.
+We start on the start state $q_0$ and input $i$ expressed on the tape.
+Then we transition to the start state of machine $D$ from homework 9, and when the
+computation ends, the tape expresses $(i,i)$. We transition from the end state
+of program $D$ to the start state of program $M$. At the end state of program $M$, if the head is on a $0$,
+we transition to an end state $q_{end}$. Else we self loop, over and over again, never halting.
 
-\question{2.1}
-
-
+Diagram:
 \begin{center}
 \begin{tikzpicture}[scale=0.2]
 \tikzstyle{every node}+=[inner sep=0pt]
-\draw [black] (13.9,-21) circle (3);
-\draw (13.9,-21) node {$q1$};
-\draw [black] (31.7,-21) circle (3);
-\draw (31.7,-21) node {$q2$};
-\draw [black] (48.7,-16.9) circle (3);
-\draw (48.7,-16.9) node {$q3$};
-\draw [black] (59.6,-31.6) circle (3);
-\draw (59.6,-31.6) node {$q4$};
-\draw [black] (51.6,-43.2) circle (3);
-\draw (51.6,-43.2) node {$q5$};
-\draw [black] (34.4,-43.8) circle (3);
-\draw (34.4,-43.8) node {$q6$};
-\draw [black] (10.928,-20.687) arc (291.72436:3.72436:2.25);
-\draw (7.57,-16.1) node [left] {$B\mbox{ }:\mbox{ }R$};
-\fill [black] (12.34,-18.45) -- (12.51,-17.52) -- (11.58,-17.89);
-\draw [black] (21.9,-21) -- (28.7,-21);
-\draw (21.4,-21) node [left] {$1\mbox{ }:\mbox{ }R$};
-\fill [black] (28.7,-21) -- (27.9,-20.5) -- (27.9,-21.5);
-\draw [black] (31.7,-18) -- (31.7,-18);
-\fill [black] (31.7,-18) -- (32.2,-17.2) -- (31.2,-17.2);
-\draw [black] (34.9,-18.7) -- (34.14,-19.25);
-\fill [black] (34.14,-19.25) -- (35.08,-19.19) -- (34.49,-18.38);
-\draw [black] (30.377,-18.32) arc (234:-54:2.25);
-\draw (31.7,-13.75) node [above] {$1\mbox{ }:\mbox{ }R$};
-\fill [black] (33.02,-18.32) -- (33.9,-17.97) -- (33.09,-17.38);
-\draw [black] (34.62,-20.3) -- (45.78,-17.6);
-\fill [black] (45.78,-17.6) -- (44.89,-17.3) -- (45.12,-18.28);
-\draw (41.9,-19.63) node [below] {$0\mbox{ }:\mbox{ }R$};
-\draw [black] (33.023,-23.68) arc (54:-234:2.25);
-\draw (31.7,-28.25) node [below] {$B\mbox{ }:\mbox{ }0$};
-\fill [black] (30.38,-23.68) -- (29.5,-24.03) -- (30.31,-24.62);
-\draw [black] (47.665,-14.097) arc (227.99099:-60.00901:2.25);
-\draw (49.91,-9.48) node [above] {$1\mbox{ }:\mbox{ }R$};
-\fill [black] (50.3,-14.37) -- (51.2,-14.11) -- (50.46,-13.44);
-\draw [black] (56.3,-19.6) -- (58.8,-28.71);
-\draw (54.26,-18.95) node [above] {$B\mbox{ }:\mbox{ }R$};
-\fill [black] (58.8,-28.71) -- (59.07,-27.8) -- (58.11,-28.07);
-\draw [black] (62.28,-30.277) arc (144:-144:2.25);
-\draw (66.85,-31.6) node [right] {$1\mbox{ }:\mbox{ }R$};
-\fill [black] (62.28,-32.92) -- (62.63,-33.8) -- (63.22,-32.99);
-\draw [black] (57.9,-34.07) -- (53.3,-40.73);
-\fill [black] (53.3,-40.73) -- (54.17,-40.36) -- (53.35,-39.79);
-\draw (55,-36.05) node [left] {$B\mbox{ }:\mbox{ }1$};
-\draw [black] (54.481,-43.992) arc (102.36646:-185.63354:2.25);
-\draw (57.19,-49.14) node [right] {$1\mbox{ }:\mbox{ }R$};
-\fill [black] (52.72,-45.97) -- (52.41,-46.86) -- (53.38,-46.64);
-\draw [black] (51.179,-46.159) arc (19.6409:-268.3591:2.25);
-\draw (45.24,-49.27) node [below] {$B\mbox{ }:\mbox{ }L$};
-\fill [black] (49,-44.67) -- (48.07,-44.46) -- (48.41,-45.41);
-\draw [black] (48.6,-43.3) -- (37.4,-43.7);
-\fill [black] (37.4,-43.7) -- (38.22,-44.17) -- (38.18,-43.17);
-\draw (42.94,-42.92) node [above] {$0\mbox{ }:\mbox{ }1$};
-\draw [black] (31.474,-44.409) arc (309.49413:21.49413:2.25);
-\draw (27.1,-41.63) node [left] {$1\mbox{ }:\mbox{ }L$};
-\fill [black] (32.14,-41.85) -- (32.01,-40.91) -- (31.24,-41.55);
-\draw [black] (35.81,-41.15) -- (47.29,-19.55);
-\fill [black] (47.29,-19.55) -- (46.47,-20.02) -- (47.36,-20.49);
-\draw (42.23,-31.51) node [right] {$0\mbox{ }:\mbox{ }R$};
+\draw [black] (11.3,-22) circle (3);
+\draw (11.3,-22) node {$q_0$};
+\draw [black] (25.4,-22) circle (3);
+\draw (25.4,-22) node {$D$};
+\draw [black] (39.1,-22) circle (3);
+\draw (39.1,-22) node {$M$};
+\draw [black] (55.5,-12.7) circle (3);
+\draw (55.5,-12.7) node {$q_end$};
+\draw [black] (55.5,-31.1) circle (3);
+\draw (55.5,-31.1) node {$q_inf$};
+\draw [black] (14.3,-22) -- (22.4,-22);
+\fill [black] (22.4,-22) -- (21.6,-21.5) -- (21.6,-22.5);
+\draw [black] (28.4,-22) -- (36.1,-22);
+\fill [black] (36.1,-22) -- (35.3,-21.5) -- (35.3,-22.5);
+\draw [black] (41.71,-20.52) -- (52.89,-14.18);
+\fill [black] (52.89,-14.18) -- (51.95,-14.14) -- (52.44,-15.01);
+\draw (48.3,-17.85) node [below] {$0$};
+\draw [black] (41.72,-23.46) -- (52.88,-29.64);
+\fill [black] (52.88,-29.64) -- (52.42,-28.82) -- (51.93,-29.69);
+\draw (46.3,-27.05) node [below] {$1$};
+\draw [black] (58.18,-29.777) arc (144:-144:2.25);
+\fill [black] (58.18,-32.42) -- (58.53,-33.3) -- (59.12,-32.49);
 \end{tikzpicture}
 \end{center}
 
-\question{2.2}
-q1 B:R q1\\
-q1 1:R q2\\
-q2 1:R q2\\
-q2 B:0 q2\\
-q2 0:R q3\\
-q3 1:R q3\\
-q3 B:R q4\\
-q4 1:R q4\\
-q4 B:1 q5\\
-q5 1:R q5\\
-q5 B:L q5\\
-q5 0:1 q6\\
-q6 1:L q6\\
-q6 0:R q3
 
+\question{3}
+
+\question{4}
 
 
 
