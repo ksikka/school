@@ -1,4 +1,9 @@
 /*
+
+
+<input files path> <table name> <n> <t>
+
+
  * INPUT NGram - Count pairs
  * OUTPUT NGram - Word - Probability
  *
@@ -83,16 +88,23 @@ public class LangModel {
     public static WordCount fromStr(String str) {
         String[] tokens = str.split("\t");
         // assert len(tokens) == 2
+        if (tokens.length != 2) {
+            return null;
+        }
         WordCount wc = new WordCount();
         wc.word = tokens[0];
-        wc.count = Integer.parseInt(tokens[1]);
+        try {
+            wc.count = Integer.parseInt(tokens[1]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
 	return wc;
     }
     public String toString() {
         if (prob == 0.0f) // the default value, ie uninitialized
-            return word + "\t" + Integer.toString(count);
+            return word + " " + Integer.toString(count);
         else
-            return word + "\t" + Float.toString(prob);
+            return word + " " + Float.toString(prob);
     }
  }
 
@@ -123,29 +135,40 @@ public class LangModel {
 
  }
 
- public static class Reduce extends TableReducer<Text, Text, Text> {
+ public static class Reduce extends TableReducer<Text, Text, ImmutableBytesWritable> {
 
 
     public void reduce(Text key, Iterable<Text> values, Context context)
       throws IOException, InterruptedException {
 
-        int ngcount = 0;
-
         int n = Integer.parseInt(context.getConfiguration().get("ksikka-n"));
         TopWCComputer topWCs = new TopWCComputer(n);
 
+        int sumCnt = 0; // manual calculation
+        int realCnt = 0; // the NULL was seen, meaning we have the real phrase count
 
-        // TODO take the top $n$ wc objects.
         for (Text s : values) {
             WordCount wc = WordCount.fromStr(s.toString());
-            topWCs.add(wc);
+            if (wc != null) {
+                if (wc.word.equals("NULL")) {
+                     realCnt = wc.count;
+                } else
+                    topWCs.add(wc);
+                if (realCnt == 0) {
+                    sumCnt += wc.count;
+                }
+            }
         }
 
-        Put putObj = new Put(key.getBytes());
+        if (realCnt == 0) realCnt = sumCnt;
+
+        Put putObj = new Put(key.toString().getBytes());
         String encodedVal = "";
         int cnt = 0;
         for (WordCount wc : topWCs.topWCs) {
             cnt += 1; // one-indexed count.
+
+            wc.prob = (float)wc.count / realCnt;
 
             encodedVal = encodedVal + wc.toString();
 
@@ -161,8 +184,14 @@ public class LangModel {
  public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
 
-    conf.set("ksikka-n", "5");
-    conf.set("ksikka-t", "2");
+    String INPUTPATH = args[0];
+    String OUTPUT_TABLE = args[1];
+    String N = args[2];
+    String T = args[3];
+
+    conf.set("ksikka-n", N);
+    conf.set("ksikka-t", T);
+    conf.set(TableOutputFormat.OUTPUT_TABLE, OUTPUT_TABLE);
 
     Job job = new Job(conf, "ngcount");
 
@@ -179,8 +208,7 @@ public class LangModel {
     job.setInputFormatClass(TextInputFormat.class);
     job.setOutputFormatClass(TableOutputFormat.class);
 
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    //FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    FileInputFormat.addInputPath(job, new Path(INPUTPATH));
 
     job.setJarByClass(LangModel.class);
 
