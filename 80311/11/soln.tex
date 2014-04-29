@@ -41,6 +41,7 @@
 
 \question{1}
 
+
 \question{2.i}
 Claim:\\
 Let f: a -> b and x and y be subsets of a, then:\\
@@ -80,6 +81,68 @@ If $f$ is injective, then $f(v) = t \wedge f(u) = t \implies v = u$.\\
 Then we can say $v \in y => u \in y$, so $u \in x \cap y$, and $t \in f[x \cap y]$.
 
 Fitch Proof of (ii):\\
+
+\question{3.i}
+Representability allows us to express THM in terms of first order logic ZF. Specifically,
+it states that
+$$THM(\phi) \iff  ZF \vdash thm('\phi')$$
+
+\question{3.ii}
+Let $m$ and $n$ be natural numbers.
+
+Note: In this problem, $'m'$ is the set theoretic numeral for $m$.
+
+Claims:\\
+1. If $m = n$ then $ZF \vdash m=n$\\
+2. If $\neg m = n$ then $ZF \vdash \neg 'm'='n'$
+
+Proof of 1:\\
+
+By induction. It holds true for the base case when $m$ and $n$ are 0, which
+is represented by the empty set. For the inductive hypothesis, assume it holds
+true for all naturals up to and including some fixed $m$ and $n$ such that $m = n$.
+
+$'m+1' = {'m','m-1', ..., '1', '0'}$\\
+$'n+1' = {'n','n-1', ..., '1', '0'}$
+
+and since we know $m=n$ from the inductive hypothesis, then we make a simple substitution to obtain:
+
+$'m+1' = {'n','n-1', ..., '1', '0'}$\\
+$'n+1' = {'n','n-1', ..., '1', '0'}$
+
+Since $'m+1'$ and $'n+1'$ are sets with all the same elements, they are in fact the same set theoretic numerals.
+
+Proof of 2:\\
+
+By the hint, we seek to prove that if $m<n$ then $ZF \vdash \neg m = n$.
+
+Proceed by induction.
+We assume $n$ is an arbitrary natural number larger than $m$.
+(2) holds true for the base case when $m$ is 0, which
+is represented by the empty set. $n$ will be presented by some set with elements which do not exist in $'m'$. Thus $\neg 'm' = 'n'$.
+
+For the inductive hypothesis, assume (2) is true for all naturals up to and including some fixed $m$ such that $m < n$.
+
+$'m+1' = {'m','m-1', ..., '1', '0'}$\\
+$'n+1' = {'n','n-1', ..., '1', '0'}$
+
+and since we know $m<n$ from the inductive hypothesis, then we make a simple substitution to obtain:
+
+$'m+1' = {'m','m-1' ..., '1', '0'}$\\
+$'n+1' = {'n',...,'m','m-1' ..., '1', '0'}$\\
+
+Since $'n+1'$ contains elements not in $'m+1'$ the sets are not equal.
+
+For all $m$ and $n$ in the naturals both claims 1 and 2 hold true.
+
+
+\question{4}
+
+
+
+
+
+
 
 
 
