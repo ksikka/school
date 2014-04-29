@@ -1,0 +1,68 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{11}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{80-311}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 80-311 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+\question{1}
+
+\question{2.i}
+Claim:\\
+Let f: a -> b and x and y be subsets of a, then:\\
+$f[x \cup y] = f[x] \cup f[y]$
+
+To prove this we show that the LHS is a subset of the RHS, and the RHS is a subset of the LHS.
+
+Part 1: $LHS \subseteq RHS$\\
+First, let an arbitrary element $t$ be a member of $f[x \cup y]$. Then by the defn of image,\\
+we know that there exists $u$ such that $f(u) = t$ and $u \in (x \cup y)$.\\
+By the defn of union, $u$ must be in either $x$ or $y$.\\
+Then $t$ is in either $f[x]$ or $f[y]$, so it is in $f[x] \cup f[y]$, which is the RHS.\\
+Therefore any element $t$ which is a member of the LHS is also a member of the RHS.\\
+Then $LHS \subseteq RHS$
+
+Part 2: $RHS \subseteq LHS$\\
+Consider element $t$ in $f[x] \cup f[y]$.\\
+Then there is an element $u$ either in $x$ or $y$ such that $f(u) = t$.\\
+Then $u$ is in $x \cup y$. Then $t$ is in f[x \cup y], so every element in the RHS is also in the LHS.
+
+\qed
+
+
+\end{document}
+
