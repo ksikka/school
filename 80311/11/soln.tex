@@ -65,10 +65,22 @@ Then $RHS \subseteq LHS$
 \question{2.ii}
 We want to show that every element in $f[x \cap y]$ is also in $f[x] \cap f[y]$.\\
 Consider an arbitrary element $t$ in $f[x \cap y]$.\\
-By the definition of image, $u$ such that $f(u) = t$ and $u \in x \cap y$.\\
+By the definition of image, there exists a $u$ such that $f(u) = t$ and $u \in x \cap y$.\\
 By the defn of binary intersection, $u$ is in both $x$ and $y$.\\
 Then $t$ is in both $f[x]$ and $f[y]$, so $t \in f[x] \cap f[y]$, proving\\
 that $LHS \subseteq RHS$.\\
+
+\question{2.iii}
+I conjecture that the formula is true when $f$ is injective.\\
+
+If an element $t$ is in $f[x]$ and $f[y]$, then there is an element $u$ such that $f(u) = t$ and $u \in x$.\\
+There is also an element $v$ such that $f(v) = t$ and $v \in y$.
+
+If $f$ is injective, then $f(v) = t \wedge f(u) = t \implies v = u$.\\
+Then we can say $v \in y => u \in y$, so $u \in x \cap y$, and $t \in f[x \cap y]$.
+
+Fitch Proof of (ii):\\
+
 
 
 \end{document}
