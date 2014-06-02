@@ -1,0 +1,57 @@
+1.            MODELING SHIT
+
+    Difference equation vs differential equation
+        Difference equation is for discrete time, 
+        differen
+
+
+    Paramters (rate constants)
+    Boundary conditions (initial values)
+
+    Lotka Volterra eqns
+
+        Let x be prety
+            y be predators
+            r and m are growth rates
+            a and b are interactions rates
+
+        dx/dt = rx - axy
+        dy/dt = -my + bxy
+
+    Numerical integration requires step size and integration method.
+
+    Parameter lines tell you how a system acts differently for
+        different parameter values.
+
+
+    Phase plane/portrait:
+
+        Plot two dependent variables, only t can be inferred
+        Super-impose the direction of the gradient
+
+    Kinetics:
+        Plot dependent variable against time
+
+
+    Timescale: amount of time to go from min to max at max rate
+
+        tol × E
+        --------
+        dE / dt
+
+    Enzyme is either free or complex, its mass is conserved
+        E + C = E0 + C0
+
+
+Parameter Estimation
+    Linear fitting for linear models
+    Iterative for nonlinear coupled models
+    Sensible - if a parameter affects the thing you're measuring
+    Identifiable - if you can identify a single, unique parameter value from data
+
+Bootstrapping -> Cross-validation
+    How do we estimate the error in the estimated parameters?
+    Can repeat ﬁt for different subsets of the data and see how the estimated parameters vary
+    This ultimately uses all of the data
+
+
