@@ -65,6 +65,30 @@ This is the min of all the elements.
 
 The sum of all the comparisons is $(\frac{n}{2}) + (\frac{n}{2}-1) + (\frac{n}{2}-1) = \frac{3n}{2}-2 $
 
+\question{1c.}
+In this proof, I will:
+
+1. Show that if the graph of comparisons contains disconnected subgraphs,\\
+then you could change the inputs so that the answers to the comparisons remain the same,\\
+but the global ordering of the elements changes such that the median changes, making the algorithm incorrect.
+
+2. Show that with only $n-2$ comparisons, you must have multiple disconnected chains in the comparison graph.
+
+Proof:
+
+1. Construct a graph of the comparisons such that the vertices are the inputs and there is a directed edge
+between vertices if the vertices are compared by the algorithm.
+
+Notice that if the graph is disconnected, then you can add a scalar to all the numbers in a subgraph not containing the median, \\
+without altering the answers to the comparisons.
+
+Furthermore, you can find a scalar to add to this subgraph which will cause the median to be in this subgraph instead of that subgraph.
+This is true because adding a scalar to elements can shift them left or right arbitrarily in the ordering.
+
+2. A path of $n$ vertices must have $n-1$ edges. So with $n-2$ comparisons (edges), no path can cover all vertices.\\
+The graph must be disconnected. By subclaim 1, an algorithm which performs $n-2$ comparisons cannot be correct on all inputs.
+
+
 \question{2}
 Lorem ipsum
 
