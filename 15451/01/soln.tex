@@ -48,13 +48,20 @@ The algorithm seems to be dominated by the latter expression, but it can be redu
      $O(n^{3/4}log(n^{3/4}))$ \\
 $\leq O(\frac{3}{4} n^{3/4} log(n))$
 
-Notice that $O(n^{1/4}) \geq log(n)$ so we can make the following substitution:
+Notice that $O(n^{1/4}) \geq O(log(n))$ so we can make the following substitution:
 
 $\leq O(\frac{3}{4} n^{3/4} n^{1/4})$ \\
 $\leq O(n)$
 
 \question{1b.}
-Lorem ipsum
+Pair up the elements, and for each pair, compare the elements. ($\frac{n}{2}$ comparisons) \\
+Call the larger element a "winner" and the smaller element a "loser". \\
+Among the $\frac{n}{2}$ winners, find the max by going one by one keeping track of the max so far. ($\frac{n}{2}-1$ comparisons) \\
+This is the max of all the elements.
+
+Among the $\frac{n}{2}$ losers, find the min by going one by one keeping track of the min so far. $\frac{n}{2}-1$
+
+The sum of all the comparisons is $\frac{n}{2} + \frac{n}{2}-1 + \frac{n}{2}-1 = \frac{3n}{2}-2 $
 
 \question{2}
 Lorem ipsum
