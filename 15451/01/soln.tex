@@ -38,13 +38,25 @@
 \today
 \end{center}
 
-\question{1}
+\question{1a.}
+Compute $n^3/4$ in constant time.\\
+Use DeterministicSelect to select the $n^{3/4}$th largest number in $O(n)$ time.\\
+Then filter out the elements greater than or equal to it in $O(n)$ time.\\
+Now sort the $n^{3/4}$ numbers using mergesort in $O(n^{3/4}log(n^{3/4}))$ time.\\
+The algorithm seems to be dominated by the latter expression, but it can be reduced to $O(n)$ as follows:
+
+     $O(n^{3/4}log(n^{3/4}))$ \\
+$\leq O(\frac{3}{4} n^{3/4} log(n))$
+
+Notice that $O(n^{1/4}) \geq log(n)$ so we can make the following substitution:
+
+$\leq O(\frac{3}{4} n^{3/4} n^{1/4})$ \\
+$\leq O(n)$
+
+\question{1b.}
 Lorem ipsum
 
 \question{2}
-Lorem ipsum
-
-\question{3}
 Lorem ipsum
 
 
