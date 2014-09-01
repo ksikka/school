@@ -56,7 +56,7 @@ $\leq O(n)$
 \question{1b.}
 Pair up the elements, and for each pair, compare the elements. ($\frac{n}{2}$ comparisons) \\
 Call the larger element a ``winner" and the smaller element a ``loser". \\
-Among the $\frac{n}{2}$ winners, find the max by going one by one keeping track of the max so far. ($\frac{n}{2}-1$ comparisons) \\
+Among the $\frac{n}{2}$ winners, find the max by going one by one keeping track of the max so far. The minus one term is because you don't have anything to compare the first element to - you assume it as the max at first. ($\frac{n}{2}-1$ comparisons) \\
 This is the max of all the elements.
 
 Among the $\frac{n}{2}$ losers, find the min by going one by one keeping track of the min so far. ($\frac{n}{2}-1$ comparisons)
