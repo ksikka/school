@@ -105,11 +105,35 @@ Then the recurrence is in $\Theta(n^{log_b(a)}) = \Theta(n^{log_2(5)})$.
 
 Ordering: \\
 $B < C$ since $\Theta(n^{2} log(n)) \leq \Theta(n^{2} n^{1/2}) \leq \Theta(n^{2.5})$\\
-$C < A$ since $log_2(5) \approx 2.3219 \leq 2.5$
+$C < A$ since $log_2(5) \approx 2.3219 \leq 2.5$\\
+Thus $B < C < A$.
 
 
-\question{2}
-Lorem ipsum
+\question{2a}
+For the sake of this proof, we'll think of the matrix as $n$ sorted arrays of $n$. \\
+You can look at the problem as recursively merging the $n$ sorted arrays pairwise.\\
+It's obvious that this algorithm will be correct as each of the arrays is sorted and you can easily
+merge two sorted arrays to produce another sorted array containing the original elements.\\
+First observe there will be $log(n)$ iterations as we're merging arrays pairwise.\\
+At each step, the total number of comparisons is at most $n^2$ since each of the $n$ elements need only be compared with any other element once in the sequential merging algorithm.\\
+So the number of comparisons in the algorithm is at most $n^2 log(n)$.
+
+\question{2b}
+If the algorithm takes $k$ comparisons, then there are $2^k$ possible sets of answers.
+For each set of answer, there is exactly one abstract matrix for which that set of answers is correct (and no other set of answers is correct).
+This logic yields the following equality:
+$2^k = (number of abstract matrices for which the algorithm is correct)$.
+But the total number of abstract matrices is $\frac{(n^2)!}{n n!}$
+
+So the minimum number of comparisons required to be correct on every input is $k$ where
+$k = log_2(\frac{(n^2)!}{n n!})$
+$k = log_2((n^2)!) - (log_2(n) + log_2(n!)))$
+
+We can find a lower bound first log term by realizing that
+$$\frac{n^2}{2}^\frac{n^2}{2} < n^2!$$
+
+$k \geq \frac{n^2}{2} log_2(\frac{n^2}{2}) - (log_2(n) + log_2(n!)))$
+
 
 
 \end{document}
