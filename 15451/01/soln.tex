@@ -127,12 +127,14 @@ But the total number of abstract matrices is $\frac{(n^2)!}{n n!}$
 
 So the minimum number of comparisons required to be correct on every input is $k$ where
 $k = log_2(\frac{(n^2)!}{n n!})$
-$k = log_2((n^2)!) - (log_2(n) + log_2(n!)))$
+$k = log_2((n^2)!) - (log_2(n) + log_2(n!))$
 
-We can find a lower bound first log term by realizing that
+We can find a lower bound first log term by looking at the factorial expansion (as we did in lecture) and realizing that
 $$\frac{n^2}{2}^\frac{n^2}{2} < n^2!$$
 
-$k \geq \frac{n^2}{2} log_2(\frac{n^2}{2}) - (log_2(n) + log_2(n!)))$
+$k \geq \frac{n^2}{2} log_2(\frac{n^2}{2}) - (log_2(n) + log_2(n!))$ \\
+$     = \frac{n^2}{2} [log_2(n^2) - log_2(2)] - (log_2(n) + log_2(n!))$ \\
+$     = n^2 log_2(n^2) - \frac{n^2}{2} - (log_2(n) + log_2(n!))$
 
 
 
