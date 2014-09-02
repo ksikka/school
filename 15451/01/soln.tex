@@ -119,8 +119,12 @@ At each step, the total number of comparisons is at most $n^2$ since each of the
 So the number of comparisons in the algorithm is at most $n^2 log(n)$.
 
 \question{2b}
-If the algorithm takes $k$ comparisons, then there are $2^k$ possible sets of answers.\\
-For each set of answer, there is exactly one abstract matrix for which that set of answers is correct (and no other set of answers is correct).\\
+For the following proof, we define an ``abstract matrix" to be an $n x n$  matrix whose distinct entries look like $a_i$ where $i$ is an integer between 1 and $n^2$ inclusive, and $a_i < a_{i_1}$ for all $i$.\\
+The rows of the matrix are required to be sorted.\\
+There are $\frac{n^2!}{n * n!}$ possible abstract matrices. This is because there are $n^2!$ matrices, but this will overcount by a factor of $n!$ for each of the $n$ rows since 1 out of $n!$ of row permutations is sorted.
+
+If the algorithm takes $k$ comparisons, it is asking $k$ yes or no questions, then there are $2^k$ possible sets of answers.\\
+For each set of answers, there is exactly one abstract matrix for which that set of answers is correct (and no other set of answers is correct).\\
 This logic yields the following equality:\\
 $2^k = $(number of abstract matrices for which the algorithm is correct).\\
 But the total number of abstract matrices is $\frac{(n^2)!}{n n!}$
@@ -137,7 +141,9 @@ $     = \frac{n^2}{2} [log_2(n^2) - log_2(2)] - (log_2(n) + log_2(n!))$ \\
 $     = n^2 log_2(n) - \frac{n^2}{2} - (log_2(n) + log_2(n!))$ \\
 $     = n^2 log_2(n) - O(n^2)$
 
-Note that the $log_2(n!)$ term is in $O(n log(n))$ as was discussed in lecture.
+(Note that the $log_2(n!)$ term is in $O(n log(n))$ as was discussed in lecture.)
+
+We've proved a stronger lower bound on the number of comparisons than what was asked for, so we are done.
 
 
 
