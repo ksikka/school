@@ -119,32 +119,28 @@ At each step, the total number of comparisons is at most $n^2$ since each of the
 So the number of comparisons in the algorithm is at most $n^2 log(n)$.
 
 \question{2b}
-For the following proof, we define an ``abstract matrix" to be an $n x n$  matrix whose distinct entries look like $a_i$ where $i$ is an integer between 1 and $n^2$ inclusive, and $a_i < a_{i_1}$ for all $i$.\\
-The rows of the matrix are required to be sorted.\\
-There are $\frac{n^2!}{n * n!}$ possible abstract matrices. This is because there are $n^2!$ matrices, but this will overcount by a factor of $n!$ for each of the $n$ rows since 1 out of $n!$ of row permutations is sorted.
 
-If the algorithm takes $k$ comparisons, it is asking $k$ yes or no questions, then there are $2^k$ possible sets of answers.\\
-For each set of answers, there is exactly one abstract matrix for which that set of answers is correct (and no other set of answers is correct).\\
-This logic yields the following equality:\\
-$2^k = $(number of abstract matrices for which the algorithm is correct).\\
-But the total number of abstract matrices is $\frac{(n^2)!}{n n!}$
+Recall that a sorting algorithm outputs a permutation of the input sequence.\\
+Although our inputs are given as matrices, we can think of them as sequences if we concatenate the rows sequentially.\\
+If the matrix is n x n, the proportional sequence is $n^2$ elements long.\\
+There are $n^2!$ possible permutations ways that the algorithm could choose to permute the input sequence.
 
-So the minimum number of comparisons required to be correct on every input is $k$ where\\
-$k = log_2(\frac{(n^2)!}{n n!})$\\
-$  = log_2((n^2)!) - (log_2(n) + log_2(n!))$
+For each of these $n^2!$ permutations, each one has a distinct input which would cause the algorithm to output such a permutation.\\
+If the algorithm makes $2^k$ comparisons, and the output permutation is a function only of the comparisons,\\
+then the algorithm must make at least $log_2(n^2!)$ comparisons, or it wouldn't be possible to output all the possible permutations, meaning the algorithm would not return a correct answer on some input.
 
-We can find a lower bound first log term by looking at the factorial expansion (as we did in lecture) and realizing that
+$k \geq log_2(n^2!)$\\
+$  = log_2(n^2!)$
+
+We can find a lower bound on the log term by looking at the factorial expansion (as we did in lecture) and realizing that
 $$\frac{n^2}{2}^\frac{n^2}{2} < n^2!$$
 
-$k \geq \frac{n^2}{2} log_2(\frac{n^2}{2}) - (log_2(n) + log_2(n!))$ \\
-$     = \frac{n^2}{2} [log_2(n^2) - log_2(2)] - (log_2(n) + log_2(n!))$ \\
-$     = n^2 log_2(n) - \frac{n^2}{2} - (log_2(n) + log_2(n!))$ \\
-$     = n^2 log_2(n) - O(n^2)$
-
-(Note that the $log_2(n!)$ term is in $O(n log(n))$ as was discussed in lecture.)
-
-We've proved a stronger lower bound on the number of comparisons than what was asked for, so we are done.
-
+Then we complete the proof as follows:\\
+$k \geq \frac{n^2}{2} log_2(\frac{n^2}{2})   $ \\
+$     = \frac{n^2}{2} [log_2(n^2) - log_2(2)]$ \\
+$     = n^2 log_2(n) - \frac{n^2}{2}         $ \\
+$     = n^2 log_2(n) - O(n^2)$\\
+$  \geq \frac{9}{10} n^2 log_2(n) - O(n^2)$
 
 
 \end{document}
