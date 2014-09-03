@@ -89,7 +89,7 @@ This is true because adding a scalar to elements can shift them left or right ar
 The graph must be disconnected. By subclaim 1, an algorithm which performs $n-2$ comparisons cannot be correct on all inputs.
 
 \question{1d.}
-Since all recurrences are divide-and-conquer style, we can use the Master theorem to solve all of them.
+Since all recurrences are divide-and-conquer style, we can use the Master theorem, proved in recitation, to solve all of them.
 
 A. $a=3, b=2, c=1, k=2.5$\\
 $r = a/b^{k} = 3/2^{2.5} \approx .5303 < 1$\\
@@ -114,9 +114,17 @@ For the sake of this proof, we'll think of the matrix as $n$ sorted arrays of $n
 You can look at the problem as recursively merging the $n$ sorted arrays pairwise.\\
 It's obvious that this algorithm will be correct as each of the arrays is sorted and you can easily
 merge two sorted arrays to produce another sorted array containing the original elements.\\
-First observe there will be $log(n)$ iterations as we're merging arrays pairwise.\\
-At each step, the total number of comparisons is at most $n^2$ since each of the $n$ elements need only be compared with any other element once in the sequential merging algorithm.\\
-So the number of comparisons in the algorithm is at most $n^2 log(n)$.
+First observe there will be $log(n)$ iterations as we're merging arrays pairwise and the number of arrays to merge is cut in half at every iteration.\\
+
+Second, we'll observe that to merge two sorted arrays, while forming the new array, only one comparison between two elements (one from each original array) is necessary to determine which element to put in the next available slot of the array.
+One comparison per element coming out of the merge algorithm,
+which contains exactly the same elements which were put in to the merging algorithm.
+That's at most $k$ comparisons where $k$ is the total number of elements going into the merge.
+
+Finally at each of the $log_2(n)$ iterations, the total number of comparisons is at most $n^2$,\\
+since thats how many elements go into the merging algorithm in total.
+
+Therefore, the number of comparisons in the algorithm is at most $n^2 log_2(n)$.
 
 \question{2b}
 
@@ -129,8 +137,7 @@ For each of these $n^2!$ permutations, each one has a distinct input which would
 If the algorithm makes $2^k$ comparisons, and the output permutation is a function only of the comparisons,\\
 then the algorithm must make at least $log_2(n^2!)$ comparisons, or it wouldn't be possible to output all the possible permutations, meaning the algorithm would not return a correct answer on some input.
 
-$k \geq log_2(n^2!)$\\
-$  = log_2(n^2!)$
+$k \geq log_2(n^2!)$
 
 We can find a lower bound on the log term by looking at the factorial expansion (as we did in lecture) and realizing that
 $$\frac{n^2}{2}^\frac{n^2}{2} < n^2!$$
