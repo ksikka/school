@@ -123,10 +123,33 @@ Define a function $\Phi$ to be $3/2$ times the number of elements which are not 
 At the beginning of the algorithm, $\Phi$ is $\frac{3}{2} n$ since all elements are free.\\
 At the end of the algorithm, $Phi$ is $\frac{3}{2} 2 = 3$ since only two elements are not middles, namely the top and bottom.
 
+F,T,B,M
+
+One mid created each time.
+Number of tops and bottoms.
+
+3/2 times number of frees.
++ tees
++ bees
+
+If you lose a free, you create a tee or a bee.
 
 
+\begin{verbatim}
+F,F => T,B
+F,T => B,T | T,M
+F,B => B,M | T,B   
+F,M => B,M | T,M   
+   
+T,T => M,T | T,M   
+T,B => T,B | M,M   
+T,M => M,M | T,M   
+   
+B,B => B,M | M,B   
+B,M => B,M | M,M   
 
-
+M,M => M,M
+\end{verbatim}
 
 \end{document}
 
