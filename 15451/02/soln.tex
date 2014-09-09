@@ -96,15 +96,6 @@ To return max, simply take the max((max(s1), max(s2)) which is computed in const
 
 Say there are $n$ elements.
 
-We observe the following about the life-cycle of the elements:
-
-\begin{enumerate}
-\item At the start of the algorithm, all $n$ elements are free.
-\item A free element compared with any other element will turn into either a top or bottom.
-\item A top or bottom compared with any other element will either remain as it was, or turn into a middle.
-\item A middle compared with any other element will remain a middle.
-\end{enumerate}
-
 Next we notice the following about the counts of different types of elements:
 
 \begin{enumerate}
@@ -119,37 +110,42 @@ You would have to compare them to determine that and the lower would become a mi
 holds for the number of bottoms. The number of middles are the remaining elements. No element can be free
 since that element could be changed to be a Max or Min and it wouldn't be detected by the algorithm.
 
-Define a function $\Phi$ to be $3/2$ times the number of elements which are not middles.\\
-At the beginning of the algorithm, $\Phi$ is $\frac{3}{2} n$ since all elements are free.\\
-At the end of the algorithm, $Phi$ is $\frac{3}{2} 2 = 3$ since only two elements are not middles, namely the top and bottom.
+Define a function $\Phi$ to be $3/2$ times the number of free elements plus the number of tops, plus the number of bottoms\\
+At the beginning of the algorithm, $\Phi$ is $\frac{3}{2} n$ since all elements are free and there are no tops nor bottoms\\
+At the end of the algorithm, $Phi$ is 2 since there is 1 top and 1 bottom.
 
-F,T,B,M
+We observe the following about the life-cycle of the elements:
 
-One mid created each time.
-Number of tops and bottoms.
+\begin{enumerate}
+\item At the start of the algorithm, all $n$ elements are free.
+\item A free element compared with any other element will turn into either a top or bottom.
+\item A top or bottom compared with any other element will either remain as it was, or turn into a middle.
+\item A middle compared with any other element will remain a middle.
+\end{enumerate}
 
-3/2 times number of frees.
-+ tees
-+ bees
+Now we compute the change in $\Phi$ of each case
 
-If you lose a free, you create a tee or a bee.
+\begin{enumerate}
+\item free => top or bottom: -3/2 + 1 = -1/2
+\item top or bottom => top or bottom, or middle: 0 or -1
+\item middle => middle: 0.
+\end{enumerate}
 
+Notice that two elements may convert on a comparison, so the only way to exceed a change of -1 is by having\\
+two conversions of top or bottom to middles. This could only happen by comparing a top and a bottom, finding\\
+that the bottom is greater than the top, and they both convert to middles.
 
-\begin{verbatim}
-F,F => T,B
-F,T => B,T | T,M
-F,B => B,M | T,B   
-F,M => B,M | T,M   
-   
-T,T => M,T | T,M   
-T,B => T,B | M,M   
-T,M => M,M | T,M   
-   
-B,B => B,M | M,B   
-B,M => B,M | M,M   
+An adversary can choose an input such that this case does not happen. On some input,\\
+run the algorithm and observe which elements became top or bottom.\\
+Note that an element starts free, then must become only top, or only bottom, and then it may become middle.\\
+Then, add a scalar to all the top elements such that the smallest top element is larger than the largest bottom element.\\
+Now we know that all tops are larger than all bottoms, and the ordering of tops amongst themselves in unchanged.\\
+We can rerun the algorithm with the new input,\\
+and we'll see that all tops before are still tops, and any top compared with any bottom, does not convert both\\
+to middle, because the top will be greater than the bottom.
 
-M,M => M,M
-\end{verbatim}
+So we can find an input such that the change in $\Phi$ is at most -1, and that means $\Phi$ will
+start at $\frac{3}{2} n$ and end at $2$, taking $\frac{3}{2} n - 2$ comparisons to get there.
 
 \end{document}
 
