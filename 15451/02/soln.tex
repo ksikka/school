@@ -39,70 +39,39 @@ Recitation: A \\
 \today \\
 \end{center}
 
-\question{1}{Mathematical Symbols}
+\question{1}{Max Stacks and Quacks}
 
-This is an example of an answer to a homework question.  In your
-answer, you may want to use a variety of mathematical symbols:
+\part{a} Queues from stacks:
 
-% this is one way to make a list. Another would be to say
-% \begin{enumerate} and \end{enumerate}, which would give numbers instead
-% of bullets to the items
-\begin{itemize}
-\item Fractions: $\frac{2}{3}$ %don't need curly braces for single chars; could have typed \frac23
-\item Binomial coefficients: $\binom{n}{k} = 10$
-\item Subscripts and superscripts: $t_0$, $t^2$, $t_0^{2/3}$, 
-\item Greek letters: $\alpha$, $\beta$, $\gamma$, $\lambda$, $\Pi$, $\pi$.
-\item Summations: $\sum_{i=1}^n i = \frac{n(n+1)}2$.
-\end{itemize}
+To prove that a sequence of $n$ ops costs at most $3n$, we set up a hypothetical situation where we spend 3 coins on each operation,\\
+impose a cost of 1 coin for each push and pop, and assuming this, show that the algorithm's bank balance is never negative.\\
+Then we will know that the cost to run the algorithm will not exceed $3n$.
 
-You can refer to Leslie Lamport's ``\LaTeX\ User's Guide and
-Reference Manual'' for more useful info on mathematical typesetting
-with \LaTeX.  Pages 42-46 outline many of the useful math symbols
-and functions.
+For an insert operation, the algorithm will spend 1 coin on pushing onto S1, and save 2 coins in the bank.\\
 
-Another good reference for the mathematical symbols of \LaTeX\ is 
-``Inessential LaTeX'' by the MIT SIPB group.  Find it on the Web at
-\verb|http://www.mit.edu/afs/sipb/project/doc/latex/guide.PS|
+For a dump operation where the stack S1 has size $k$, the algorithm with spend 2 coins on each of the $k$ elements,\\
+popping each element off S1 and pushing on to S2.
+
+The only way to get an element onto S1 is via an insert, and the only way to get an element off of S1 is a dump.
+
+Each element on the stack S1 must have contributed 2 coins to the bank, and those 2 coins will be used to get it popped off and pushed onto S1.\\
+So we see that the funds saved from an insert are always sufficient to perform the dump.
+
+For a remove operation, there are 2 cases. In one case, S1 is not empty, and we need only spend 1 out of 3 coins received on popping off an element.\\
+In the other case, S1 is empty and a dump needs to be performed.\\
+The dump is funded from money saved during inserts, as shown above.\\
+Then we reduce to the problem to the first case where S1 is not empty, and we need only spend 1 out of 3 coins received on popping off an element.
+
+We showed that the insert, dump, and remove operations can always be funded by money in the bank assuming we spend 3 coins on each operation.\\
+Therefore $n$ operations cost at most $3n$.
 
 
 \question{2}{Little Gauss's Formula}
 
-This is another example of a question.  In this case, it's
-a multi-part question.
-
 \part{a} Recall {\em Little Gauss's formula}:
-
-% equations are automatically centered!
-\begin{eqnarray}
-\sum_{i=1}^n i = {\frac{n(n+1)}2}  % as usual, liberal use of curly braces...
-\label{little-gauss}        % labelled so we can refer to this formula by number
-\end{eqnarray}
 
 \part{b} Now, equation \ref{little-gauss} can be proven by induction as
 follows:
-
-\begin{itemize}
-\item {\bf Base case}: $n=1$: $1 = 1(2)/2=1$.
-\item {\bf Inductive hypothesis}: assume the equation holds for $n=2...k$.
-\item {\bf Inductive step}: for $n=k+1$, we have
-\begin{eqnarray*}    % the star suppresses the equation numbers 
-\sum_{i=1}^{k+1} i = (k+1) + \sum_{i=1}^k i
-\end{eqnarray*}
-Using the inductive hypothesis, we can substitute for the second term
-on the righthand side:
-\begin{eqnarray*}
-\sum_{i=1}^{k+1} i &=& (k+1) + k(k+1)/2\\    
-                   &=& {\frac{{2k+2 + k(k+1)}}2}\\
-                   &=& {\frac{{k^2 + 3k + 2}}2}\\
-                   &=& {\frac{(k+1)(k+2)}2}
-\end{eqnarray*}
-% notice \\ to indicate newline and the &=& to line up the equals signs 
-\end{itemize}
-
-Lo and behold! The last line shows that for $n=k+1$, little Gauss'
-formula still holds for $n=k+1$! We've showed that the formula holds
-for $n=1$, and we've shown that if it holds for $n=k$ it must hold for
-$n=k+1$. Therefore, it must hold for all $n$.
 
 \end{document}
 
