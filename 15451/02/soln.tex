@@ -92,12 +92,20 @@ Notice that the dump is linear in the number of pushes and pops, so it's time is
 To return max, simply take the max((max(s1), max(s2)) which is computed in constant amortized time.
 
 
-\question{2}{Little Gauss's Formula}
+\question{2}{You Be the Adversary}
 
-\part{a} Recall {\em Little Gauss's formula}:
+Say there are $n$ elements.
 
-\part{b} Now, equation \ref{little-gauss} can be proven by induction as
-follows:
+We observe the following about the life-cycle of the elements:
+
+\begin{enumerate}
+\item At the start of the algorithm, all $n$ elements are free.
+\item A free element compared with any other element will turn into either a top or bottom.
+\item A top or bottom compared with any other element will either remain as it was, or turn into a middle.
+\item A middle compared with any other element will remain a middle.
+\end{enumerate}
+
+
 
 \end{document}
 
