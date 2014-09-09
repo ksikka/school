@@ -105,6 +105,27 @@ We observe the following about the life-cycle of the elements:
 \item A middle compared with any other element will remain a middle.
 \end{enumerate}
 
+Next we notice the following about the counts of different types of elements:
+
+\begin{enumerate}
+\item The number of frees at the beginning is $n$, and the number of frees at the end is 0.
+\item The number of tops at the beginning is $0$, and the number of tops at the end is 1.
+\item The number of bottoms at the beginning is $0$, and the number of bottoms at the end is 1.
+\item The number of middles at the beginning is $0$, and the number of middles at the end is $n-2$.
+\end{enumerate}
+
+The number of tops is not more than 1 because then there is ambiguity as to which is the larger top.\\
+You would have to compare them to determine that and the lower would become a middle. A symmetrical argument
+holds for the number of bottoms. The number of middles are the remaining elements. No element can be free
+since that element could be changed to be a Max or Min and it wouldn't be detected by the algorithm.
+
+Define a function $\Phi$ to be $3/2$ times the number of elements which are not middles.\\
+At the beginning of the algorithm, $\Phi$ is $\frac{3}{2} n$ since all elements are free.\\
+At the end of the algorithm, $Phi$ is $\frac{3}{2} 2 = 3$ since only two elements are not middles, namely the top and bottom.
+
+
+
+
 
 
 \end{document}
