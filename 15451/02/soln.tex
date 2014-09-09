@@ -60,10 +60,36 @@ So we see that the funds saved from an insert are always sufficient to perform t
 For a remove operation, there are 2 cases. In one case, S1 is not empty, and we need only spend 1 out of 3 coins received on popping off an element.\\
 In the other case, S1 is empty and a dump needs to be performed.\\
 The dump is funded from money saved during inserts, as shown above.\\
-Then we reduce to the problem to the first case where S1 is not empty, and we need only spend 1 out of 3 coins received on popping off an element.
+After the dump, we can reduce to the problem to the first case where S1 is not empty, and we need only spend 1 out of 3 coins received on popping off an element.
 
 We showed that the insert, dump, and remove operations can always be funded by money in the bank assuming we spend 3 coins on each operation.\\
 Therefore $n$ operations cost at most $3n$.
+
+\part{b} Max-queue:
+
+A max-queue is simply a queue that supports the additional operation of return-max.
+
+We can implement a max-queue using two stacks as done in part a, and we know the push and pop operations are $O(1)$ amortized.
+
+To implement the return-max function, we will add some data structures so that the max of S1 and S2 can each be found in constant time, and then we will take max(S1, S2) to find the max of the Q.
+
+How to turn a Stack "S" into a Max Stack so that its max can be found in constant time:
+
+\begin{quote}
+Create another stack, call it M.
+When pushing "e" onto S, also push max(e,max(M)) onto M. Max(M) is always at top of M inductively.
+This takes $O(1)$ time so it doesn't affect the cost of the push.
+
+On a pop from S, also pop the max off of M.
+This maintains the invariant that the element at the top of the M-stack is the current max of S.
+This is also done in $O(1)$ time.
+
+Now the max of S can always be found in constant time by looking at the top of the stack M.
+\end{quote}
+
+Notice that the dump is linear in the number of pushes and pops, so it's time is unaffected since the time of the pushes and pops is unaffected.
+
+To return max, simply take the max((max(s1), max(s2)) which is computed in constant amortized time.
 
 
 \question{2}{Little Gauss's Formula}
