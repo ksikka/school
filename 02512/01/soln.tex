@@ -81,7 +81,7 @@ Adjacency matrix:
 \end{verbatim}
 
 \part{b}
-The shortest path covering all vertices is <3, 2, 1, 4>.
+The shortest path covering all vertices is \textless 3, 2, 1, 4 \textgreater.
 Performing the alignment, we obtain the shortest common superstring:
 
     GTACGTTGTAATGTGCGCTAATG
@@ -90,6 +90,7 @@ Performing the alignment, we obtain the shortest common superstring:
 
 First we split our sequences into 4-mers and 3-mers
 
+\begin{verbatim}
 1.
 AATG, ATGT, TGTG, GTGC, TGCG, GCGC, CGCT
 AAT, ATG, TGT, GTG, TGC, GCG, CGC, GCT
@@ -105,9 +106,11 @@ GTA, TAC, ACG, CGT, GTT, TTG
 4.
 CGCT, GCTA, CTAA, TAAT, AATG
 CGC, GCT, CTA, TAA, AAT, ATG
+\end{verbatim}
 
 Now we construct a graph where nodes are k-1 mers and edges represent the presence of k mers
 
+\begin{verbatim}
 Nodes:
 AAT, ACG, ATG, CGC, CGT, CTA, GCG, GCT, GTA, GTG, GTT, TAA, TAC, TGC, TGT, TTG
 
@@ -130,12 +133,14 @@ TGC -> GCG (TGCG)
 TGT -> GTA (TGTA)
 TGT -> GTG (TGTG)
 TTG -> TGT (TTGT)
+\end{verbatim}
 
 
 No unique solution because a k-mer is repeated in more than one sequence, so there will be multiple possible ways to put the sequence back together.
 Repeated k-mers: ATGT, CGTT, GTTG, CGCT, TAAT, AATG
 
 \part{d}
+\begin{verbatim}
 First we split our sequences into 5-mers and 4-mers
 1.
 AATGT, ATGTG, TGTGC, GTGCG, TGCGC, GCGCT
@@ -175,11 +180,13 @@ TGCG -> GCGC (TGCGC)
 TGTA -> GTAA (TGTAA)
 TGTG -> GTGC (TGTGC)
 TTGT -> TGTA (TTGTA)
+\end{verbatim}
 
 No unique solution because a k-mer is repeated in more than one sequence, so there will be multiple possible ways to put the sequence back together.
 AATGT, CGTTG, TAATG
 
 \part{e}
+\begin{verbatim}
 GTAC -> TACG (GTACG)
 TACG -> ACGT (TACGT)
 ACGT -> CGTT (ACGTT)
@@ -198,6 +205,7 @@ GCGC -> CGCT (GCGCT)
 CGCT -> GCTA (CGCTA)
 GCTA -> CTAA (GCTAA)
 CTAA -> TAAT (CTAAT)
+\end{verbatim}
 
 Shortest string consistent with graph: GTACGTTGTAATGTGCGCTAAT
 
