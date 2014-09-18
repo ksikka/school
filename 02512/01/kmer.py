@@ -9,21 +9,21 @@ def kmer(s,k):
         mers.append(kmer_help(s[i:], k))
     return mers
 
+k = 4
 
 kmers = set([])
 repeated = set([])
 kminusonemers = []
 for s in "AATGTGCGCT CGTTGTAATGT GTACGTTG CGCTAATG".split():
-    print ', '.join(kmer(s, 5))
-    print ', '.join(kmer(s, 4))
-    print ', '.join(kmer(s, 3))
+    print ', '.join(kmer(s, k))
+    print ', '.join(kmer(s, k - 1))
 
-    for kmr in kmer(s, 5):
+    for kmr in kmer(s, k):
         if kmr in kmers:
             repeated.add(kmr)
         else:
             kmers.add(kmr)
-    kminusonemers.extend(kmer(s, 4))
+    kminusonemers.extend(kmer(s, k - 1))
 
 kminusonemers = set(kminusonemers)
 
@@ -37,7 +37,7 @@ in_edges = defaultdict(list) # vertex -> list of in-edges
 
 print "\nEdges:"
 for kmer in sorted(kmers):
-    prefix = kmer[:4]
+    prefix = kmer[:k - 1]
     suffix = kmer[1:]
     if prefix in kminusonemers and suffix in kminusonemers:
         out_edges[prefix].append(kmer)
