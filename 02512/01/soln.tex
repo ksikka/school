@@ -3,6 +3,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{fancyhdr}
+\usepackage{verbatim}
+\verbatiminput{mis.py}
 
 \oddsidemargin0cm
 \topmargin-2cm
@@ -42,16 +44,32 @@
 \part{a}
 Cast problem as a bipartite graph where set A is the binding sites and B is the chemical groups.
 Create edges such that edge between binding site and chemical group is the docking energy.
-Now the problem is the Minimum Weight B-Perfect Matching (all vertices in B should be in the matching)
+Now the problem is the Minimum Weight B-Perfect Matching (all vertices in B must be in the matching)
 
-1b. Create a graph where the vertices are the drugs and an edge connects drugs which may react with each other.
-Now solve the Minimum Vertex Coloring problem.
 
-1c.This is wrong - Longest common substring to create alignment. If aligns well, combine the two strings into one. Repeat until all strings are one string.
+\part{b}
+Create a graph where the vertices are the drugs and an edge connects drugs which may react with each other.
+Now solve the Minimum Vertex Coloring problem. You can run all drugs (vertices) labeled with the same color at the same time. 
+The problem minimizes the number of colors, which is the number of rounds.
 
-1d. Use a Markov Chain Monte Carlo algorithm. 
+\part{c}
+Use the longest common subsequence pairwise on the sequences, allowing only for gaps. This is effective since the reads are long.
+Keep track of the length of the common subsequence as a score between pairs. Then put the sequences in a graph as nodes where the edge weights are
+the negatives of the scores obtained from LCS. Then use the traveling salesman problem to obtain the most likely original sequence.
 
-1e. Longest common substring
+\part{d}
+
+Construct a graph where the nodes are the tissues and the edge weight for any $(v_1, v_2)$
+is -1 x the probability that if the molecule is on tissue $v_1$ it will transport to $v_2$ (so that all edge weights are negative).
+Then the problem can be considered as a single-pair shortest path problem where the start node is the start tissue and the end node is the target tissue.
+The sum of the probabilities is minimized, which is not exactly what we want.
+
+A better algorithm which suits the task (although not mentioned in class) is to start from the start node and traverse edge with the highest probability. If this results in a cycle, recurse on the neightbor connected by the next highest edge.
+Otherwise you have traversed the path which the molecule is most likely to take. You could keep track of the path along the way and that would be the output of the algorithm.
+
+\part{e}
+Use longest common substring for $k$ strands obtained from the purified DNA strands. Do this for a small $k$ so that the probelm is tractable.
+The substring found should be present in nearly every single strand, you can verify this in polynomial time. Otherwise choose a larger $k$ or resample $k$ strands.
 
 
 \question{2}
@@ -251,6 +269,8 @@ function getMaxIndSet(drugs, interact)
 
     return max_set
 \end{verbatim}
+
+\part{d}
 
 
 \end{document}
