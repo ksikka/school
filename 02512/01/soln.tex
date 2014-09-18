@@ -80,21 +80,30 @@ The objective function is the sum of the edge weights of the tree, which we seek
 \part{b}
 It's a minimum spanning tree problem. You can use Prim's algorithm.
 
-2c. 
-2d. 
-2e. 
+2c.
+Find the maximum $\Pi$ across all subsets of the nodes, where $\Pi$ is (sum of MST edges in subgraph with an added unlabeled vertex at the centroid of subgraph) - (sum of MST edges in subgraph)
+
+2d.
+Use a heuristic to quickly find a few points where the addition of an unlabeled vertex would be most beneficial.
+
+2e.
+When points are uniformly distributed the first algorithm works well.\\
+When points are distributed unevenly, the second algorithm works better.
+
 
 \question{3}
 \part{a}
-Image attached
-Adjacency matrix:
+\begin{figure}[p]
+    \includegraphics{3a.png}
+\end{figure}
 
+Adjacency matrix added for clarity.
 \begin{verbatim}
        1  2  3  4
-    1  X  0  0 -4
-    2 -5  X -2  0
-    3  0 -5  X  0
-    4 -4  0  0  X
+    1     0  0 -4
+    2 -5    -2  0
+    3  0 -5     0
+    4 -4  0  0   
 \end{verbatim}
 
 \part{b}
