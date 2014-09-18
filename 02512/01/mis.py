@@ -32,7 +32,9 @@ def getMaxIndSet(drugs):
         return set([])
     for d1 in drugs:
         drugs_which_interact_with_d1 = set([d2 for d2 in drugs if interact(d1, d2)])
-        ind_set_with_d1    = set([d1]) | getMaxIndSet(drugs - set([d1]) - drugs_which_interact_with_d1)
+        ind_set_with_d1    = set([d1]) | getMaxIndSet(drugs
+                                                    - set([d1])
+                                                    - drugs_which_interact_with_d1)
         ind_set_without_d1 = getMaxIndSet(drugs - set([d1]))
 
         if len(ind_set_with_d1) > len(max_set):
