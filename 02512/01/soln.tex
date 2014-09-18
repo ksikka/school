@@ -112,7 +112,8 @@ Now we construct a graph where nodes are k-1 mers and edges represent the presen
 
 \begin{verbatim}
 Nodes:
-AAT, ACG, ATG, CGC, CGT, CTA, GCG, GCT, GTA, GTG, GTT, TAA, TAC, TGC, TGT, TTG
+AAT, ACG, ATG, CGC, CGT, CTA, GCG, GCT, GTA, GTG, GTT, TAA, TAC, TGC,
+TGT, TTG
 
 Edges:
 AAT -> ATG (AATG)
@@ -159,7 +160,8 @@ CGCTA, GCTAA, CTAAT, TAATG
 CGCT, GCTA, CTAA, TAAT, AATG
 
 Nodes:
-AATG, ACGT, ATGT, CGCT, CGTT, CTAA, GCGC, GCTA, GTAA, GTAC, GTGC, GTTG, TAAT, TACG, TGCG, TGTA, TGTG, TTGT
+AATG, ACGT, ATGT, CGCT, CGTT, CTAA, GCGC, GCTA, GTAA, GTAC, GTGC,
+GTTG, TAAT, TACG, TGCG, TGTA, TGTG, TTGT
 
 Edges:
 AATG -> ATGT (AATGT)
@@ -230,7 +232,9 @@ function getMaxIndSet(drugs, interact)
     if size(drugs) == 0:
         return {}
     For every drug d1 in drugs:
-        ind_set_with_d1    = {d1} + getMaxIndSet(drugs - {d2 for d2 in drugs if (d1, d2) interact}))
+        ind_set_with_d1 = {d1} + getMaxIndSet(drugs
+                     - {d1}
+                     - {d2 for d2 in drugs if (d1, d2) interact}))
         ind_set_without_d1 = getMaxIndSet(drugs - {d1})
 
         if size(ind_set_with_d1) > size(max_set):
