@@ -154,11 +154,8 @@ TTG -> TGT (TTGT)
 \end{verbatim}
 
 
-No unique solution because some k-mers are found in more than one sequence, so there will be multiple possible ways to put the sequence back together.
-Repeated k-mers:
-\begin{verbatim}
-ATGT, CGTT, GTTG, CGCT, TAAT, AATG
-\end{verbatim}
+No unique solution because there is a cycle and you could include any number of cycle iterations in the resulting eulerian path.\\
+\verb{TAA -> AAT -> ATG -> TGT -> GTA -> TAA ...}
 
 \part{d}
 First we split our sequences into 5-mers and 4-mers
@@ -204,11 +201,7 @@ TGTG -> GTGC (TGTGC)
 TTGT -> TGTA (TTGTA)
 \end{verbatim}
 
-No unique solution because some k-mers are found in more than one sequence, so there will be multiple possible ways to put the sequence back together.
-Repeated k-mers:
-\begin{verbatim}
-AATGT, CGTTG, TAATG
-\end{verbatim}
+Yes, there is a unique solution. An eulerian path must start with an odd-degree vertex and there are only two. Only one of the two leads to an eulerian path.
 
 \part{e}
 \begin{verbatim}
@@ -270,7 +263,12 @@ function getMaxIndSet(drugs, interact)
 \end{verbatim}
 
 \part{d}
+Written in Python 2.7:\\
 \verbatiminput{mis.py}
+
+\part{e}
+On the first input, the program outputs ``0 2 4".\\
+On the second input, the program outputs ``0 3 5".\\
 
 
 \end{document}
