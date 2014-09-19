@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{03}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+ 
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-451}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}
+{\Large 15-451 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+Collaborated with Dave Cummings and Sandeep Rao.\\
+Recitation: A \\
+\today \\
+\end{center}
+
+\question{1}{Balanced Splay Trees}
+
+The outline of the proof is as follows:
+
+\begin{enumerate}
+\item We show a lower bound on the decrease in potential when performing a deep splay, $3 lg n + 1$.
+\item We show an upper bound on the increase in potential when performing a splay, $3 lg n + 1$.
+\item From these facts, we conclude that since we start with a perfectly balanced tree (min potential), a deep splay can only occur at most once after a splay, due to restrictions on the potential function.
+\end{enumerate}
+
+\part{1} Lower bound on decrease in potential during deep splay.
+
+From the access lemma, we know that:
+$$ \text{a.c. of splay} \leq 3 (r(y) - r(x)) + 1$$
+Where $y$ is the root node and $x$ is the node being splayed.\\
+We know that $r(y) = lg(n)$ and in the case of a deep splay, $r(x) = 0$ since it's terminal, subtree size is 1, $lg(1) = 0$.
+
+We also know the definition of amortized cost in terms of the potential function. Then in the case of a deep splay,
+$$ \text{# of rots} + \Delta \Phi \leq 3 lg n + 1$$
+
+In the case of a deep splay, the number of rotations is $d - 1$ since a rotation moves the terminal node 1 level closer to the root.\\
+And a deep splay only occurs when the tree is off-balance which means that $d \geq 6 lg n + 3$. Combining these facts, we do the following algebra:
+
+$ d-1 + \Delta \Phi \leq 3 lg n + 1$
+$ \implies \Delta \Phi \leq 3 lg n + 1 - (d - 1)$
+$ \implies  \Delta \Phi \leq 3 lg n + 1 - (6 lg n + 3 - 1)$
+$ \implies  \Delta \Phi \leq - (3 lg n - 1)$
+
+\part{2} Upper bound on increase in potential of a splay.
+
+Combine the access lemma with the defn of amortized cost to establish the following truth:
+$$ \Delta \Phi \leq 3 (r(y) - r(x)) + 1 - number of rotations$$
+
+We know that $r(y) = lg(n)$. We know $r(x) \geq 0$ and same with the number of rotations, so we can omit them from our upper bound.
+Thus, we obtain the following.
+
+$$ \Delta \Phi \leq 3 lg(n)  + 1$$
+
+\part{3} 
+We start with a perfectly balanced tree, so that the potential function is at its minimum.
+From there, a deep splay can only occur after a splay, and it can only occur once per splay, otherwise the potential function would go lower than it was when the tree was perfectly balanced.
+
+
+
+
+\question{2}{You Be the Adversary}
+
+Say there are $n$ elements.
+
+Next we notice the following about the counts of different types of elements:
+
+\begin{enumerate}
+\item The number of frees at the beginning is $n$, and the number of frees at the end is 0.
+\item The number of tops at the beginning is $0$, and the number of tops at the end is 1.
+\item The number of bottoms at the beginning is $0$, and the number of bottoms at the end is 1.
+\item The number of middles at the beginning is $0$, and the number of middles at the end is $n-2$.
+\end{enumerate}
+
+The number of tops is not more than 1 because then there is ambiguity as to which is the larger top.\\
+You would have to compare them to determine that and the lower would become a middle. A symmetrical argument
+holds for the number of bottoms. The number of middles are the remaining elements. No element can be free
+since that element could be changed to be a Max or Min and it wouldn't be detected by the algorithm.
+
+Define a function $\Phi$ to be $3/2$ times the number of free elements plus the number of tops, plus the number of bottoms\\
+At the beginning of the algorithm, $\Phi$ is $\frac{3}{2} n$ since all elements are free and there are no tops nor bottoms\\
+At the end of the algorithm, $Phi$ is 2 since there is 1 top and 1 bottom.
+
+We observe the following about the life-cycle of the elements:
+
+\begin{enumerate}
+\item At the start of the algorithm, all $n$ elements are free.
+\item A free element compared with any other element will turn into either a top or bottom.
+\item A top or bottom compared with any other element will either remain as it was, or turn into a middle.
+\item A middle compared with any other element will remain a middle.
+\end{enumerate}
+
+Now we compute the change in $\Phi$ of each case
+
+\begin{enumerate}
+\item free =\textgreater top or bottom: -3/2 + 1 = -1/2
+\item top or bottom =\textgreater top or bottom, or middle: 0 or -1
+\item middle =\textgreater middle: 0.
+\end{enumerate}
+
+Notice that two elements may convert on a comparison, so the only way to exceed a change of -1 is by having\\
+two conversions of top or bottom to middles. This could only happen by comparing a top and a bottom, finding\\
+that the bottom is greater than the top, and they both convert to middles.
+
+An adversary can choose an input such that this case does not happen. On some input,\\
+run the algorithm and observe which elements became top or bottom.\\
+Note that an element starts free, then must become only top, or only bottom, and then it may become middle.\\
+Then, add a scalar to all the top elements such that the smallest top element is larger than the largest bottom element.\\
+Now we know that all tops are larger than all bottoms, and the ordering of tops amongst themselves in unchanged.\\
+We can rerun the algorithm with the new input,\\
+and we'll see that all tops before are still tops, and any top compared with any bottom, does not convert both\\
+to middle, because the top will be greater than the bottom.
+
+So we can find an input such that the change in $\Phi$ is at most -1, and that means $\Phi$ will
+start at $\frac{3}{2} n$ and end at $2$, taking $\frac{3}{2} n - 2$ comparisons to get there.
+
+\end{document}
+
