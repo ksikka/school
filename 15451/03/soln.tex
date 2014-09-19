@@ -126,10 +126,24 @@ Now, the probability that $h_1 = h_2$ is the same as the probability that $T[k][
 is filled with values uniformly at random, the probability is $\frac{1}{M}$ because the RHS has 1 out of $M$ equally likely outcomes
 that will be equal to the LHS.
 
-This showed that if exactly one character varied between two strings, the probability that their hash would collide is equal to $\frac{1}{M}$.
-If an additional character varied, the probability of a hash collision would only be less than this, since there would be additional ways for the hash functions to be inequal compared to the previous analysis.
+This showed that if exactly one character varied between two strings, the probability that their hash would collide is equal to $\frac{1}{M}$.\\
+If an additional character varied, the probability of a hash collision would only be less than this, since there would only be additional ways for the hash functions to be inequal compared to the previous analysis.
 
 Therefore, the probability of a hash collision between any two distinct keys is at most $\frac{1}{M}$, and the hash family is universal.
+
+\part{b.ii.}
+The maximum $p$ is the total size of the universe with is $256^n$ because we couldn't find a p where it's not p-universal.
+
+The p-universal property holds for any fixed distinct p-length sequence of distinct keys.
+
+The distinct property matters because it means that at least one character varies between two strings. This will cause the uniform random distribution of the hash function.
+
+First, we show that the sum of uniformly randomly distributed variables between 0 and $M-1$ modded by $M$ is still uniformly distributed between 0 and $M-1$.\\
+The argument is inductive. It obviously holds for the case where you're summing 1 variable, since it's already uniform random and it's unaffected by mod due to its range.\\
+Then, given a uniform random variable which is the M-modded sum of $k$ uniform random variables, if you add a uniform random variable, the resulting value is still going to be uniform random after taking mod M.
+
+So long as two strings have at least one differing character, the sum of the differing characters will form a uniform random distribution since the output of the T-table is uniform random.
+The hash functions outputs are always uniformly randomly distributed.
 
 
 \end{document}
