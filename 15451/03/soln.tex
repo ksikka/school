@@ -102,8 +102,34 @@ Thus the probability of collision (over all hash functions in the family) on the
 It is not 2-universal, because if it were, then it would also be universal, but as we showed in part i, it's not. 
 
 \part{b.i.}
-$h_i = \sum_{k=1}^{n} T_i[k][s_i] \mod M$
+Yes, the hash family is universal.
 
+Say you have two strings which vary by exactly 1 character in the $k^{th}$ position.
+
+We will attempt to compute their hash functions without loss of generality with regards to the hash function chosen.
+
+$h_1 = \sum_{i=1}^{n} T[i][S_{1,i}] \mod M$\\
+$h_2 = \sum_{i=1}^{n} T[i][S_{2,i}] \mod M$
+
+Notice that all terms of the form $T[i][S_{\_,i}]$ will be equal between $S_1, S_2$ because all characters are the same but one.\\
+Encapsulate the sum of these terms into $X$, and now only the term where $i=k$ differs.
+
+$h_1 = X + T[k][S_{1,k}] \mod M$\\
+$h_2 = X + T[k][S_{2,k}] \mod M$
+
+Furthermore, since any value outputted from table T is identical when modded by M (due to its range of values, we say the following:
+
+$h_1 = X \mod M + T[k][S_{1,k}] $\\
+$h_2 = X \mod M + T[k][S_{2,k}] $
+
+Now, the probability that $h_1 = h_2$ is the same as the probability that $T[k][S_{1,k}] = T[k][S_{2,k}]$, and since the table
+is filled with values uniformly at random, the probability is $\frac{1}{M}$ because the RHS has 1 out of $M$ equally likely outcomes
+that will be equal to the LHS.
+
+This showed that if exactly one character varied between two strings, the probability that their hash would collide is equal to $\frac{1}{M}$.
+If an additional character varied, the probability of a hash collision would only be less than this, since there would be additional ways for the hash functions to be inequal compared to the previous analysis.
+
+Therefore, the probability of a hash collision between any two distinct keys is at most $\frac{1}{M}$, and the hash family is universal.
 
 
 \end{document}
