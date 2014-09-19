@@ -45,8 +45,8 @@ Recitation: A \\
 The outline of the proof is as follows:
 
 \begin{enumerate}
-\item We show a lower bound on the decrease in potential when performing a deep splay, $3 lg n + 1$.
-\item We show an upper bound on the increase in potential when performing a splay, $3 lg n + 1$.
+\item We show a lower bound on the decrease in potential when performing a deep splay, $3 lg(n) + 1$.
+\item We show an upper bound on the increase in potential when performing a splay, $3 lg(n) + 1$.
 \item From these facts, we conclude that since we start with a perfectly balanced tree (min potential), a deep splay can only occur at most once after a splay, due to restrictions on the potential function.
 \end{enumerate}
 
@@ -58,15 +58,15 @@ Where $y$ is the root node and $x$ is the node being splayed.\\
 We know that $r(y) = lg(n)$ and in the case of a deep splay, $r(x) = 0$ since it's terminal, subtree size is 1, $lg(1) = 0$.
 
 We also know the definition of amortized cost in terms of the potential function. Then in the case of a deep splay,
-$$ \text{\# of rots} + \Delta \Phi \leq 3 lg n + 1$$
+$$ \text{\# of rots} + \Delta \Phi \leq 3 lg(n) + 1$$
 
 In the case of a deep splay, the number of rotations is $d - 1$ since a rotation moves the terminal node 1 level closer to the root.\\
-And a deep splay only occurs when the tree is off-balance which means that $d \geq 6 lg n + 3$. Combining these facts, we do the following algebra:
+And a deep splay only occurs when the tree is off-balance which means that $d \geq 6 lg(n) + 3$. Combining these facts, we do the following algebra:
 
-$ d-1 + \Delta \Phi \leq 3 lg n + 1$
-$ \implies \Delta \Phi \leq 3 lg n + 1 - (d - 1)$
-$ \implies  \Delta \Phi \leq 3 lg n + 1 - (6 lg n + 3 - 1)$
-$ \implies  \Delta \Phi \leq - (3 lg n - 1)$
+$ d-1 + \Delta \Phi \leq 3 lg(n) + 1$\\
+$ \implies \Delta \Phi \leq 3 lg(n) + 1 - (d - 1)$\\
+$ \implies  \Delta \Phi \leq 3 lg(n) + 1 - (6 lg(n) + 3 - 1)$\\
+$ \implies  \Delta \Phi \leq - (3 lg(n) - 1)$
 
 \part{2} Upper bound on increase in potential of a splay.
 
