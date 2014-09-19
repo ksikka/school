@@ -127,7 +127,7 @@ is filled with values uniformly at random, the probability is $\frac{1}{M}$ beca
 that will be equal to the LHS.
 
 This showed that if exactly one character varied between two strings, the probability that their hash would collide is equal to $\frac{1}{M}$.\\
-If an additional character varied, the probability of a hash collision would only be less than this, since there would only be additional ways for the hash functions to be inequal compared to the previous analysis.
+If an additional character varied, the probability of a hash collision would only be less than this, since there would only be additional ways for the hash functions to be inequal compared to the previous sum where only one term was different.
 
 Therefore, the probability of a hash collision between any two distinct keys is at most $\frac{1}{M}$, and the hash family is universal.
 
