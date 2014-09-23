@@ -1,0 +1,94 @@
+<html>
+<head>
+
+<script>
+
+function getImages(str1, str2, str3)
+{
+if (str1=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  } 
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+    $("#tooltips img[title]").tooltip();
+    }
+  }
+if ( str3=="" || str3=="max #") 
+  {  //not using range
+  xmlhttp.open("GET","getPicture.php?cat="+str1+"&pic="+str2,true);
+  }
+else
+  { //using range
+  xmlhttp.open("GET","getPicture.php?cat="+str1+"&picstart="+str2+"&picend="+str3,true);
+  }
+xmlhttp.send();
+}
+</script>
+
+  <!-- include the tooltip code from http://jquerytools.org/demos/tooltip/ --> 
+  <script src="/jquery.tools.min.js"></script>
+
+  <style>
+    /* tooltip styling. by default the element to be styled is .tooltip  */
+  .tooltip {
+    display:none;
+    background:transparent url(/black_arrow.png); 
+    font-size:16px;
+    height:70px;
+    width:160px;
+    padding:25px;
+    color:#eee;
+  }
+    /* style the trigger elements */
+  #tooltips img {
+    border:0;
+    /* cursor:pointer; */
+    margin:0 1px;
+  }
+  </style>
+
+  <!-- @ksikka Begin custom scripts -->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+  <script type="text/javascript" src="/extracredit.js"></script>
+  <link rel="stylesheet" href="/extracredit.css"></script>
+  <!-- @ksikka End custom scripts -->
+
+</head>
+<body>
+
+<form>
+<input type="radio" name="range" value="off" checked onclick="this.form.Picture2.style.visibility='hidden'; this.form.Picture2.value='max #'; " >Single Picture
+<input type="radio" name="range" value="on" onclick="this.form.Picture2.style.visibility='visible';" >Range of Multiple Pictures<br>
+Category<input type="text" name="Category" size="30">
+Picture(s)<input type="text" name="Picture1" value="#" size="8"> 
+<input type="text" name="Picture2" style="visibility:hidden" value="max #" size="8"><br>
+<input type="button" value="Display Image(s)" onclick="getImages(this.form.Category.value,  this.form.Picture1.value, this.form.Picture2.value)" >
+</form>
+
+
+<br>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div id="tooltips">
+<div id="txtHint"><b>Enter category and numbers above, then click the button...</b></div>
+</div>
+
+
+</body>
+</html>
+
