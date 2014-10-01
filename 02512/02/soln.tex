@@ -59,7 +59,7 @@ Let $y$ be the expression level.
 
 Then:
 
-$$\vec{k} \dot \vec{x} + c = y$$
+$$\vec{k} \cdot \vec{x} + c = y$$
 
 If we have $n+1$ such equations, one for each combination, we can represent the linear
 system in the following matrix: ($x_i$ will now be $x_{j,i}$ where $j$ is the ordinal number of the combination/equation, and apply a similar transformation to the indexes of $k$ and $y$)
@@ -87,6 +87,8 @@ $
  \end{bmatrix}
 $
 
+We know the eqns are independent since the combinations of substitutions are distinct, and may not be scalar multiples of one another because all values are zero or one.
 
+Therefore the matrix is full-rank, and you'll find exact solutions for $\vec{k}$ using Gaussian Elimination.
 
 \end{document}
