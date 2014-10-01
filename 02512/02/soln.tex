@@ -89,6 +89,13 @@ $
 
 We know the eqns are independent since the combinations of substitutions are distinct, and may not be scalar multiples of one another because all values are zero or one.
 
-Therefore the matrix is full-rank, and you'll find exact solutions for $\vec{k}$ using Gaussian Elimination.
+The problem is in the canonical $A\vec{x} = \vec{b}$ form.
+The A matrix is full-rank (number of rows equals number of columns), and you'll find exact solutions for $\vec{k}$ using Gaussian Elimination.
+
+\part{b}
+Now we have $n^2$ equations rather than $n+1$ and the number of rows is greater than the number of columns.
+
+Therefore the system is overdetermined.
+Given our overdetermined system $X \vec{k} = \vec{y}$, we find $\vec{k}$ which minimizes the sum of least-squares by solving the linear system $(X^T X)\vec{k} = (X^T \vec{y})$
 
 \end{document}
