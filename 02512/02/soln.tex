@@ -42,28 +42,50 @@
 \end{center}
 
 \question{1}
-%n substitions you can make
-%possible to make any combination simultaneously
-%what combination maximizes obj f?
-%
-%linear factor for each substitution...
-%k1x1 + k2x2 + ... + knxn = Expression
 
 \part{a}
-Consider the linear system:
-  $$X \vec{k} = \text{expression lvl}$$
 
+For one combination of substitutions made, define the following variables:
 
+Let $\vec{x}$ be an n-dimensional vector of 1s and 0s where $x_i$ is 1
+if the $i^{th}$ substitution was made, and 0 if not.
 
+Let $\vec{k}$ be an n-dimensional vector of weights, where $k_i$ is the amount
+that making the $i^{th}$ substitution contributes to the expression level.
 
+Let $c$ be the baseline expression level.
 
+Let $y$ be the expression level.
 
+Then:
 
+$$\vec{k} \dot \vec{x} + c = y$$
 
+If we have $n+1$ such equations, one for each combination, we can represent the linear
+system in the following matrix: ($x_i$ will now be $x_{j,i}$ where $j$ is the ordinal number of the combination/equation, and apply a similar transformation to the indexes of $k$ and $y$)
 
-
-
-
+$
+ \begin{bmatrix}
+  x_{1,1} & x_{1,2} & \cdots & x_{1,n} & 1\\
+  x_{2,1} & x_{2,2} & \cdots & x_{2,n} & 1\\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  x_{m,1} & x_{m,2} & \cdots & x_{m,n} & 1
+ \end{bmatrix}
+ \begin{bmatrix}
+  k_{1} \\
+  k_{2} \\
+  \vdots  \\
+  k_{m} \\
+  c
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  y_{1} \\
+  y_{2} \\
+  \vdots  \\
+  y_{m}
+ \end{bmatrix}
+$
 
 
 
