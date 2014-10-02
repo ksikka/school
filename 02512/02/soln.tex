@@ -89,7 +89,7 @@ $
 
 We know the eqns are independent since the combinations of substitutions are distinct, and may not be scalar multiples of one another because all values are zero or one.
 
-The problem is in the canonical $A\vec{x} = \vec{b}$ form.
+The problem is in the canonical $A\vec{x} = \vec{b}$ form (but we'll call it  $X \vec{k} = \vec{y})$.
 The A matrix is full-rank (number of rows equals number of columns), and you'll find exact solutions for $\vec{k}$ using Gaussian Elimination.
 
 \part{b}
@@ -97,5 +97,26 @@ Now we have $n^2$ equations rather than $n+1$ and the number of rows is greater 
 
 Therefore the system is overdetermined.
 Given our overdetermined system $X \vec{k} = \vec{y}$, we find $\vec{k}$ which minimizes the sum of least-squares by solving the linear system $(X^T X)\vec{k} = (X^T \vec{y})$
+
+\part{c}
+We add an entry for each pair of substitions ($n \choose 2$ pairs) to our bit vector $x$ and correspondingly our weight vector $k$ for each experimental test.
+The bit vector $x$ had $n+1$ entries before, now we add $n \choose 2 = \frac{1}{2}(n^2 - n)$ entries to result in a total of $\frac{1}{2}(n^2+n+2)$ entries.
+
+The number of entries is larger than $n^2$ when $n \geq 2$ (determined using Wolfram Mathematica), so the system is underdetermined.
+There are many valid solutions, but one way to get one solution would be to find the pseudoinverse of the matrix formed by the linear systems (done in a manner similar to part A) using Singular Value Decomposition.
+Then mulitply the pseudoinverse by the $\vec{y}$ to obtain a solution for $\vec{k}$ that has the most number of zeros in it.
+
+\question{2}
+\part{a}
+The total potential energy of the cell is then given by E(x) = E1(x) + E2(x).
+
+\begin{alignat}{2}
+  &\quad & F(x) &= \frac{d}{dx} E(x)\\ 
+  &&&= \frac{d}{dx} E_1(x) + \frac{d}{dx} E_2(x) \\  
+  &&&= \frac{d}{dx} \frac{1}{4} x^{4} + \frac{d}{dx} x^2 \\  
+  &&&= x^{3} + 2x \\
+\end{alignat}
+
+
 
 \end{document}
