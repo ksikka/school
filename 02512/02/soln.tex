@@ -124,8 +124,7 @@ Then mulitply the pseudoinverse by the $\vec{y}$ to obtain a solution for $\vec{
 Now we need to find the values of x for which the equation $x^{3} + 2x - 5 = 0$. This is a zero-finding problem.
 
 \part{c}
-We can do this numerically using the bisection method.
-Let $f(x) = x^{3} + 2x - 5$
+Bisection method for $f(x) = x^{3} + 2x - 5$\\
 
 Initialization:\\
 $x_{min} = 1$ and $x_{max} = 2$.\\
@@ -150,7 +149,42 @@ $f_{mid} = f(x_{mid}) = 0.34961... $\\
 It's greater than zero, so:\\
 $x_{max} = 1.375$
 
-Return $x = \frac{x_{min} + x_{max}}{2} = \frac{1.25 + 1.375}{2} = 1.3125$
+Return $x = \frac{x_{min} + x_{max}}{2} = \frac{1.25 + 1.375}{2} = 1.3125$\\
+The backward error is $x_{max} - x_{min} = 1.375 - 1.25 = 1.125$\\
+The forward error is $f(x) = 0.34961...$
+
+
+\part{d}
+Secant method for $f(x) = x^{3} + 2x - 5$\\
+
+Initialization:\\
+$x_{min} = 1$ and $x_{max} = 2$.\\
+$f_{min} = x_{min}^{3} + 2x_{min} - 5 = 1 + 2 - 5 = -2$\\
+$f_{max} = x_{max}^{3} + 2x_{max} - 5 = 8 + 4 - 5 = 7$\\
+
+\newcommand{xmid}[4]{\1 - \frac{\2 - \1}{\4 - \3}\3}
+
+First round:\\
+$x_{mid} = \xmid{x_{min}}{x_{max}}{f_{min}}{f_{max}} = \xmid{1}{2}{-2}{7} = 1$\\
+$f_{mid} = f(x_{mid}) = 1.375 $\\
+It's greater than zero, so:\\
+$x_{max} = 1.5$
+
+Second round:\\
+$x_{mid} = \frac{1+1.5}{2} = 1.25$\\
+$f_{mid} = f(x_{mid}) = -0.546875 $\\
+It's less than zero, so:\\
+$x_{min} = 1.25$
+
+Third round:\\
+$x_{mid} = \frac{1.25+1.5}{2} = 1.375$\\
+$f_{mid} = f(x_{mid}) = 0.34961... $\\
+It's greater than zero, so:\\
+$x_{max} = 1.375$
+
+Return $x = \frac{x_{min} + x_{max}}{2} = \frac{1.25 + 1.375}{2} = 1.3125$\\
+The backward error is $x_{max} - x_{min} = 1.375 - 1.25 = 1.125$\\
+The forward error is $f(x) = 0.34961...$
 
 
 \end{document}
