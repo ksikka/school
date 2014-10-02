@@ -236,8 +236,8 @@ $x_3 \geq 0$\\
 \newcommand{\dubpartial}[2]{\frac{\partial F}{\partial #1} \frac{\partial F}{\partial #2}}
 % takes as argument the inner a
 \newcommand{\partiala}[1]{\frac{\frac{\partial F}{\partial #1}(a + \Delta a, k_1, k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta a}}
-\newcommand{\partialkone}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1 + \Delta k_1, k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k_1}}
-\newcommand{\partialktwo}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1, k_2 + \Delta k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k_2}}
+\newcommand{\partialone}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1 + \Delta k_1, k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k_1}}
+\newcommand{\partialtwo}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1, k_2 + \Delta k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k_2}}
 $
  \begin{bmatrix}
    \dubpartial{a}{a} & \dubpartial{a}{k_1} & \dubpartial{a}{k_2} \\
