@@ -223,12 +223,37 @@ $$\min_{x_1, x_2, x_3} f(x_1, x_2, x_3) = 3x_1 + 4x_2 + 5x_3$$
 \part{c}
 Minimize $f(x_1, x_2, x_3) = 3x_1 + 4x_2 + 5x_3$\\
 Subject to the following constraints:\\
-$x_1 + 2x_2 \geq 5$\\
-$x_1 + x_2 + 3x_3 \geq 2$\\
-$x_1 + 2x_3 \geq 3$\\
+$x_1 + 2x_2 - \bar{x_a} = 5$\\
+$x_1 + x_2 + 3x_3 - \bar{x_b} = 2$\\
+$x_1 + 2x_3 - \bar{x_c} = 3$\\
 $x_1 \geq 0$\\
 $x_2 \geq 0$\\
 $x_3 \geq 0$\\
+$\bar{x_a} \geq 0$\\
+$\bar{x_b} \geq 0$\\
+$\bar{x_c} \geq 0$\\
+
+\part{d}
+We first set $x_1 = 5, x_2 = 0, x_3 = 0$, and by our constraints,
+observe that $x_a = 0, x_b = 1, x_c = 2$. $n-m$ of the variables are zero so this is a simplex.
+The objective function value is now 15, we will try to improve it in the step after next.
+
+Now we rewrite the constraints and objective as follows:\\
+$x_1 = 2x_2 - \bar{x_a} - 5$\\
+$x_1 + \bar{x_b} = x_2 + 3x_3  - 2$\\
+$x_1 + \bar{x_c} = 3 - 2x_3$
+
+We choose to increase $x_2$ and see that we can increase it to $x_2 = 1$, before $x_c$ is forced to be 0.
+Also this forces $x_1$ to be 3. Our new values are: $x_1 = 3, x_2 = 1, x_3 = 0, x_a = 0, x_b = 1, x_c = 0$.
+The objective function value is now 13, a strict improvement from our previous value..
+
+After this, we can't increase $x_3$ because either we're out of slack or we increase the objective function.
+
+Thus, we're at a global maximum.
+
+\part{e}
+$x_1 = 3, x_2 = 1, x_3 = 0$ and it costs \$13
+
 
 \question{4}
 
@@ -251,7 +276,7 @@ $$\nabla F = \begin{bmatrix}
 \newcommand{\partiala}[1]{\frac{\frac{\partial F}{\partial #1}(a + \Delta a, k_1, k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta a}}
 \newcommand{\partialone}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1 + \Delta k, k_2) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k}}
 \newcommand{\partialtwo}[1]{\frac{\frac{\partial F}{\partial #1}(a, k_1, k_2 + \Delta k) - \frac{\partial F}{\partial #1}(a, k_1, k_2)}{\Delta k}}
-$
+$$
  \begin{bmatrix}
    \dubpartial{a}{a} & \dubpartial{a}{k_1} & \dubpartial{a}{k_2} \\
    \dubpartial{k_1}{a} & \dubpartial{k_1}{k_1} & \dubpartial{k_1}{k_2} \\
@@ -263,7 +288,7 @@ $
    \partialone{a} & \partialone{k_1} & \partialone{k_2} \\
    \partialtwo{a} & \partialtwo{k_1} & \partialtwo{k_2}
  \end{bmatrix}
- $
+ $$
 
 \part{c}
 \begin{verbatim}
@@ -284,6 +309,7 @@ function newton_raphson(v0, deltaA, deltaK, n):
 \end{verbatim}
 
 \part{d}
+Code submitted separately.
 
 \part{e}
 
