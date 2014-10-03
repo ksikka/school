@@ -233,6 +233,16 @@ $x_3 \geq 0$\\
 \question{4}
 
 \part{a}
+$\nabla F = \begin{bmatrix}
+\frac{\partial F}{\partial a}\\
+\frac{\partial F}{\partial k_1}\\
+\frac{\partial F}{\partial k_2}
+\end{bmatrix}
+=
+\sum_{i=1}^{n} 2(e^{-k_{1}t_i} - e^{-k_{2}t_i})(F(t_i) - f_i)\\
+\sum_{i=1}^{n} 2(at_{i}e^{-k_{1}t_i})(F(t_i) - f_i)\\
+\sum_{i=1}^{n} 2((1-a)t_{i}e^{-k_{2}t_i})(F(t_i) - f_i)
+\end{bmatrix}$
 
 \part{b}
 \newcommand{\dubpartial}[2]{\frac{\partial F}{\partial #1} \frac{\partial F}{\partial #2}}
@@ -262,9 +272,9 @@ function J(v, deltaA, deltaK) =
 
 let gradF = 3x1 vector from part A
 
-function newton_raphson(initialV, deltaA, deltaK, n):
+function newton_raphson(v0, deltaA, deltaK, n):
 
-    let v = initialV
+    let v = v0
     from 1 to n:
         y = linear_solve(J(v), gradF)
         v = v - y
