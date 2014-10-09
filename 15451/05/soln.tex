@@ -66,10 +66,10 @@ Either $r->left$ is NULL or in $A$ or in $B$.
 Either $r->right$ is NULL or in $A$ or in $B$.
 If both left and right are NULL, then if $k=1$ return ({G}, {}, {}) 
 If only left is NULL, take the min over |S| of the following cases:
-      $r \in A, r->right \in A$ given by $T[r->right][k-1][1]$    
-  1 + $r \in A, r->right \in B$ given by $T[r->right][k-1][0]$    
-      $r \in B, r->right \in A$ given by $T[r->right][k][1]$    
-  1 + $r \in B, r->right \in B$ given by $T[r->right][k][0]$    
+  $r \in A, r->right \in A$ given by     $T[r->right][k-1][1]$    
+  $r \in A, r->right \in B$ given by 1 + $T[r->right][k-1][0]$    
+  $r \in B, r->right \in A$ given by     $T[r->right][k][1]$    
+  $r \in B, r->right \in B$ given by 1 + $T[r->right][k][0]$    
 
 Then add $r$ to the approprate set based on the case which was the min,
 adding $(r, r->right)$ as a split edge if necessary.
@@ -80,8 +80,24 @@ Now we have the case where left and right are not null. In this case,
 left and right subtrees can be partitioned and the sum of their A sets should be $k-1$ if $r$ in $A$ and $k$ otherwise.
 We must minimize the number of split edges accross all variations of A-set-size.
 
+  $r \in A, r->left \in A, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1       T[r->left][i][1] +     T[r->right][j][1]$ 
+  $r \in A, r->left \in A, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1       T[r->left][i][1] + 1 + T[r->right][j][0]$ 
+  $r \in A, r->left \in B, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1   1 + T[r->left][i][0] +     T[r->right][j][1]$ 
+  $r \in A, r->left \in B, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1   1 + T[r->left][i][0] + 1 + T[r->right][j][0]$ 
+  $r \in B, r->left \in A, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k     1 + T[r->left][i][1] + 1 + T[r->right][j][1]$ 
+  $r \in B, r->left \in A, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k     1 + T[r->left][i][1] +     T[r->right][j][0]$ 
+  $r \in B, r->left \in B, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k         T[r->left][i][0] + 1 + T[r->right][j][1]$ 
+  $r \in B, r->left \in B, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k         T[r->left][i][0] +     T[r->right][j][0]$ 
+
+Then add $r$ to the approprate set based on the case which was the min,
+adding $(r, r->right)$ as a split edge if necessary,
+adding $(r, r->left)$ as a split edge if necessary.
 
 
+Note that at each node we do at most $O(k)$ work assuming the table is computed.
+For $n$ nodes there is at most $O(nk) = O(n^2)$ work.
+
+The cells are never recomputed and each cell is a constant time computation given the other cells. Populating the table takes $O(nk)$ work.
 
 
 \end{document}
