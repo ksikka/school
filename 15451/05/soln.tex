@@ -104,12 +104,6 @@ The procedure to compute kPart(r,k,b) is as follows:
     If only r->right is NULL,
         Logic is symmetric to above case.
 
-    %Either $r$ is in $A$ or $B$.
-    %Either $r->left$ is NULL or in $A$ or in $B$.
-    %Either $r->right$ is NULL or in $A$ or in $B$.
-
-% how did you fund travels
-
     If r->left and r->right are not NULL,
         $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, r->right, and r->left that might yield a minimizing k-partition:
                 Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.
@@ -156,17 +150,9 @@ The procedure to compute kPart(r,k,b) is as follows:
                     \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,0)$
                 $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
 
-        Then add $r$ to the approprate set based on the case which was the min,
-        adding $(r, r->right)$ as a split edge if necessary,
-        adding $(r, r->left)$ as a split edge if necessary.
 
    return $T[r][k][i]$
 
-
-Note that at each node we do at most $O(k)$ work assuming the table is computed.
-For $n$ nodes there is at most $O(nk) = O(n^2)$ work.
-
-The cells are never recomputed and each cell is a constant time computation given the other cells. Populating the table takes $O(nk)$ work.
 
 
 \end{document}
