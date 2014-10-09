@@ -49,49 +49,118 @@ Recitation: A \\
 
 \question{3}{Color Me Red, Color Me Blue}
 
-Create a memo table $T$ indexed by a node, a value from 1 to k, and a bit indicating whether or not the node given by the first index is in set A.
-We initialize the table with NULLs.
+For convenience, we will call a $(k,n-k)$ partition which minimizes split edges a ``minimizing k-partition''.
+
+We will consider a function kPart as follows:\\
 
 Given a node $n$, value $i (1 \leq i \leq k)$ and bit $b$,\\
-the table cell contains either NULL or some $(A,B,S)$ where $A,B$ partition the nodes of the subtree rooted at $n$ such that $|A| = k$, $n \in A \iff b = 1$, $S$ is the set of split edges, and there does not exist a partition with fewer split edges. 
+The function returns NONE, or SOME $(A,B,S)$.\\
 
-% add a note about the size of the table.
+$\mathtt{kPart}(n,k,b) = \mathtt{NONE}$ signifies that no k-partition of vertices in the subtree rooted at $n$ exists, which happens when $(k > |n|)$. \\
+$\mathtt{kPart}(n,k,b) = \mathtt{SOME}(A,B,S)$ signifies that $A,B$ is some minimizing k-partition the nodes of the subtree rooted at $n$ such that $n \in A \iff b = 1$, $S$ is the set of split edges\\
 
-Now to calculate the $(k, n-k)$ partition of a binary tree $G$, we do the following case analysis:\\
 
-Call the root $r$.
-If $k = 0$, return ({}, {all nodes in G})
-Either $r$ is in $A$ or $B$.
-Either $r->left$ is NULL or in $A$ or in $B$.
-Either $r->right$ is NULL or in $A$ or in $B$.
-If both left and right are NULL, then if $k=1$ return ({G}, {}, {}) 
-If only left is NULL, take the min over |S| of the following cases:
-  $r \in A, r->right \in A$ given by     $T[r->right][k-1][1]$    
-  $r \in A, r->right \in B$ given by 1 + $T[r->right][k-1][0]$    
-  $r \in B, r->right \in A$ given by     $T[r->right][k][1]$    
-  $r \in B, r->right \in B$ given by 1 + $T[r->right][k][0]$    
+We create a memo table for the computation which we assume is available to the function.\\
+The table can be accessed by $T[n][k][b]$ where $n$ is a node, $k$ is an int from 0 to $k$, $b$ is a bit.\\
+We initialize the table with NULLs, and compute the values in the following recursive function.\\
+Note that the table has $n*(k+1)*2$ cells.
 
-Then add $r$ to the approprate set based on the case which was the min,
-adding $(r, r->right)$ as a split edge if necessary.
+The procedure to compute kPart(r,k,b) is as follows:
+    % Check if value has already been computed.
+    If $T[r][k][i] \neq \text{NULL}$,
+       return $T[r][k][i]$
+    % If k=0, A is empty, B is rest of nodes.
+    If $k = 0$,
+       $T[r][k][i] = ({}, {\mathtt{all_nodes}(b)}, {})$
+    % If k > n, no set A can be formed...
+    If $k > n$,
+       $T[r][k][i] = \mathtt{DNE}$
 
-Symmetric logic if only right is NULL.
+    If both r->left and r->right are NULL,
+        If $k=1$
+            $T[r][k][i] = ({r}, {}, {})$
+        Else
+            % k > n and this case would have been caught earlier
 
-Now we have the case where left and right are not null. In this case,
-left and right subtrees can be partitioned and the sum of their A sets should be $k-1$ if $r$ in $A$ and $k$ otherwise.
-We must minimize the number of split edges accross all variations of A-set-size.
+    If only r->left is NULL,
+        % There are four cases.
+        % We will compute the number of split edges in each case,
+        % take the case with minimum split edges
+        % return the partitioning for that case.
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and r->right that might yield a minimizing k-partition:
+          $r \in A, r->right \in A$ =>
+            $A_r, B_r, S_r = \mathtt{kPart}(r->right,k-1,1)$
+            answer is $({r} \cup A_r, B_r, S_r)$
+          $r \in A, r->right \in B$ =>
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k-1,0)$
+            answer is $({r} \cup A_r, B_r, S_r \cup {(r, r->right)})$
+          $r \in B, r->right \in A$ =>
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,1)$
+            answer is $(A_r,{r} \cup B_r, S_r \cup {(r, r->right)})$
+          $r \in B, r->right \in B$ => 1 + $T[r->right][k][0]$
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,0)$
+            answer is $(A_r,{r} \cup B_r, S_r)$
 
-  $r \in A, r->left \in A, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1       T[r->left][i][1] +     T[r->right][j][1]$ 
-  $r \in A, r->left \in A, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1       T[r->left][i][1] + 1 + T[r->right][j][0]$ 
-  $r \in A, r->left \in B, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1   1 + T[r->left][i][0] +     T[r->right][j][1]$ 
-  $r \in A, r->left \in B, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k-1   1 + T[r->left][i][0] + 1 + T[r->right][j][0]$ 
-  $r \in B, r->left \in A, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k     1 + T[r->left][i][1] + 1 + T[r->right][j][1]$ 
-  $r \in B, r->left \in A, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k     1 + T[r->left][i][1] +     T[r->right][j][0]$ 
-  $r \in B, r->left \in B, r->right \in A$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k         T[r->left][i][0] + 1 + T[r->right][j][1]$ 
-  $r \in B, r->left \in B, r->right \in B$ given by $table cell minimizing split edge size over all integral i,j \geq 0 st i+j = k         T[r->left][i][0] +     T[r->right][j][0]$ 
+    If only r->right is NULL,
+        Logic is symmetric to above case.
 
-Then add $r$ to the approprate set based on the case which was the min,
-adding $(r, r->right)$ as a split edge if necessary,
-adding $(r, r->left)$ as a split edge if necessary.
+    %Either $r$ is in $A$ or $B$.
+    %Either $r->left$ is NULL or in $A$ or in $B$.
+    %Either $r->right$ is NULL or in $A$ or in $B$.
+
+% how did you fund travels
+
+    If r->left and r->right are not NULL,
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, r->right, and r->left that might yield a minimizing k-partition:
+                Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.
+                We must minimize the number of split edges accross all variations of A-set-size.
+
+          $r \in A, r->left \in A, r->right \in A\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1$\\
+                $A_l, B_l, S_l = \mathtt{kPart}(r->left,i,1)$\\
+                $A_r, B_r, S_r = \mathtt{kPart}(r->right,j,1)$
+                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r)$
+
+          $r \in A, r->left \in A, r->right \in B
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1
+                    \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,0)$
+                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->right)})$
+
+          $r \in A, r->left \in B, r->right \in A
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1
+                1 + \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,1)$
+                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left)})$
+
+          $r \in A, r->left \in B, r->right \in B
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1
+                1 + \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,0)$
+                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left),(r, r->right)})$
+
+          $r \in B, r->left \in A, r->right \in A
+              minimize |S| over all integral i,j \geq 0 st i+j = k
+                1 + \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,1)$
+                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left),(r, r->right)})$
+
+          $r \in B, r->left \in A, r->right \in B
+              minimize |S| over all integral i,j \geq 0 st i+j = k
+                1 + \mathtt{kPart}(r->left,i,1) +     \mathtt{kPart}(r->right,j,0)$
+                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left)})$
+
+          $r \in B, r->left \in B, r->right \in A
+              minimize |S| over all integral i,j \geq 0 st i+j = k
+                    \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,1)$
+                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->right)})$
+
+          $r \in B, r->left \in B, r->right \in B
+              minimize |S| over all integral i,j \geq 0 st i+j = k
+                    \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,0)$
+                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
+
+        Then add $r$ to the approprate set based on the case which was the min,
+        adding $(r, r->right)$ as a split edge if necessary,
+        adding $(r, r->left)$ as a split edge if necessary.
+
+   return $T[r][k][i]$
 
 
 Note that at each node we do at most $O(k)$ work assuming the table is computed.
