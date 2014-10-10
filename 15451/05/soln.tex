@@ -121,6 +121,9 @@ The cost of running djikstra's $n$ times using the fibonacci heaps version is $O
 
 \question{3}{Color Me Red, Color Me Blue}
 
+\newcommand{\rright}[0]{\texttt{r-{\textgreater}right }}
+\newcommand{\rleft}[0]{\texttt{r-{\textless}left }}
+
 For convenience, we will call a $(k,n-k)$ partition which minimizes split edges a ``minimizing k-partition''.
 
 We will consider a function kPart as follows:\\
@@ -148,14 +151,12 @@ The procedure to compute kPart(r,k,b) is as follows:
     If $k > n$,
        $T[r][k][i] = \mathtt{DNE}$
 
-    If both r->left and r->right are NULL,
+    If both \rleft and \rright are NULL,
         If $k=1$
             $T[r][k][i] = ({r}, {}, {})$
         Else
             % k > n and this case would have been caught earlier
-
-\newcommand{\rright}[0]{\texttt{r-{\textgreater}right}}
-    If only r->left is NULL,
+    If only \rleft is NULL,
         % There are four cases.
         % We will compute the number of split edges in each case,
         % take the case with minimum split edges
@@ -174,11 +175,11 @@ The procedure to compute kPart(r,k,b) is as follows:
             $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,0)$
             answer is $(A_r,{r} \cup B_r, S_r)$
 
-    If only r->right is NULL,
+    If only \rright is NULL,
         Logic is symmetric to above case.
 
-    If r->left and r->right are not NULL,
-        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, r->right, and r->left that might yield a minimizing k-partition:
+    If \rleft and \rright are not NULL,
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, \rright, and \rleft that might yield a minimizing k-partition:
                 Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.
                 We must minimize the number of split edges accross all variations of A-set-size.
 
