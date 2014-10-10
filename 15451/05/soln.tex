@@ -165,16 +165,16 @@ The procedure to compute kPart(r,k,b) is as follows:\\
         ( take the case with minimum split edges )\\
         ( return the partitioning for that case. )\\
         $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:\\
-          $r \in A, \mrright \in A$ =>\\
+          $r \in A, \mrright \in A \implies $\\
             $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,1)$\\
             answer is $({r} \cup A_r, B_r, S_r)$\\
-          $r \in A, \mrright \in B$ =>\\
+          $r \in A, \mrright \in B \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
             answer is $({r} \cup A_r, B_r, S_r \cup {(r, \mrright)})$\\
-          $r \in B, \mrright \in A$ =>\\
+          $r \in B, \mrright \in A \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
             answer is $(A_r,{r} \cup B_r, S_r \cup {(r, \mrright)})$\\
-          $r \in B, \mrright \in B$ => 1 + $T[\mrright][k][0]$\\
+          $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
             answer is $(A_r,{r} \cup B_r, S_r)$
 
