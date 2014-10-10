@@ -186,46 +186,46 @@ The procedure to compute kPart(r,k,b) is as follows:\\
                 Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.\\
                 We must minimize the number of split edges accross all variations of A-set-size.
 
-          $r \in A, r->left \in A, \mrright \in A\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1$\\
-                $A_l, B_l, S_l = \mathtt{kPart}(r->left,i,1)$\\
+          $r \in A, \mrleft \in A, \mrright \in A\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1$\\
+                $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,1)$\\
                 $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,1)$\\
-                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r)$
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r)$
 
-          $r \in A, r->left \in A, \mrright \in B\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
-                    \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
-                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrright)})$
+          $r \in A, \mrleft \in A, \mrright \in B\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
+                    \mathtt{kPart}(\mrleft,i,1) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrright)})$
 
-          $r \in A, r->left \in B, \mrright \in A\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
-                1 + \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(\mrright,j,1)$\\
-                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left)})$
+          $r \in A, \mrleft \in B, \mrright \in A\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
+                1 + \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,1)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrleft)})$
 
-          $r \in A, r->left \in B, \mrright \in B\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
-                1 + \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
-                $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left),(r, \mrright)})$
+          $r \in A, \mrleft \in B, \mrright \in B\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
+                1 + \mathtt{kPart}(\mrleft,i,0) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrleft),(r, \mrright)})$
 
-          $r \in B, r->left \in A, \mrright \in A\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k\\
-                1 + \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left),(r, \mrright)})$
+          $r \in B, \mrleft \in A, \mrright \in A\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
+                1 + \mathtt{kPart}(\mrleft,i,1) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrleft),(r, \mrright)})$
 
-          $r \in B, r->left \in A, \mrright \in B\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k\\
-                1 + \mathtt{kPart}(r->left,i,1) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left)})$
+          $r \in B, \mrleft \in A, \mrright \in B\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
+                1 + \mathtt{kPart}(\mrleft,i,1) +     \mathtt{kPart}(\mrright,j,0)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrleft)})$
 
-          $r \in B, r->left \in B, \mrright \in A\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k\\
-                    \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrright)})$
+          $r \in B, \mrleft \in B, \mrright \in A\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
+                    \mathtt{kPart}(\mrleft,i,0) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrright)})$
 
-          $r \in B, r->left \in B, \mrright \in B\\
-              minimize |S| over all integral i,j \geq 0 st i+j = k\\
-                    \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
+          $r \in B, \mrleft \in B, \mrright \in B\\
+              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
+                    \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,0)$\\
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
 
 
    return $T[r][k][i]$
