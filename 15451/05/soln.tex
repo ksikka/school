@@ -140,15 +140,15 @@ The table can be accessed by $T[n][k][b]$ where $n$ is a node, $k$ is an int fro
 We initialize the table with NULLs, and compute the values in the following recursive function.\\
 Note that the table has $n*(k+1)*2$ cells.
 
-The procedure to compute kPart(r,k,b) is as follows:
-    % Check if value has already been computed.
-    If $T[r][k][i] \neq \text{NULL}$,
-       return $T[r][k][i]$
-    % If k=0, A is empty, B is rest of nodes.
-    If $k = 0$,
-       $T[r][k][i] = ({}, {\mathtt{all_nodes}(b)}, {})$
-    % If k > n, no set A can be formed...
-    If $k > n$,
+The procedure to compute kPart(r,k,b) is as follows:\\
+    (Check if value has already been computed. )\\
+    If $T[r][k][i] \neq \text{NULL}$,\\
+       return $T[r][k][i]$\\
+    ( If k=0, A is empty, B is rest of nodes. )\\
+    If $k = 0$,\\
+       $T[r][k][i] = ({}, {\mathtt{all_nodes}(b)}, {})$\\
+    ( If k > n, no set A can be formed... )\\
+    If $k > n$,\\
        $T[r][k][i] = \mathtt{DNE}$
 
     If both \rleft and \rright are NULL,
@@ -157,71 +157,71 @@ The procedure to compute kPart(r,k,b) is as follows:
         Else
             % k > n and this case would have been caught earlier
     If only \rleft is NULL,
-        % There are four cases.
-        % We will compute the number of split edges in each case,
-        % take the case with minimum split edges
-        % return the partitioning for that case.
-        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:
-          $r \in A, r->right \in A$ =>
-            $A_r, B_r, S_r = \mathtt{kPart}(r->right,k-1,1)$
-            answer is $({r} \cup A_r, B_r, S_r)$
-          $r \in A, r->right \in B$ =>
-            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k-1,0)$
-            answer is $({r} \cup A_r, B_r, S_r \cup {(r, r->right)})$
-          $r \in B, r->right \in A$ =>
-            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,1)$
-            answer is $(A_r,{r} \cup B_r, S_r \cup {(r, r->right)})$
-          $r \in B, r->right \in B$ => 1 + $T[r->right][k][0]$
-            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,0)$
+        ( There are four cases. )\\
+        ( We will compute the number of split edges in each case, )\\
+        ( take the case with minimum split edges )\\
+        ( return the partitioning for that case. )\\
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:\\
+          $r \in A, r->right \in A$ =>\\
+            $A_r, B_r, S_r = \mathtt{kPart}(r->right,k-1,1)$\\
+            answer is $({r} \cup A_r, B_r, S_r)$\\
+          $r \in A, r->right \in B$ =>\\
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k-1,0)$\\
+            answer is $({r} \cup A_r, B_r, S_r \cup {(r, r->right)})$\\
+          $r \in B, r->right \in A$ =>\\
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,1)$\\
+            answer is $(A_r,{r} \cup B_r, S_r \cup {(r, r->right)})$\\
+          $r \in B, r->right \in B$ => 1 + $T[r->right][k][0]$\\
+            $A_r, B_r, S_r = \mathtt{kPark}(r->right,k,0)$\\
             answer is $(A_r,{r} \cup B_r, S_r)$
 
-    If only \rright is NULL,
+    If only \rright is NULL,\\
         Logic is symmetric to above case.
 
-    If \rleft and \rright are not NULL,
-        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, \rright, and \rleft that might yield a minimizing k-partition:
-                Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.
+    If \rleft and \rright are not NULL,\\
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r, \rright, and \rleft that might yield a minimizing k-partition:\\
+                Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.\\
                 We must minimize the number of split edges accross all variations of A-set-size.
 
           $r \in A, r->left \in A, r->right \in A\\
               minimize |S| over all integral i,j \geq 0 st i+j = k-1$\\
                 $A_l, B_l, S_l = \mathtt{kPart}(r->left,i,1)$\\
-                $A_r, B_r, S_r = \mathtt{kPart}(r->right,j,1)$
+                $A_r, B_r, S_r = \mathtt{kPart}(r->right,j,1)$\\
                 $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r)$
 
-          $r \in A, r->left \in A, r->right \in B
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1
-                    \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,0)$
+          $r \in A, r->left \in A, r->right \in B\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
+                    \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,0)$\\
                 $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->right)})$
 
-          $r \in A, r->left \in B, r->right \in A
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1
-                1 + \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,1)$
+          $r \in A, r->left \in B, r->right \in A\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
+                1 + \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,1)$\\
                 $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left)})$
 
-          $r \in A, r->left \in B, r->right \in B
-              minimize |S| over all integral i,j \geq 0 st i+j = k-1
-                1 + \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,0)$
+          $r \in A, r->left \in B, r->right \in B\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k-1\\
+                1 + \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,0)$\\
                 $answer is (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, r->left),(r, r->right)})$
 
-          $r \in B, r->left \in A, r->right \in A
-              minimize |S| over all integral i,j \geq 0 st i+j = k
-                1 + \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,1)$
+          $r \in B, r->left \in A, r->right \in A\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k\\
+                1 + \mathtt{kPart}(r->left,i,1) + 1 + \mathtt{kPart}(r->right,j,1)$\\
                 $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left),(r, r->right)})$
 
-          $r \in B, r->left \in A, r->right \in B
-              minimize |S| over all integral i,j \geq 0 st i+j = k
-                1 + \mathtt{kPart}(r->left,i,1) +     \mathtt{kPart}(r->right,j,0)$
+          $r \in B, r->left \in A, r->right \in B\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k\\
+                1 + \mathtt{kPart}(r->left,i,1) +     \mathtt{kPart}(r->right,j,0)$\\
                 $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->left)})$
 
-          $r \in B, r->left \in B, r->right \in A
-              minimize |S| over all integral i,j \geq 0 st i+j = k
-                    \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,1)$
+          $r \in B, r->left \in B, r->right \in A\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k\\
+                    \mathtt{kPart}(r->left,i,0) + 1 + \mathtt{kPart}(r->right,j,1)$\\
                 $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, r->right)})$
 
-          $r \in B, r->left \in B, r->right \in B
-              minimize |S| over all integral i,j \geq 0 st i+j = k
-                    \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,0)$
+          $r \in B, r->left \in B, r->right \in B\\
+              minimize |S| over all integral i,j \geq 0 st i+j = k\\
+                    \mathtt{kPart}(r->left,i,0) +     \mathtt{kPart}(r->right,j,0)$\\
                 $answer is (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
 
 
