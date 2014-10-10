@@ -154,12 +154,13 @@ The procedure to compute kPart(r,k,b) is as follows:
         Else
             % k > n and this case would have been caught earlier
 
+\newcommand{\rright}[0]{\texttt{r-{\textgreater}right}}
     If only r->left is NULL,
         % There are four cases.
         % We will compute the number of split edges in each case,
         % take the case with minimum split edges
         % return the partitioning for that case.
-        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and r->right that might yield a minimizing k-partition:
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:
           $r \in A, r->right \in A$ =>
             $A_r, B_r, S_r = \mathtt{kPart}(r->right,k-1,1)$
             answer is $({r} \cup A_r, B_r, S_r)$
