@@ -99,8 +99,8 @@ A new negative cycle would have to include s. However that can't be because ther
 \part{b}
 
 Case the shortest path to $v$ goes through $u$. \\
-$\Phi(v) = \mathtt{shortest path from u to v} + \Phi(u)$\\
-and we know that $\mathtt{shortest path from u to v} \leq \mathtt{len}(u,v)$\\
+$\Phi(v) = \mathtt{shortest\_path\_from\_u\_to\_v} + \Phi(u)$\\
+and we know that $\mathtt{shortest\_path\_from\_u\_to\_v} \leq \mathtt{len}(u,v)$\\
 $\implies \Phi(v) \leq len(u,v) + \Phi(u) \implies \Phi(v) - \Phi(u) \leq len(u,v)$.
 
 Case the shortest path to $v$ does not go through $u$. \\
@@ -110,7 +110,13 @@ so $\Phi(v)$ is smaller than was shown in the previous case, so the original cla
 
 \part{c}
 Consider a path of nodes $v_1, v_2, ..., v_k$. When you sum the new edge lengths, you see all of the $\Phi$ terms cancel out except\\
-you are left with $\Phi(v_1) - \Phi(v_k)$. So the length of a path in the new graph is $\mathtt{oldlen_path + \Phi(v_1) - \Phi(v_k)}$
+you are left with $\Phi(v_1) - \Phi(v_k)$. So the length of a path in the new graph is $\mathtt{old\_path\_len + \Phi(v_1) - \Phi(v_k)}$
+
+For each node, run djikstra's single source shortest path algorithm.\\
+We claim that the resulting shortest paths will be the true shortest paths in the original graph.\\
+This is because the shortest path from some $u$ to some $v$ is going to be the path among all paths from $u$ to $v$ minimizing $\mathtt{old\_path\_len(u,v) + \Phi(u) - \Phi(v)}$ where $\Phi(u) - \Phi(v)$ is a constant quantity for a given $u,v$.\\
+The real length of the path from $u$ to $v$ is $\mathtt{new\_path\_len(u,v) - \Phi(u) + \Phi(v)}$\\
+The cost of running djikstra's $n$ times using the fibonacci heaps version is $O(nm + n^2lg(n)$
 
 
 \question{3}{Color Me Red, Color Me Blue}
