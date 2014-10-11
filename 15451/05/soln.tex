@@ -143,7 +143,6 @@ $S$ is the set of split edges\\
 We create a memo table for the computation which we assume is available to the function.\\
 The table can be accessed by $T[n][k][b]$ where $n$ is a node, $k$ is an int from 0 to $k$, $b$ is a bit.\\
 We initialize the table with NULLs, and compute the values in the following recursive function.\\
-Note that the table has $n*(k+1)*2$ cells.
 
 \newenvironment{changemargin}[2]{%
 \list{}{\rightmargin#2\leftmargin#1
