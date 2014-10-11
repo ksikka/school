@@ -194,17 +194,17 @@ The procedure to compute kPart(r,k,b) is as follows:
             \end{indentmore}
           Case 2: $r \in A, \mrright \in B \implies $
             \begin{indentmore}
-            $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
+            $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,0)$\\
             answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$
            \end{indentmore}
           Case 3: $r \in B, \mrright \in A \implies $
             \begin{indentmore}
-            $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
+            $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k,1)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$
            \end{indentmore}
           Case 4: $r \in B, \mrright \in B \implies $
             \begin{indentmore}
-            $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
+            $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k,0)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r)$
            \end{indentmore}
           \end{indentmore}
@@ -309,9 +309,27 @@ The procedure to compute kPart(r,k,b) is as follows:
    return $T[r][k][i]$
 \end{indentmore}
 
+\textbb{Correctness}
 
-Each function call costs $O(1)$ if the value in the table is computed, else it makes recursive calls, but these are also $O(1)$ if computed already.
-The base case takes $O(1) to compute$. We see that each function call we makes at most $8(k+1)$ recursive function calls, we do this a total of $n$ times. That's at most O(nk) function calls total accross the entire algorithm.
+The proof of correctness is by structural induction.\\
+The algorithm correctly returns $(A,B,S)$ of the minimizing k-partition of a leaf node.\\
+The inductive cases consider all possible colorings of the root, the left child, and right child,\\
+compute the minimizing k-partition in each case, and takes the answer with the min $|S|$ of all of those.
+
+Note that there are no edges between nodes in the left subtree and nodes in the right subtree due to the definition of a tree.\\
+Therefore there are no other partitions to consider which can be a minimizing k-partition.
+
+\textbb{Runtime analysis}
+
+We're going to put coins on nodes/root of subtrees.
+A function call spends the coins on the node/roote of subtree to do work, to perform recursive calls that have been memoized, but not to perform unmemoized recursive calls.
+The claim is that those recursive calls will pay for themselves using the money on their root.
+
+For a given node $n$ and $k$ value, the function will spend at most $k+1$ (which is less than $n+1$) coins at most twice (once when b is 1, once when b is 0). This is the worst case for the function call because it assumes all function calls are memoized, otherwise the recursive call would pay for the work.
+After spending this money, the function is memoized and some other function call pays for it.
+There are $n+1$ possible values of $k$, so the money diminished from that node is at most $(n+1)*2*(n+1)$ coins total.
+
+There are $n$ nodes so the total number of coins you need to fund the operation is at most $n*(n+1)*2*(n+1) = O(n^3)$
 
 \end{document}
 
