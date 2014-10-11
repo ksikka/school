@@ -143,13 +143,30 @@ The table can be accessed by $T[n][k][b]$ where $n$ is a node, $k$ is an int fro
 We initialize the table with NULLs, and compute the values in the following recursive function.\\
 Note that the table has $n*(k+1)*2$ cells.
 
-The procedure to compute kPart(r,k,b) is as follows:\\
-\qquad    (Check if value has already been computed. )\\
-\qquad    If $T[r][k][i] \neq \text{NULL}$,\\
-       return $T[r][k][i]$\\
+\newenvironment{changemargin}[2]{%
+\list{}{\rightmargin#2\leftmargin#1
+\parsep=0pt\topsep=0pt\partopsep=0pt}
+\item[]}
+{\endlist}
+ 
+\newenvironment{indentmore}{\begin{changemargin}{1cm}{0cm}}{\end{changemargin}}
+
+The procedure to compute kPart(r,k,b) is as follows:
+
+\begin{indentmore}
+    (Check if value has already been computed. )\\
+    If $T[r][k][i] \neq \text{NULL}$,
+
+       \begin{indentmore}
+       return $T[r][k][i]$
+       \end{indentmore}
+
     ( If k=0, A is empty, B is rest of nodes. )\\
-    If $k = 0$,\\
-       $T[r][k][i] = (\{\}, {\mathtt{all\_nodes}(b)}, \{\})$\\
+    If $k = 0$,
+       \begin{indentmore}
+       $T[r][k][i] = (\{\}, {\mathtt{all\_nodes}(b)}, \{\})$
+       \end{indentmore}
+
     ( If k > n, no set A can be formed... )\\
     If $k > n$,\\
        $T[r][k][i] = \mathtt{DNE}$
