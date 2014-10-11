@@ -321,15 +321,15 @@ Therefore there are no other partitions to consider which can be a minimizing k-
 
 \textbf{Runtime analysis}
 
-We're going to put coins on nodes/root of subtrees.
-A function call spends the coins on the node/roote of subtree to do work, to perform recursive calls that have been memoized, but not to perform unmemoized recursive calls.
-The claim is that those recursive calls will pay for themselves using the money on their root.
+We're going to put coins on nodes/root of subtrees.\\
+A function call spends the coins on the node/root of subtree to do work (like take a min), to perform recursive calls that have been memoized, but not to perform unmemoized recursive calls.\\
+The claim is that recursive calls will pay for themselves using the money on their root.
 
-For a given node $n$ and $k$ value, the function will spend at most $k+1$ (which is less than $n+1$) coins at most twice (once when b is 1, once when b is 0). This is the worst case for the function call because it assumes all function calls are memoized, otherwise the recursive call would pay for the work.
-After spending this money, the function is memoized and some other function call pays for it.
-There are $n+1$ possible values of $k$, so the money diminished from that node is at most $(n+1)*2*(n+1)$ coins total.
+For a given node $n$ and $k$ value, the function will spend at most $8(k+1)$ (which is less than $8(n+1)$) coins at most twice (once when b is 1, once when b is 0).\\
+After spending this money, the function is memoized and some other function call pays for it.\\
+There are at most $n+1$ possible values of $k$, so the money diminished from that node is at most $(n+1)*2*8*(n+1)$ coins total.
 
-There are $n$ nodes so the total number of coins you need to fund the operation is at most $n*(n+1)*2*(n+1) = O(n^3)$
+There are $n$ nodes so the total number of coins you need to fund the operation is at most $n*(n+1)*2*8(n+1) = O(n^3)$
 
 \end{document}
 
