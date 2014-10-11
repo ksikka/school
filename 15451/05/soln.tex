@@ -218,10 +218,10 @@ The procedure to compute kPart(r,k,b) is as follows:
     If \rleft and \rright are not NULL,
         \begin{indentmore}
         $T[r][k][i]$ = Take the answer (of the form $(A,B,S)$) with the minimum $|S|$ over all of the following cases, where each case represents a possible coloring of r, \rright, and \rleft that might yield a minimizing k-partition:
-                %\begin{indentmore}
-                %Left and right subtrees can be partitioned in at most k+1 ways such that the sum of their A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise.\\
-                %We must minimize the number of split edges accross all variations of A-set-size.
-                %\end{indentmore}
+
+
+          \begin{indentmore}
+          ( Note that in each case, the Left and Right subtrees can each be partitioned in at most k+1 ways such that the sum of their resulting A sets should be $k-1$ if $r$ in $A$ or $k$ otherwise. )
 
           Case 1: $r \in A, \mrleft \in A, \mrright \in A$
               \begin{indentmore}
@@ -267,6 +267,7 @@ The procedure to compute kPart(r,k,b) is as follows:
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
                     \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,0)$\\
                 $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r)$
+          \end{indentmore}
         \end{indentmore}
 
 
