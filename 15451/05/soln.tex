@@ -166,35 +166,49 @@ The procedure to compute kPart(r,k,b) is as follows:
        \begin{indentmore}
        $T[r][k][i] = (\{\}, {\mathtt{all\_nodes}(b)}, \{\})$
        \end{indentmore}
-\end{indentmore}
 
     ( If k > n, no set A can be formed... )\\
     If $k > n$,\\
+       \begin{indentmore}
        $T[r][k][i] = \mathtt{DNE}$
+       \end{indentmore}
 
     If both \rleft and \rright are NULL,
+        \begin{indentmore}
         If $k=1$
+            \begin{indentmore}
             $T[r][k][i] = (\{r\}, \{\}, \{\})$
+           \end{indentmore}
         Else
             % k > n and this case would have been caught earlier
+       \end{indentmore}
     If only \rleft is NULL,
+        \begin{indentmore}
         ( There are four cases. )\\
         ( We will compute the number of split edges in each case, )\\
         ( take the case with minimum split edges )\\
         ( return the partitioning for that case. )\\
         $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:\\
+          \begin{indentmore}
           $r \in A, \mrright \in A \implies $\\
+            \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,1)$\\
             answer is $(\{r\} \cup A_r, B_r, S_r)$\\
+            \end{indentmore}
           $r \in A, \mrright \in B \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
             answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$\\
+           \end{indentmore}
           $r \in B, \mrright \in A \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$\\
+           \end{indentmore}
           $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r)$
+           \end{indentmore}
+       \end{indentmore}
+   \end{indentmore}
 
     If only \rright is NULL,\\
         Logic is symmetric to above case.
@@ -247,6 +261,7 @@ The procedure to compute kPart(r,k,b) is as follows:
 
 
    return $T[r][k][i]$
+\end{indentmore}
 
 
 Each function call costs $O(1)$ if the value in the table is computed, else it makes recursive calls, but these are also $O(1)$ if computed already.
