@@ -309,7 +309,7 @@ The procedure to compute kPart(r,k,b) is as follows:
    return $T[r][k][i]$
 \end{indentmore}
 
-\textbb{Correctness}
+\textbf{Correctness}
 
 The proof of correctness is by structural induction.\\
 The algorithm correctly returns $(A,B,S)$ of the minimizing k-partition of a leaf node.\\
@@ -319,7 +319,7 @@ compute the minimizing k-partition in each case, and takes the answer with the m
 Note that there are no edges between nodes in the left subtree and nodes in the right subtree due to the definition of a tree.\\
 Therefore there are no other partitions to consider which can be a minimizing k-partition.
 
-\textbb{Runtime analysis}
+\textbf{Runtime analysis}
 
 We're going to put coins on nodes/root of subtrees.
 A function call spends the coins on the node/roote of subtree to do work, to perform recursive calls that have been memoized, but not to perform unmemoized recursive calls.
