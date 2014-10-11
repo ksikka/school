@@ -149,14 +149,14 @@ The procedure to compute kPart(r,k,b) is as follows:\\
        return $T[r][k][i]$\\
     ( If k=0, A is empty, B is rest of nodes. )\\
     If $k = 0$,\\
-       $T[r][k][i] = ({}, {\mathtt{all_nodes}(b)}, {})$\\
+       $T[r][k][i] = (\{\}, {\mathtt{all\_nodes}(b)}, \{\})$\\
     ( If k > n, no set A can be formed... )\\
     If $k > n$,\\
        $T[r][k][i] = \mathtt{DNE}$
 
     If both \rleft and \rright are NULL,
         If $k=1$
-            $T[r][k][i] = ({r}, {}, {})$
+            $T[r][k][i] = (\{r\}, \{\}, \{\})$
         Else
             % k > n and this case would have been caught earlier
     If only \rleft is NULL,
@@ -167,16 +167,16 @@ The procedure to compute kPart(r,k,b) is as follows:\\
         $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:\\
           $r \in A, \mrright \in A \implies $\\
             $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,1)$\\
-            answer is $({r} \cup A_r, B_r, S_r)$\\
+            answer is $(\{r\} \cup A_r, B_r, S_r)$\\
           $r \in A, \mrright \in B \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
-            answer is $({r} \cup A_r, B_r, S_r \cup {(r, \mrright)})$\\
+            answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$\\
           $r \in B, \mrright \in A \implies $\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
-            answer is $(A_r,{r} \cup B_r, S_r \cup {(r, \mrright)})$\\
+            answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$\\
           $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$\\
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
-            answer is $(A_r,{r} \cup B_r, S_r)$
+            answer is $(A_r,\{r\} \cup B_r, S_r)$
 
     If only \rright is NULL,\\
         Logic is symmetric to above case.
@@ -190,47 +190,49 @@ The procedure to compute kPart(r,k,b) is as follows:\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1$\\
                 $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,1)$\\
                 $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r)$
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r)$
 
           $r \in A, \mrleft \in A, \mrright \in B\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
                     \mathtt{kPart}(\mrleft,i,1) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrright)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r \cup \{(r, \mrright)\})$
 
           $r \in A, \mrleft \in B, \mrright \in A\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
                 1 + \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrleft)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r \cup \{(r, \mrleft)\})$
 
           $r \in A, \mrleft \in B, \mrright \in B\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k-1\\
                 1 + \mathtt{kPart}(\mrleft,i,0) + 1 + \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r \cup {r},B_l \cup B_r,S_l \cup S_r \cup {(r, \mrleft),(r, \mrright)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r \cup \{(r, \mrleft),(r, \mrright)\})$
 
           $r \in B, \mrleft \in A, \mrright \in A\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
                 1 + \mathtt{kPart}(\mrleft,i,1) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrleft),(r, \mrright)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft),(r, \mrright)\})$
 
           $r \in B, \mrleft \in A, \mrright \in B\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
                 1 + \mathtt{kPart}(\mrleft,i,1) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrleft)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft)\})$
 
           $r \in B, \mrleft \in B, \mrright \in A\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
                     \mathtt{kPart}(\mrleft,i,0) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r \cup {(r, \mrright)})$
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrright)\})$
 
           $r \in B, \mrleft \in B, \mrright \in B\\
               \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
                     \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup {r},S_l \cup S_r)$
+                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r)$
 
 
    return $T[r][k][i]$
 
 
+Each function call costs $O(1)$ if the value in the table is computed, else it makes recursive calls, but these are also $O(1)$ if computed already.
+The base case takes $O(1) to compute$. We see that each function call we makes at most $8(k+1)$ recursive function calls, we do this a total of $n$ times. That's at most O(nk) function calls total accross the entire algorithm.
 
 \end{document}
 
