@@ -263,26 +263,45 @@ The procedure to compute kPart(r,k,b) is as follows:
                 \end{indentmore}
               \end{indentmore}
 
+          Case 5: $r \in B, \mrleft \in A, \mrright \in A$
+              \begin{indentmore}
+              Compute the following answers over all integral $i,j$  s.t. $i,j \geq 0$ and $i+j = k$ and take the one with minimum $|S|$:
+                \begin{indentmore}
+                $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,1)$\\
+                $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,1)$\\
+                answer is $(A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft),(r, \mrright)\})$
+                \end{indentmore}
+              \end{indentmore}
 
-          $r \in B, \mrleft \in A, \mrright \in A\\
-              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
-                1 + \mathtt{kPart}(\mrleft,i,1) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft),(r, \mrright)\})$
+          Case 6: $r \in B, \mrleft \in A, \mrright \in B$
+              \begin{indentmore}
+              Compute the following answers over all integral $i,j$  s.t. $i,j \geq 0$ and $i+j = k$ and take the one with minimum $|S|$:
+                \begin{indentmore}
+                $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,1)$\\
+                $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,0)$\\
+                answer is $(A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft)\})$
+                \end{indentmore}
+              \end{indentmore}
 
-          $r \in B, \mrleft \in A, \mrright \in B\\
-              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
-                1 + \mathtt{kPart}(\mrleft,i,1) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrleft)\})$
+          Case 7: $r \in B, \mrleft \in B, \mrright \in A$
+              \begin{indentmore}
+              Compute the following answers over all integral $i,j$  s.t. $i,j \geq 0$ and $i+j = k$ and take the one with minimum $|S|$:
+                \begin{indentmore}
+                $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,0)$\\
+                $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,1)$\\
+                answer is $(A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrright)\})$
+                \end{indentmore}
+              \end{indentmore}
 
-          $r \in B, \mrleft \in B, \mrright \in A\\
-              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
-                    \mathtt{kPart}(\mrleft,i,0) + 1 + \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{(r, \mrright)\})$
-
-          $r \in B, \mrleft \in B, \mrright \in B\\
-              \texttt{minimize} |S| \texttt{over\_all\_integral} i,j \geq 0 st i+j = k\\
-                    \mathtt{kPart}(\mrleft,i,0) +     \mathtt{kPart}(\mrright,j,0)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r)$
+          Case 8: $r \in B, \mrleft \in B, \mrright \in B$
+              \begin{indentmore}
+              Compute the following answers over all integral $i,j$  s.t. $i,j \geq 0$ and $i+j = k$ and take the one with minimum $|S|$:
+                \begin{indentmore}
+                $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,0)$\\
+                $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,0)$\\
+                answer is $(A_l \cup A_r,B_l \cup B_r \cup \{r\},S_l \cup S_r \cup \{\})$
+                \end{indentmore}
+              \end{indentmore}
           \end{indentmore}
         \end{indentmore}
 
