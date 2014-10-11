@@ -122,7 +122,7 @@ The cost of running djikstra's $n$ times using the fibonacci heaps version is $O
 \question{3}{Color Me Red, Color Me Blue}
 
 \newcommand{\rright}[0]{\texttt{r-{\textgreater}right }}
-\newcommand{\rleft}[0]{\texttt{r-{\textless}left }}
+\newcommand{\rleft}[0]{\texttt{r-{\textgreater}left }}
 
 \newcommand{\mrleft}[0]{\texttt{r->left }}
 \newcommand{\mrright}[0]{\texttt{r->right }}
@@ -152,7 +152,6 @@ Note that the table has $n*(k+1)*2$ cells.
 \newenvironment{indentmore}{\begin{changemargin}{1cm}{0cm}}{\end{changemargin}}
 
 The procedure to compute kPart(r,k,b) is as follows:
-
 \begin{indentmore}
     (Check if value has already been computed. )\\
     If $T[r][k][i] \neq \text{NULL}$,
@@ -167,7 +166,7 @@ The procedure to compute kPart(r,k,b) is as follows:
        $T[r][k][i] = (\{\}, {\mathtt{all\_nodes}(b)}, \{\})$
        \end{indentmore}
 
-    ( If k > n, no set A can be formed... )\\
+    ( If k \textgreater n, no set A can be formed... )\\
     If $k > n$,
        \begin{indentmore}
        $T[r][k][i] = \mathtt{DNE}$
@@ -180,7 +179,9 @@ The procedure to compute kPart(r,k,b) is as follows:
             $T[r][k][i] = (\{r\}, \{\}, \{\})$
            \end{indentmore}
         Else
-            % k > n and this case would have been caught earlier
+            \begin{indentmore}
+            k \textgreater n and this case would have been caught earlier
+           \end{indentmore}
        \end{indentmore}
     If only \rleft is NULL,
         \begin{indentmore}
@@ -190,7 +191,7 @@ The procedure to compute kPart(r,k,b) is as follows:
         ( return the partitioning for that case. )\\
         $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:
           \begin{indentmore}
-          $r \in A, \mrright \in A \implies $\\
+          $r \in A, \mrright \in A \implies $
             \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,1)$\\
             answer is $(\{r\} \cup A_r, B_r, S_r)$
