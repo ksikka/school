@@ -168,7 +168,7 @@ The procedure to compute kPart(r,k,b) is as follows:
        \end{indentmore}
 
     ( If k > n, no set A can be formed... )\\
-    If $k > n$,\\
+    If $k > n$,
        \begin{indentmore}
        $T[r][k][i] = \mathtt{DNE}$
        \end{indentmore}
@@ -188,24 +188,24 @@ The procedure to compute kPart(r,k,b) is as follows:
         ( We will compute the number of split edges in each case, )\\
         ( take the case with minimum split edges )\\
         ( return the partitioning for that case. )\\
-        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:\\
+        $T[r][k][i]$ = The $(A,B,S)$ with the minimum $|S|$ over the following answers computed for all possible colorings of r and \rright that might yield a minimizing k-partition:
           \begin{indentmore}
           $r \in A, \mrright \in A \implies $\\
             \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPart}(\mrright,k-1,1)$\\
-            answer is $(\{r\} \cup A_r, B_r, S_r)$\\
+            answer is $(\{r\} \cup A_r, B_r, S_r)$
             \end{indentmore}
-          $r \in A, \mrright \in B \implies $\\
+          $r \in A, \mrright \in B \implies $
             \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
-            answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$\\
+            answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$
            \end{indentmore}
-          $r \in B, \mrright \in A \implies $\\
+          $r \in B, \mrright \in A \implies $
             \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
-            answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$\\
+            answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$
            \end{indentmore}
-          $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$\\
+          $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$
             \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r)$
