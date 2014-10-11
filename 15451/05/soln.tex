@@ -135,7 +135,9 @@ Given a node $n$, value $i (1 \leq i \leq k)$ and bit $b$,\\
 The function returns NONE, or SOME $(A,B,S)$.\\
 
 $\mathtt{kPart}(n,k,b) = \mathtt{NONE}$ signifies that no k-partition of vertices in the subtree rooted at $n$ exists, which happens when $(k > |n|)$. \\
-$\mathtt{kPart}(n,k,b) = \mathtt{SOME}(A,B,S)$ signifies that $A,B$ is some minimizing k-partition the nodes of the subtree rooted at $n$ such that $n \in A \iff b = 1$, $S$ is the set of split edges\\
+$\mathtt{kPart}(n,k,b) = \mathtt{SOME}(A,B,S)$ signifies that $A,B$ is some minimizing k-partition the nodes of the subtree rooted at $n$,\\
+such that $b=1 \implies n \in A$ and $b=0 \implies n \in B$ and\\
+$S$ is the set of split edges\\
 
 
 We create a memo table for the computation which we assume is available to the function.\\
