@@ -229,12 +229,12 @@ The procedure to compute kPart(r,k,b) is as follows:
 
           $r \in A, \mrleft \in A, \mrright \in A$
               \begin{indentmore}
-              answer has minimum $|S|$ of the following answers over all integral $i,j$  s.t. $i,j \geq 0$ and$i+j = k-1$
+              answer has minimum $|S|$ over all integral $i,j$  s.t. $i,j \geq 0$ and $i+j = k-1$ of
                 \begin{indentmore}
                 $A_l, B_l, S_l = \mathtt{kPart}(\mrleft,i,1)$\\
                 $A_r, B_r, S_r = \mathtt{kPart}(\mrright,j,1)$\\
-                $\texttt{over\_all\_integral} (A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r)$
                 \end{indentmore}
+                $(A_l \cup A_r \cup \{r\},B_l \cup B_r,S_l \cup S_r)$
               \end{indentmore}
 
           $r \in A, \mrleft \in A, \mrright \in B\\
