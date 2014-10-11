@@ -196,14 +196,17 @@ The procedure to compute kPart(r,k,b) is as follows:
             answer is $(\{r\} \cup A_r, B_r, S_r)$\\
             \end{indentmore}
           $r \in A, \mrright \in B \implies $\\
+            \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k-1,0)$\\
             answer is $(\{r\} \cup A_r, B_r, S_r \cup \{(r, \mrright)\})$\\
            \end{indentmore}
           $r \in B, \mrright \in A \implies $\\
+            \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,1)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r \cup \{(r, \mrright)\})$\\
            \end{indentmore}
           $r \in B, \mrright \in B \implies $ 1 + $T[\mrright][k][0]$\\
+            \begin{indentmore}
             $A_r, B_r, S_r = \mathtt{kPark}(\mrright,k,0)$\\
             answer is $(A_r,\{r\} \cup B_r, S_r)$
            \end{indentmore}
