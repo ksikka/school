@@ -18,7 +18,7 @@ A=0
 C=1
 G=2
 T=3
-
+M_to_int = {'A':A,'C':C,'G':G,'T':T}
 
 class CTMM(object):
     def __init__(self, tmat):
@@ -62,6 +62,7 @@ class CTMM(object):
 
     def sample_what_it_mutates_into(self, M):
         "Given M \in {A,G,C,T}, returns N in {A,G,C,T} such that M mutates into N."
+        M = M_to_int[M]
         sum_of_lambda = self.tmat[M][A] + self.tmat[M][C] + self.tmat[M][G] + self.tmat[M][T]
 
         u = random.random()
@@ -78,7 +79,7 @@ class CTMM(object):
     def sample_which_base_mutated(self, M):
         "Given M \in {A,G,C,T}, returns i from 0 to k_M - 1 where the ith nucleotide mutated."
         # equivalent to sampling a random variable.
-        return random.choice([i for i,b in enumerate(self.cur_strand) if b == B])
+        return random.choice([i for i,b in enumerate(self.cur_strand) if b == M])
 
     def change_ith_base_of_type_M(i, M, N):
         "Changes ith base of type M to base of type N"
@@ -94,8 +95,6 @@ class CTMM(object):
             else:
                 new_strand.append(M)
         return ''.join(new_strand)
-
-
 
     def simulate(self, start_strand, max_t):
         self.cur_t = 0.0
@@ -114,8 +113,6 @@ class CTMM(object):
 
             self.cur_strand = self.change_ith_base_of_type_M(i, M, N)
             self.cur_t += t_next
-
-
 
 def parse_matrix(lines):
     assert (len(lines) >= 4)
