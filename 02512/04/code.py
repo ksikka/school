@@ -1,18 +1,22 @@
 """
 CTMM Simulator
+@author ksikka
 
 To test, feed input into STDIN like the following:
 50 25 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
--5 1 3 1
+-5.0 1 3 1
 1 -5 1 3
 3 1 -5 1
 1 3 1 -5
+
+Or just run `python code.py < input.txt`
 
 Note that the matrix row/col ordering is A,C,G,T
 
 """
 
 import random
+import pprint
 
 A=0
 C=1
@@ -23,6 +27,7 @@ M_to_int = {'A':A,'C':C,'G':G,'T':T}
 class CTMM(object):
     def __init__(self, tmat):
         self.tmat = tmat
+        self.kimura_plot = []
 
     def count_num_bases_of_each_type(self):
         self.k_A = sum([1 for b in self.cur_strand if b == 'A'])
@@ -31,39 +36,40 @@ class CTMM(object):
         self.k_T = sum([1 for b in self.cur_strand if b == 'T'])
 
     def sample_time_to_next_mut(self):
-        return random.expovariate(self.k_A * (self.tmat[A][A] + self.tmat[A][C] + self.tmat[A][G] + self.tmat[A][T])
-                                + self.k_C * (self.tmat[C][A] + self.tmat[C][C] + self.tmat[C][G] + self.tmat[C][T])
-                                + self.k_G * (self.tmat[G][A] + self.tmat[G][C] + self.tmat[G][G] + self.tmat[G][T])
-                                + self.k_T * (self.tmat[T][A] + self.tmat[T][C] + self.tmat[T][G] + self.tmat[T][T]))
+        lamb  = (
+                (self.k_A * (                  self.tmat[A][C] + self.tmat[A][G] + self.tmat[A][T]))+
+                (self.k_C * (self.tmat[C][A] +                   self.tmat[C][G] + self.tmat[C][T]))+
+                (self.k_G * (self.tmat[G][A] + self.tmat[G][C] +                   self.tmat[G][T]))+
+                (self.k_T * (self.tmat[T][A] + self.tmat[T][C] + self.tmat[T][G]                  ))
+                )
+        return random.expovariate(lamb)
 
-    def sample_whether_ACGT_mutated(self):
-        """Follows the discrete distribution of one lambda over sum of lambda.
+    def sample_which_base_mutated(self):
+        """The Pr of which base mutates first, follows the discrete distribution of one lambda over sum of lambda.
         Each lambda represents the rate of the exponential which represents the dist of times til that base mutates."""
-        lambda_A = self.k_A * (self.tmat[A][A] + self.tmat[A][C] + self.tmat[A][G] + self.tmat[A][T])
-        lambda_C = self.k_C * (self.tmat[C][A] + self.tmat[C][C] + self.tmat[C][G] + self.tmat[C][T])
-        lambda_G = self.k_G * (self.tmat[G][A] + self.tmat[G][C] + self.tmat[G][G] + self.tmat[G][T])
-        lambda_T = self.k_T * (self.tmat[T][A] + self.tmat[T][C] + self.tmat[T][G] + self.tmat[T][T])
+        lamb_map = {} # base => lamb
+        lamb_map['A'] =                   self.tmat[A][C] + self.tmat[A][G] + self.tmat[A][T]
+        lamb_map['C'] = self.tmat[C][A] +                   self.tmat[C][G] + self.tmat[C][T]
+        lamb_map['G'] = self.tmat[G][A] + self.tmat[G][C] +                   self.tmat[G][T]
+        lamb_map['T'] = self.tmat[T][A] + self.tmat[T][C] + self.tmat[T][G]
 
-        sum_of_them = lambda_A + lambda_C + lambda_G + lambda_T
+        sum_of_them = sum([ lamb_map[b] for b in self.cur_strand ])
 
         u = random.random()
-        if u <= float(lambda_A) / sum_of_them:
-            return 'A'
 
-        u = u - float(lambda_A) / sum_of_them
-        if u <= float(lambda_C) / sum_of_them:
-            return 'C'
-
-        u = u - float(lambda_C) / sum_of_them
-        if u <= float(lambda_G) / sum_of_them:
-            return 'G'
-
-        return 'T'
+        for i,b in enumerate(self.cur_strand):
+            p = float(lamb_map[b]) / sum_of_them
+            if u <= p:
+                return i
+            u = u - p
 
     def sample_what_it_mutates_into(self, M):
         "Given M \in {A,G,C,T}, returns N in {A,G,C,T} such that M mutates into N."
         M = M_to_int[M]
-        sum_of_lambda = self.tmat[M][A] + self.tmat[M][C] + self.tmat[M][G] + self.tmat[M][T]
+
+        # compact way of getting sum of lambdas where M != N
+        sum_of_lambda = self.tmat[M][A] + self.tmat[M][C] + self.tmat[M][G] + self.tmat[M][T]\
+                                                                            - self.tmat[M][M]
 
         u = random.random()
         if u <= float(self.tmat[M][A])/sum_of_lambda:
@@ -76,43 +82,40 @@ class CTMM(object):
             return 'G'
         return 'T'
 
-    def sample_which_base_mutated(self, M):
-        "Given M \in {A,G,C,T}, returns i from 0 to k_M - 1 where the ith nucleotide mutated."
-        # equivalent to sampling a random variable.
-        return random.choice([i for i,b in enumerate(self.cur_strand) if b == M])
-
-    def change_ith_base_of_type_M(i, M, N):
-        "Changes ith base of type M to base of type N"
+    def change_ith_base_to_N(self, i, N):
         new_strand = []
-        counter = 0 # counts the index of the base of type M
-        for b in self.cur_strand:
-            if b == M:
-                if counter == i:
-                    new_strand.append(N)
-                else:
-                    new_strand.append(M)
-                counter += 1
+        for j, b in enumerate(self.cur_strand):
+            if i == j:
+                new_strand.append(N)
             else:
-                new_strand.append(M)
+                new_strand.append(b)
+        # makes sure exactly 1 character is changed
+        assert (1 == sum([ 1 for b1, b2 in zip(self.cur_strand, new_strand) if b1 != b2 ]))
         return ''.join(new_strand)
 
     def simulate(self, start_strand, max_t):
         self.cur_t = 0.0
         self.cur_strand = start_strand
+        self.count_num_bases_of_each_type()
+        self.kimura_plot.append((self.cur_t, self.k_A, self.k_C, self.k_G, self.k_T))
 
         while True:
-            self.count_num_bases_of_each_type()
-            t_next = sample_time_to_next_mut()
+            t_next = self.sample_time_to_next_mut()
 
             if self.cur_t + t_next > max_t:
                 break
 
-            M = self.sample_whether_ACGT_mutated()
+            i = self.sample_which_base_mutated()
+            M = self.cur_strand[i]
             N = self.sample_what_it_mutates_into(M)
-            i = self.sample_which_base_mutated(M)
+            assert (M != N)
 
-            self.cur_strand = self.change_ith_base_of_type_M(i, M, N)
+            self.cur_strand = self.change_ith_base_to_N(i, N)
             self.cur_t += t_next
+            print self.cur_t, self.cur_strand
+
+            self.count_num_bases_of_each_type()
+            self.kimura_plot.append((self.cur_t, self.k_A, self.k_C, self.k_G, self.k_T))
 
 def parse_matrix(lines):
     assert (len(lines) >= 4)
@@ -151,6 +154,11 @@ if __name__ == "__main__":
     assert (max_t > 0)
 
     s = CTMM(matrix)
+    s.simulate(start_strand, max_t)
 
-    print matrix
+    """ Outputs CSV for plotting in Excel
+    for tup in s.kimura_plot:
+        print ','.join([str(i) for i in tup])
+    """
+
 
