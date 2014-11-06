@@ -1,0 +1,176 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>
+Lov&aacute;sz's reduction of COLORABILITY to 3-COLORABILITY
+</title>
+</head>
+<body>
+<a name="top">
+
+<CENTER>
+<h2>
+Lov&aacute;sz's reduction of<br>
+COLORABILITY to 3-COLORABILITY
+</h2>
+<font size="-1">(Lecture notes written by Va&#154ek Chv&#225;tal)</font><br>
+</CENTER>
+
+<p><hr>
+
+<h3>A problem and an infinite sequence of problems.</h3>
+Consider the problem
+<blockquote>
+COLORABILITY<br>
+Input: A graph G and a positive integer k.<br>
+Question: Is G k-colorable?
+</blockquote>
+and, for each positive integer k, consider the problem
+<blockquote>
+k-COLORABILITY<br>
+Input: A graph G.<br>
+Question: Is G k-colorable?
+</blockquote>
+
+<p><hr>
+<h3>Two observations.</h3>
+Trivially, for each positive integer k, 
+<blockquote>
+k-COLORABILITY reduces to COLORABILITY.
+</blockquote>
+In addition, for each positive integer k, 
+<blockquote>
+k-COLORABILITY reduces to (k+1)-COLORABILITY:
+</blockquote>
+if G' denotes the graph arising from G by adding a new vertex and making this 
+new vertex adjacent to all the old vertices, then G is k-colorable if and 
+only if G' is (k+1)-colorable.
+
+<p><hr>
+<h3>A theorem of Lov&aacute;sz</h3>
+
+L&aacute;szl&oacute; Lov&aacute;sz (Coverings and coloring of
+hypergraphs,<EM> Proceedings of the Fourth Southeastern Conference on
+Combinatorics, Graph Theory, and Computing,</EM> Utilitas Math.,
+Winnipeg, Man., 1973, pp. 3--12.) proved that
+<center>
+COLORABILITY reduces to 3-COLORABILITY,
+</center>
+and so all the problems
+<blockquote>
+3-COLORABILITY,<br>
+4-COLORABILITY,<br>
+5-COLORABILITY,<br>
+...<br>
+COLORABILITY<br>
+</blockquote>
+are equivalent.<br>
+
+<p><hr>
+<h3>A plan for the reduction</h3>
+
+Given a graph G and a positive integer k, we are required to construct 
+quickly a graph H such that
+<blockquote>
+H is 3-colorable if and only if G is k-colorable.
+</blockquote>
+The idea is to build H around a rectangular <em>screen</em>, an array with 
+k rows that correspond to the colors for use in G and with n columns that 
+correspond to the n vertices of G. To this screen, we will attach a number 
+of <em>peripherals</em> whose function is to coerce every 
+3-coloring of H into having the following properties:
+<ol type=i>
+<li> only two of the three colors appear on the screen
+</ol>
+and that these two colors can be named "green" and "red" in such a way 
+that
+<ol type=i start=2>
+<li> in each column (1,u), (2,u), ..., (k,u) of the screen,<br>
+at least one vertex (i,u) is colored green and
+<li> for each pair v,w of adjacent vertices and for each color i,<br>
+at least one of the two vertices (i,v) and (i,w) is colored red. 
+</ol>
+If we manage to accomplish this plan, then every 3-coloring of H will 
+point out a k-coloring f of G: specifically, f(u) is any i such that 
+vertex (i,u) is colored green.<br>
+
+<p><hr>
+<h3>A peripheral to enforce property (i)</h3> 
+
+We begin the construction of H with the vertices of the screen and no
+edges at all; to enforce property (i), we add a new vertex b and make it
+adjacent to all the vertices of the screen. Since we are free to name
+the three colors in any 3-coloring of H whatever we want, we might as well 
+call the color of b "blue" and to call the two other colors "green" and "red". 
+Now property (i) is forced.<br>
+
+<p><hr>
+<h3>Peripherals to enforce property (ii)</h3> 
+
+There is no loss of generality in assuming that k is odd. (If k
+happens to be even, then we may replace k by k+1 and replace G by G'
+that consists of G and a new vertex adjacent to all the vertices of G:
+now G is k-colorable if and only if G' is (k+1)-colorable.) Under this
+assumption, we may enforce property (ii) by adding to H one odd cycle
+on k new vertices for each of the n columns of the screen, then matching
+the k new vertices with the k vertices of the column, and making each
+vertex adjacent to its mate: if all the vertices of the column were
+colored by the same color, then the k vertices of the odd cycle would
+have to be colored by the remaining two colors, which is impossible.<br>
+
+<p><hr>
+<h3>Peripherals to enforce property (iii)</h3> 
+
+So far "green" and "red" have been interchangeable. We will now break
+the symmetry by adding to H a new vertex named g and making g adjacent to 
+b: the color of g cannot be blue and we might just as well call it green. 
+To enforce property (iii), we add to H three vertices and six edges 
+for each choice of i, v, and w such that i is one of the k colors for use in G 
+and v,w are two adjacent vertices of G. The three new vertices, x, y, and z, 
+form a triangle; the six new edges are the three edges of the triangle plus 
+the three edges
+<blockquote>
+(x,(i,v)), (y,(i,w)), (z,g).
+</blockquote>
+If both (i,v) and (i,w) were colored green, then all three vertices x,
+y, z of the triangle would have to be colored red or blue, which is
+impossible.<br>
+
+<p><hr>
+<h3>From a k-coloring of G to a 3-coloring of H.</h3> 
+
+Now the construction of H is complete. It follows from what we have
+said so far that every 3-coloring of H has properties (i), (ii), (iii), 
+and so it yields a k-coloring f of G by letting f(u) be any i such that 
+(i,u) is colored green. Conversely, every k-coloring f of G yields a 
+3-coloring of H: first, each vertex (i,u) of the screen can be colored 
+<blockquote>
+green if f(u)=i,<br>
+red &nbsp;&nbsp;&nbsp;
+otherwise
+</blockquote>
+and then this 2-coloring of the screen can be extended into a
+3-coloring of the entire H as follows. The special vertex b is colored
+blue and the special vertex g is colored green.  As for the n odd
+cycles that enforce property (ii), each of them corresponds to one of
+the n columns of the screen; its k vertices are matched with the k
+vertices of the column;of these k vertices, k-1 are red and one is
+green. The mate of the green vertex on the cycle gets colored red; the
+colors on the remaining k-1 vertices of the cycle alternate between
+green and blue. As for the various triangles xyz that enforce property
+(iii), its vertex z always gets colored red; one of the vertices
+(i,v), (i,w) is colored red and its neighbor in the triangle gets
+colored green; the other one of the vertices (i,v), (i,w) is colored
+red or green and its neighbor in the triangle gets colored blue.<br>
+
+<p>
+<HR>
+<A HREF="toc.html"> 
+Back to the table of contents of Va&#154ek Chv&#225tal's 
+course notes</A>
+
+</body>
+</html>
+
+
+

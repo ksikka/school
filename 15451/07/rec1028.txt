@@ -1,0 +1,121 @@
+                    15-451/651 Algorithms                  10/28/14
+                        recitation notes
+=================================================================
+* NP-completeness of integer programming
+* NP-completeness of 3-coloring
+=================================================================
+
+
+NP-COMPLETENESS OF BINARY LINEAR PROGRAMMING
+============================================
+
+Binary linear programming (BinLP) is like linear programming, with the
+additional constraint that all variables must take on values either 0 or
+1. The decision version of binary linear programming asks whether or not
+there exists a point satisfying all the constraints. (For the decision
+version there is no objective function).
+
+Claim: BinLP is NP-complete.
+
+Proof:
+
+(1) BinLP is in NP. (What is the witness? The solution.)
+
+(2) We can reduce 3SAT to BinLP:
+
+Let the variables in the 3SAT formula be x_1, x_2, ..., x_n.  We will
+have corresponding variables z_1, z_2, ..., z_n in our integer linear
+program.  First, restrict each variable to be 0 or 1:
+
+z_i in {0,1}	  for all i
+
+Assigning z_i=1 in the integer program represents setting x_i=true in
+the formula, and assigning z_i=0 represents setting x_i=false.
+
+For each clause like (x_1 OR not(x_2) OR x_3), have a constraint like:
+
+z_1 + (1-z_2) + z_3 >= 1.
+
+To satisfy this inequality we must either set z_1=1 or z_2=0 or z_3=1,
+which means we either set x_1=true or x_2=false or x_3=true in the
+corresponding truth assignment.  More generally, for each clause
+in the 3SAT instance, we create the constraint that the sum of literals,
+using z_i to represent x_i and (1-z_i) to represent NOT(x_i), is 
+at least 1.
+
+If the given instance I was a YES-instance of 3SAT then f(I) is
+a YES-instance for BinLP: just take a satisfying assignment A to the 
+variables x_i and set each z_i to 0 or 1 accordingly.  Since A
+satisfied at least one literal in each clause, this means the associated 
+sum is >= 1.  In the other direction, any solution to the BinLP must set
+at least one of the associated literals to 1, since each is an
+integer 0 or 1.
+
+NP-COMPLETENESS OF INTEGER LINEAR PROGRAMMING
+=============================================
+
+Integer linear programming (ILP) is like linear programming, with the
+additional constraint that all variables must take on integral values.
+The decision version of integer programming asks whether or not there
+exists a point satisfying all the constraints. (Again for the decision
+version there is no objective function).
+
+Claim: ILP is NP-complete.
+
+Proof: Again
+
+(1) ILP is in NP. (What is the witness? The solution.)
+
+(2) We can either reduce 3SAT to ILP (similar to above), but we can do
+the simpler thing of reducing BinLP (which we now know is NP-complete)
+to ILP.
+
+Take any instance of BinLP. Instead of the constraints that x_i in
+{0,1}, which are allowed in BinLP but not in ILP, add in two sets of
+constraints:
+
+ 0 <= x_i <= 1 for all i
+ x_i in integers.
+
+Now any solution to this ILP is a solution to the original BinLP, and
+vice versa.
+
+
+NP-COMPLETENESS OF 3-COLORING
+=============================
+Let's prove that 3-Coloring is NP-complete using the fact that 3-SAT
+is NP-complete.
+
+This reduction is a little trickier.  Want to convert 3-CNF formula \phi to
+a graph G that is 3-colorable iff \phi was satisfiable.
+
+First, for each x_i, will have one node called "x_i" and one node
+called "not(x_i)".  Let's call the three colors "red", "T" and "F",
+and add three special nodes in a triangle called "red", "T", and "F"
+that we can assume without loss of generality are given the
+corresponding colors.  Now, let's have a triangle between red, x_i,
+and not(x_i) for each i.  This forces the coloring to make a choice
+for each variable of whether it should be true or false.
+
+Now, we need to add in a "gadget" for each clause.  For a clause 
+"(x OR y or z)" we will have the gadget:
+
+   x---O
+       |\
+       | O---O
+       |/    |\
+   y---O     | T  (this is the common "T" node)
+             |/
+   z---------O
+
+This gadget has the property that it's not possible to color all three
+of x,y,z with color "F", but *any* other assignment of {T,F} to x,y,z
+is OK.   [this is easiest to see looking at the triangle attached to
+x,y.  If both x,y are F, then the tip of that triangle has to be F
+too, else it can be colored T.]
+
+So, if the formula was satisfiable then there is a legal 3-coloring,
+and any legal 3-coloring must give a satisfyting assignment to the
+formula. 
+
+------------------------------------------------------------
