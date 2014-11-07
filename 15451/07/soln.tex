@@ -53,32 +53,33 @@ Recitation: A \\
 The problem is in NP because there exists a poly-time verifier as follows:
 
 Define the proof of the solution as a K-element subset of X. We compute distances
-between each pair of distinct points and check that that they are greater than or equal to delta D.
+between each pair of distinct points and check that that they are greater than or equal to $\Delta$.
 If all pairs satisfy the condition, then we verify that this is a solution. Otherwise it is not.
 
 The Well-Separated problem is in NP-Hard because the independent set decision problem which is NP-hard reduces to it.
 The reduction is as follows:
 
-Given a graph $G = (V,E)$ and integer $k$,
-we want to output YES
-if there exists a set of vertices of size $k$
+\textbf{Independent set}\\
+Given a graph $G = (V,E)$ and integer $k$,\\
+we want to output YES\\
+if there exists a set of vertices of size $k$\\
 such that no two of them are adjacent.
 
-To craft our input to the Well-Separated oracle,
-we construct a set $X$ from the vertices of $G$,
-let $K = k$,
-let $\Delta = 1.25$,
-for all $i \in V$ let $d(i,i) = 0$,
-for all $i,j \in V : i \neq j \wedge (i,j) \in E$ let $d(i,j) = 1$
+To craft our input to the Well-Separated oracle,\\
+we construct a set $X$ from the vertices of $G$,\\
+let $K = k$,\\
+let $\Delta = 1.25$,\\
+for all $i \in V$ let $d(i,i) = 0$,\\
+for all $i,j \in V : i \neq j \wedge (i,j) \in E$ let $d(i,j) = 1$\\
 for all $i,j \in V : i \neq j \wedge (i,j) \notin E$ let $d(i,j) = 1.5$
 
-We pass this input to the well separated problem, which will return YES
+We pass this input to the well separated problem, which will return YES\\
 if there exists a set of elements of size $K$ where all distances are greater than 1.25.
 
-Observe these elements in $X$ map directly to vertices in $V$ which are not adjacent
+Observe these elements in $X$ map directly to vertices in $V$ which are not adjacent\\
 due to the way we constructed the input to the Well-Separated problem.
 
-Also note that the construction of $d$ correctly obeys the triangle inequality, because
+Also note that the construction of $d$ correctly obeys the triangle inequality, because\\
 two of the shortest distances $(1 + 1)$ is still greater than the longest distance $(1.5)$.
 
 
@@ -86,7 +87,7 @@ two of the shortest distances $(1 + 1)$ is still greater than the longest distan
 First we will present the algorithm, then prove its correctness.
 
 \textbf{Algorithm:}\\
-Call one set with separation at least $Delta^{*} / 2$ set $C$.
+Call one set with separation at least $\Delta^{*} / 2$ set $C$.
 
 We will maintain a vector of all points which are potentially in $C$, initially containing all points.
 
@@ -124,7 +125,7 @@ Therefore this algorithm can be run at least $K$ iterations before running out o
 Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ that are not already in $C$.
 Obseve that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.
 Sort the values from highest to lowest, and run the algorithm with these values.
-Return the none-NONE answer corresponding to the input with highest $Delta^{*}$
+Return the none-NONE answer corresponding to the input with highest $\Delta^{*}$
 
 \end{document}
 
