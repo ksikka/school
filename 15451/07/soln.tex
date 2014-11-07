@@ -84,7 +84,7 @@ two of the shortest distances $(1 + 1)$ is still greater than the longest distan
 
 
 \part{b}
-First we will present the algorithm, then prove its correctness.
+We will present the algorithm, prove a condition about it's correctness, and show that it runs in poly time.
 
 \textbf{Algorithm:}\\
 Call one set with separation at least $\Delta^{*} / 2$ set $C$.
@@ -123,11 +123,16 @@ Therefore at most one optimal point is removed from $C$ in each iteration of the
 
 Therefore this algorithm can be run at least $K$ iterations before running out of points to select.
 
+\textbf{Runtime:}\\
+The algorithm runs $K$ iterations, each iteration takes $O(|X|)$ work, so the runtime is $O(K*|X|)$.
+
 \part{c}
 Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ that are not already in $C$.\\
-Obseve that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.\\
+Observe that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.\\
 Sort the values from highest to lowest, and run the algorithm with these values.\\
 Return the none-NONE answer corresponding to the input with highest $\Delta^{*}$
+
+The algorithm runs in $O(K*|X|*|X|^2) = O(K*|X|^3)$
 
 \end{document}
 
