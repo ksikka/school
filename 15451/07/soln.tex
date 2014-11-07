@@ -91,24 +91,26 @@ Call one set with separation at least $\Delta^{*} / 2$ set $C$.
 
 We will maintain a vector of all points which are potentially in $C$, initially containing all points.
 
-We will maintain a vector of points which we know are in $C$.
+We will also maintain a vector of points which we know are in $C$.
 
-Pick a point $u$ potentially in $C$ that's not already in $C$, and examine how far away all other points are from it.
-Remove all potential points not at least $\Delta^{*} / 2$ from $u$ from the set of points potentially in $C$.
-Add $u$ to the set of known points $C$.
+\begin{enumerate}
+\item Pick a point $u$ potentially in $C$ that's not already in $C$, and examine how far away all other points are from it.
+\item Remove all potential points not at least $\Delta^{*} / 2$ from $u$ from the set of points potentially in $C$.
+\item Add $u$ to the set of known points $C$.
+\end{enumerate}
 
-Perform this a total of $K$ times.
-
-This guarantees that all points in $C$ will be at least $\Delta^{*} / 2$ away from each other since at each step we eliminate points which could invalidate this invariant.
+Repeat for a total of $K$ iterations,\\
+resulting in a set $C$ with $K$ points at least $\Delta^{*} / 2$ away from each other\\
+since at each step we eliminate points which could invalidate this invariant.
 
 Now we need a proof that we can perform this $K$ times, or in other words, we never run out of points potentially in $C$ from which to select at each iteration.
 
 \textbf{Proof:}\\
-We were allowed to assume there exists some set of $K$ points with separation $\Delta^{*}$.
-For convenience, lets call these the optimal points.
+We were allowed to assume there exists some set of $K$ points with separation $\Delta^{*}$.\\
+For convenience, let's call these the optimal points.
 
-Lets examine how many optimal points are eliminated from $C$ in one iteration of the algorithm.
-If we select optimal point $u$, we will see that all the other optimal points are at least $\Delta^{*}$ away from $u$, and they will not be eliminated from $C$ in this iteration.
+Lets examine how many optimal points are eliminated from $C$ in one iteration of the algorithm.\\
+If we select optimal point $u$, we will see that all the other optimal points are at least $\Delta^{*}$ away from $u$, and they will not be eliminated from $C$ in this iteration.\\
 If we select non-optimal point $u$, we will see that at most one optimal point is less than $\Delta^{*} / 2$ away from $u$.
 
 This due to the triangle inequality. Consider a nonoptimal point $u$, the nearest optimal point $v$, and any other optimal point $w$.
@@ -122,9 +124,9 @@ Therefore at most one optimal point is removed from $C$ in each iteration of the
 Therefore this algorithm can be run at least $K$ iterations before running out of points to select.
 
 \part{c}
-Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ that are not already in $C$.
-Obseve that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.
-Sort the values from highest to lowest, and run the algorithm with these values.
+Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ that are not already in $C$.\\
+Obseve that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.\\
+Sort the values from highest to lowest, and run the algorithm with these values.\\
 Return the none-NONE answer corresponding to the input with highest $\Delta^{*}$
 
 \end{document}
