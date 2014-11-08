@@ -42,8 +42,21 @@ Recitation: A \\
 
 \question{1}{A Densely-Knit Community}
 \part{a}
+Consider the following assignment of values to $x$:
+
+Let $x_i = 0$ if $v_i$ not in $S^{*}$\\
+Let $x_i = \frac{1}{|S^{*}|}$ if $v_i$ is in $S^{*}$\\
+Let $x_{ij} = \min(x_i, x_j)$
+
+Note that the constraints are satisfied. All values are at least 0.
+The sum of the $x_i$ is 1 since it's $|S^{*}| * \frac{1}{|S^{*}|}$.
+
+$$\texttt{OPT}_{LP} = \sum_{i,j \in E} x_{ij}$$
+
 \part{b}
+
 \part{c}
+
 \part{d}
 
 \question{2}{Large + Dense = Difficult}
