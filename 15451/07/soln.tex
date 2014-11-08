@@ -55,6 +55,29 @@ $$\texttt{OPT}_{LP} \geq \sum_{i,j \in E} x_{ij} = edges(S^{*}) * \frac{1}{|S^{*
 
 
 \part{b}
+i. Consider a random variable $V_i$ that's 1 if the ith vertex is in $S(\alpha^*)$ and 0 otherwise.\\
+The expected number of vertices is equal to the expected value of the sum of $V_i$, which by linearity of expectation,
+is the equal to the sum of the expected value of $V_i$. $E[V_i] = 1 * Pr(V_i = 1) = Pr(\alpha < x^*_i) = x^*_i$
+
+Therefore the expected number of vertices is $\sum x^*_i = 1$
+
+ii. Consider a random variable $U_i$ that's 1 if the ith edge is in $S(\alpha^*)$ and 0 otherwise.\\
+The expected number of edges is equal to the expected value of the sum of $U_i$, which by linearity of expectation,
+is the equal to the sum of the expected value of $U_i$. $E[U_i] = 1 * Pr(U_i = 1)$
+
+The probability that an edge exists in $S(\alpha^*)$ is equal to 
+
+$$Pr(\alpha < \min(x^*_i, x^*_j)) = Pr(\alpha < x^*_{ij}) = x^*_{ij}$$
+
+Therefore the expected number of edges is $\sum x^*_{ij}$
+
+iii. By simple substitution,
+$$ \frac{\sum x^*_{ij}}{1} = \sum x^*_{ij} = OPT_{LP}$$
+
+c.
+
+
+
 
 \part{c}
 
