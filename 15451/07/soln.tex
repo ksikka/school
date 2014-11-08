@@ -51,7 +51,8 @@ Let $x_{ij} = \min(x_i, x_j)$
 Note that the constraints are satisfied. All values are at least 0.
 The sum of the $x_i$ is 1 since it's $|S^{*}| * \frac{1}{|S^{*}|}$.
 
-$$\texttt{OPT}_{LP} = \sum_{i,j \in E} x_{ij}$$
+$$\texttt{OPT}_{LP} \geq \sum_{i,j \in E} x_{ij} = edges(S^{*}) * \frac{1}{|S^{*}|} = OPT$$
+
 
 \part{b}
 
