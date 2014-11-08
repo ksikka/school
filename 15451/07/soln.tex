@@ -47,6 +47,31 @@ Recitation: A \\
 \part{d}
 
 \question{2}{Large + Dense = Difficult}
+The problem is in NP because there exists a poly-time verifier as follows:
+
+Given a $(G, K, D)$ and a potential solution $S$ of size $K$, compute the density which is
+
+$$\frac{| \texttt{edges}(S) |}{|S|}$$
+
+Note:Computing edges of $S$ can be done in $|S|^2$ time.
+
+The problem is NP-hard because we can show a a Karp reduction from K-Clique to it.
+
+Given $G, K$ we want to output YES if there exists a K-clique in $G$.\\
+
+Observe that the number of edges in a K-clique is $\frac{K(K-1)}{2}$ because you can pair each vertex with each other vertex and divide by 2 to eliminate the same pair written backwards.\\
+Therefore the density of a K-clique is $$\frac{\frac{K(K-1)}{2}}{K} = \frac{K-1}{2}$$
+Also, a graph that is not a K-clique has a strictly smaller density because you would have to add edges to make it a K-clique, thereby increasing the density.\\
+Therefore if a graph has density equal to $\frac{|V| - 1}{2}$ it must be a K-clique.
+
+We construct an input to the Reasonably Sized problem as follows:\\
+Let $D = \frac{K(K-1)}{2}$
+Let $G$ be the same graph as in the K-clique problem.
+Let $K$ be the same $K$.
+
+This correctly outputs YES when there is a K-clique and NO when there isn't because of the way we set $D$.
+
+Since the problem is NP and NP-hard, it's NP-Complete.
 
 \question{3}{A Well-Separated Problem}
 \part{a}
@@ -56,7 +81,7 @@ Define the proof of the solution as a K-element subset of X. We compute distance
 between each pair of distinct points and check that that they are greater than or equal to $\Delta$.
 If all pairs satisfy the condition, then we verify that this is a solution. Otherwise it is not.
 
-The Well-Separated problem is in NP-Hard because the independent set decision problem which is NP-hard reduces to it.
+The Well-Separated problem is in NP-Hard because there is a Karp Reduction from the Independent Set decision problem which is NP-hard to this problem.
 The reduction is as follows:
 
 \textbf{Independent set}\\
@@ -131,12 +156,16 @@ Therefore the algorithm can be run at least $K$ iterations before running out of
 The algorithm runs $K$ iterations, each iteration takes $O(|X|)$ work, so the runtime is $O(K*|X|)$.
 
 \part{c}
-Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ that are not already in $C$.\\
-Observe that the optimum separation delta may only be one of $\binom{|X|}{2}$ values: the distances $d(i,j) : i \neq j$.\\
+You could run the algorithm on all possible values of $\Delta^{*}$. More formally:
+
+Modify the algorithm from B to return NONE if it runs out of points potentially in $C$ before running $K$ iterations.\\
+Observe that the optimum separation delta may only be one of $\binom{|X|}{2} \leq |X|^2$ values: the distances $d(i,j) : i \neq j$.\\
 Sort the values from highest to lowest, and run the algorithm with these values.\\
 Return the none-NONE answer corresponding to the input with highest $\Delta^{*}$
 
 Sorting takes $O(|X|^{2} * log(|X|^2))$ and the rest takes $O(K*|X|*|X|^2)$. The limiting step is $O(K*|X|^3)$
+
+Note: you could do this faster by using binary search instead of linear search, but it doesn't matter for the sake of this problem.
 
 \end{document}
 
