@@ -94,9 +94,10 @@ We will maintain a vector of all points which are potentially in $C$, initially 
 We will also maintain a vector of points which we know are in $C$.
 
 \begin{enumerate}
-\item Pick a point $u$ potentially in $C$ that's not already in $C$, and examine how far away all other points are from it.
-\item Remove all potential points not at least $\Delta^{*} / 2$ from $u$ from the set of points potentially in $C$.
+\item Pick a point $u$ potentially in $C$, and examine how far away all other points are from it.
 \item Add $u$ to the set of known points $C$.
+\item Remove $u$ from the set of points potentially in $C$.
+\item Remove all points not at least $\Delta^{*} / 2$ from $u$ from the set of points potentially in $C$.
 \end{enumerate}
 
 Repeat for a total of $K$ iterations,\\
@@ -109,8 +110,9 @@ Now we need a proof that we can perform this $K$ times, or in other words, we ne
 We were allowed to assume there exists some set of $K$ points with separation $\Delta^{*}$.\\
 For convenience, let's call these the optimal points.
 
-Lets examine how many optimal points are eliminated from $C$ in one iteration of the algorithm.\\
-If we select optimal point $u$, we will see that all the other optimal points are at least $\Delta^{*}$ away from $u$, and they will not be eliminated from $C$ in this iteration.\\
+Lets examine how many optimal points are eliminated from the potentially-in-C set in one iteration of the algorithm.\\
+Claim: At most one optimal point is removed from the potentially-in-C set.\\
+If we select optimal point $u$, we will see that all the other optimal points are at least $\Delta^{*}$ away from $u$, and they will not be eliminated from the potentially-in-C set in this iteration. $u$ will be the only optimal point removed.\\
 If we select non-optimal point $u$, we will see that at most one optimal point is less than $\Delta^{*} / 2$ away from $u$.
 
 This due to the triangle inequality. Consider a nonoptimal point $u$, the nearest optimal point $v$, and any other optimal point $w$.
@@ -119,9 +121,11 @@ $$\Delta^{*} \leq d(v,w) \leq d(v,u) + d(u,w)$$
 
 Since $v$ no farther from  $u$ than $w$, $d(v,u)$ may be less than $\Delta^{*} / 2$, but $d(u,w)$ will certainly be at least $\Delta^{*} / 2$.
 
-Therefore at most one optimal point is removed from $C$ in each iteration of the algorithm.
+Therefore at most one optimal point is removed from the potentially-in-C set in each iteration of the algorithm.
 
-Therefore this algorithm can be run at least $K$ iterations before running out of points to select.
+We know there were $K$ optimal points to start out with in the potentially-in-C set.
+
+Therefore the algorithm can be run at least $K$ iterations before running out of points to select.
 
 \textbf{Runtime:}\\
 The algorithm runs $K$ iterations, each iteration takes $O(|X|)$ work, so the runtime is $O(K*|X|)$.
