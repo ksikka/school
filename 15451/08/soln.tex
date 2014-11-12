@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[2] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1: #2} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{08}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+ 
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{HW\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{15-451}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}
+{\Large 15-451 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+Collaborated with Dave Cummings and Sandeep Rao.\\
+Recitation: A \\
+\today \\
+\end{center}
+
+\question{1}{Streaming Medians}
+\part{a}
+
+\part{b}
+
+\part{c}
+
+\part{d}
+
+\question{2}{Counting Substrings}
+
+\question{3}{LDIS}
+\part{a}
+Keep a running max length of the duplicate initial string.
+
+For i from 1 to $|s|/2$, compute the hash of $s_{0,i}$ and $s_{i,2*i}$.\\
+If they are equal, update the max length of the duplicate initial string to be $i$.
+
+Finally return the max length of the duplicate initial strings.
+
+Note that computing the hash at each iteration takes constant time.
+
+To deal with false positives, you can verify the solution at the end.
+
+TODO deal with this rigorously
+
+\part{b}
+
+\begin{verbatim}
+aaaacc
+
+
+prefix traversal order:
+
+a => yes
+a a => yes
+a a a => no
+a a a a => no
+a a a a c => no
+a a a a c c => no
+
+Keep running max length duplicate prefix
+
+1. traverse a, then aa, then aaa...
+2. each time, check if the following condition is true:
+
+check if there exists another suffix prefix starting at 2*len(prefix) (assuming string is 1-indexed)
+
+^{prefix}.*
+.{len(prefix)*2}{prefix}.*
+
+3. If the condition is true, update the max-length duplicate prefix to len(prefix)
+
+\end{verbatim}
+
+TODO polish the above.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
