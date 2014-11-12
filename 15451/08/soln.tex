@@ -70,7 +70,7 @@ Then by a union bound over $n/2$ locations Then the probability of any incorrect
 We want $n/2 * \delta < 1/2$ or equivalently $\delta < 1/n$.
 
 We make an incorrect match when the hash $a$ of one substring is equal to the hash $b$ of another, modulo some random prime $q$.
-Formally, this occurs when $q \divides a-b$. $a-b$ has at most $p$ distinct prime divisors since it's a $p$-bit number and each prime divisor is at least 2.
+Formally, this occurs when $q | a-b$. $a-b$ has at most $p$ distinct prime divisors since it's a $p$-bit number and each prime divisor is at least 2.
 If $q \divides a-b$, then $q$ must have been one of the $p$ prime divisors of $a-b$.
 
 We want to choose a prime such that the chance that it's one of the $p$ prime divisors is less than $1/n$.
