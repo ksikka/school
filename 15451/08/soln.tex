@@ -60,11 +60,30 @@ If they are equal, update the max length of the duplicate initial string to be $
 
 Finally return the max length of the duplicate initial strings.
 
-Note that computing the hash at each iteration takes constant time.
+Note that computing the hash at each iteration takes constant time (insert formula here).
 
-To deal with false positives, you can verify the solution at the end.
+Next we will show the probability of a false positive is less than 1/2.
 
-TODO deal with this rigorously
+Let the length of the string be $n$. 
+Suppose for any fixed locations $i$ and $2i$ the probability of an incorrect match is $\delta$.
+Then by a union bound over $n/2$ locations Then the probability of any incorrect match is at most $n/2 * \delta$
+We want $n/2 * \delta < 1/2$ or equivalently $\delta < 1/n$.
+
+We make an incorrect match when the hash $a$ of one substring is equal to the hash $b$ of another, modulo some random prime $q$.
+Formally, this occurs when $q \divides a-b$. $a-b$ has at most $p$ distinct prime divisors since it's a $p$-bit number and each prime divisor is at least 2.
+If $q \divides a-b$, then $q$ must have been one of the $p$ prime divisors of $a-b$.
+
+We want to choose a prime such that the chance that it's one of the $p$ prime divisors is less than $1/n$.
+Choose $K$ large enough so that there are $pn$ primes between 2 and $K$.
+
+If there are $\pi(x)$ primes between one and $x$, then $\pi(x) ≥ \frac{7}{8} \frac{n}{ln(n)}$.
+Thus we want to choose K such that
+$\pi(K) \geq \frac{7}{8} \frac{K}{ln(K)} > pt$.
+
+Setting $K = 5pt ln(pt)$ acheives this result.
+
+
+
 
 \part{b}
 
