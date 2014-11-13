@@ -101,42 +101,30 @@ Setting $K = 5*lg(\Sigma)*n*ln(lg(\Sigma)n)$ acheives this result.
 \part{b}
 
 Construct a suffix tree for $s$ in linear time.
-We will preprocess the suffix tree by running two $O(n)$ DFSs.
+
+We will preprocess the suffix tree to store at each node, the following value:\\
+Let p be the pattern represented by the node.\\
+Let L be the length of the pattern.\\
+Store the index of the last occurence of $p$ in the string, which starts on or before index L.
+
+How we do the above is explained later.
+
+Then, the algorithm proceeds as follows:\\
+
+
 
 Do a DFS where you keep track of the length of the prefix at a node, called L,
 cache the index of the last occurence of P starting on or before index L+1.
 
 Ask your children, what's your last occurence, and since your L+1 is strictly greater than my L+1, I'll filter out the invalid answers and still have the correct last occurence before L+1.
 
+Traverse the suffix tree starting from the root, taking the edge which leads you to a node representing a pattern which is a prefix of the original string.
+At each node, keep track of the length of the prefix, and check whether the length of the value we computed earlier is equal to L.
+Keep a running max length of the prefix for which this condition is true.
 
 
-\begin{verbatim}
-
-
-a => yes
-a a => yes
-a a a => no
-a a a a => no
-a a a a c => no
-a a a a c c => no
-
-Keep running max length duplicate prefix
-
-1. traverse a, then aa, then aaa...
-2. each time, check if the following condition is true:
-
-check if there exists another suffix prefix starting at 2*len(prefix) (assuming string is 1-indexed)
-
-^{prefix}.*
-.{len(prefix)*2}{prefix}.*
-
-3. If the condition is true, update the max-length duplicate prefix to len(prefix)
-
-\end{verbatim}
-
-TODO polish the above.
-
-
+TODO Correctness
+TODO details of how to do the precomputation
 
 
 
