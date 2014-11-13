@@ -69,7 +69,7 @@ and trying again if not. This algorithm is expected $O(log(K))$ which is $O(log(
 \textbf{Modified Karp-Rabin}:
 Now we will compute the Karp-Rabin hashes of each prefix and the string of the same length following it.
 Starting at i = 1, compute h(s[0:i]), h(s[i:2i])
-Increment i and compute the hashes again. Note that this takes constant time since s[0:i] -> s[0:i+1] and s[i:2i] -> s[i+1:2i+2] so to compute the hash we only have to do a constant time adjustment to the previously computed hash.
+Increment i and compute the hashes again. Note that this takes constant time since $s[0:i] \implies s[0:i+1]$ and $s[i:2i] \implies s[i+1:2i+2]$ so to compute the hash we only have to do a constant time adjustment to the previously computed hash.
 
 Repeat until $i > t/2$. Return the max $i$ for which the two hash computed at the $ith$ iteration are equal.
 
