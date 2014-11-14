@@ -43,13 +43,79 @@ Recitation: A \\
 \question{1}{Streaming Medians}
 \part{a}
 
+The probability of getting majority heads is:
+$$ Pr(heads >= k+1) =
+\sum_{i = k+1}^{2k+1} Pr(heads = i) =
+\sum_{i = k+1}^{2k+1} \binom{2k+1}{i} p^{i} (1-p)^{2k+1-i} =
+\sum_{i = k+1}^{2k+1} \binom{2k+1}{i} (\frac{1}{2}(1 - e))^{i} (\frac{1}{2}(1 + e))^{2k+1-i} =
+$$
+
+
 \part{b}
+
 
 \part{c}
 
 \part{d}
+To start off, allocate memory for an array of size $l$.
+While $t<l$, add the element to $l$ in the position $t$.
+Note that so far all element are in $l$ with equal probability: 1.
+
+From now on, $l \leq t$.
+
+In order for the elements in $l$ to be a uniformly random subset of $T$,
+each must have a probability of $l/t$ of being in $l$ at time $t$.
+
+At time $t$, we want to insert the element into $l$ with probability $l/t$.
+However in order to do so, we must evict an element from $l$.
+Choose the element to evict uniformly, so that each element has probability $1/l$ of being evicted..
+
+Note that prior to eviction at time $t-1$, all elements had a probability of $\frac{l}{t-1}$ (inductive hypothesis).
+
+
+The probability that some element will be evicted is $l/t$.
+The probability that it's one element is $1/l$.
+The probability that an element will NOT be evicted at $t$ is $1 - \frac{l}{t} \frac{1}{l} = 1 - \frac{1}{t} = \frac{t-1}{t}$
+
+Mulitplying that to the old probability gives:
+
+$\frac{l}{t-1} \frac{t-1}{t}  = \frac{l}{t}$
+
+
 
 \question{2}{Counting Substrings}
+
+Each edge of the suffix tree has a pair of indices $(i,j)$ representing the starting and ending character of that edge.\\
+The algorithm is simply to sum over all the edges, $j-i$.\\
+You can do this by DFS in $O(n)$.
+
+\textbf{Proof of correctness}:
+
+1. Injection from substring -> highlighted path of characters starting at the root\\
+Consider a substring in $s$. There exists a suffix starting with that substring.\\
+Therefore we can identify the path in the suffix tree corresponding to that suffix,\\
+From there we can highlight the characters of the edges on the path, starting at the root, which correspond to the substring.
+
+Note that this highlighted portion of the suffix path is unique to the substring.\\
+To see why, try adding the substring (optionally concatenate garbage to the end).\\
+You'll see that while adding this to the suffix tree, the highlighted path is not modified.\\
+The only modification to the suffix tree is an additional leaf node.
+
+So any distinct substring maps uniquely to some highlighted path of characters in the suffix tree (starting at the root).
+
+
+2. Injection highlighted path of characters starting at the root -> substring\\
+Any highlighted path of characters starting at the root corresponds to a distinct substring.\\
+Distinctness comes from the construction of the suffix tree. The highlighted path is obviously\\
+a substring because it's the prefix of some suffix.
+
+3. Therefore there's a bijection.
+
+The number of those character paths is $j-i$ for each edge since each character on the edge serves as the last character for exactly one distinct substring.
+
+
+
+
 
 \question{3}{LDIS}
 \part{a}
