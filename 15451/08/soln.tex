@@ -126,7 +126,7 @@ You can do this by DFS in $O(n)$.
 
 \textbf{Proof of correctness}:
 
-1. Injection from substring -> highlighted path of characters starting at the root\\
+1. Injection from substring -\textgreater highlighted path of characters starting at the root\\
 Consider a substring in $s$. There exists a suffix starting with that substring.\\
 Therefore we can identify the path in the suffix tree corresponding to that suffix,\\
 From there we can highlight the characters of the edges on the path, starting at the root, which correspond to the substring.
@@ -139,7 +139,7 @@ The only modification to the suffix tree is an additional leaf node.
 So any distinct substring maps uniquely to some highlighted path of characters in the suffix tree (starting at the root).
 
 
-2. Injection highlighted path of characters starting at the root -> substring\\
+2. Injection highlighted path of characters starting at the root -\textgreater substring\\
 Any highlighted path of characters starting at the root corresponds to a distinct substring.\\
 Distinctness comes from the construction of the suffix tree. The highlighted path is obviously\\
 a substring because it's the prefix of some suffix.
@@ -214,18 +214,22 @@ Then, the algorithm proceeds as follows:\\
 
 
 
-Do a DFS where you keep track of the length of the prefix at a node, called L,
-cache the index of the last occurence of P starting on or before index L+1.
-
-Ask your children, what's your last occurence, and since your L+1 is strictly greater than my L+1, I'll filter out the invalid answers and still have the correct last occurence before L+1.
-
 Traverse the suffix tree starting from the root, taking the edge which leads you to a node representing a pattern which is a prefix of the original string.
 At each node, keep track of the length of the prefix, and check whether the length of the value we computed earlier is equal to L.
 Keep a running max length of the prefix for which this condition is true.
 
 
-TODO Correctness
-TODO details of how to do the precomputation
+
+Correctness
+
+If the last occurance of P before L+1 occurs at index L then you have a \^vv pattern.
+
+Details of how to do the precomputation
+
+Do a DFS where you keep track of the length of the prefix at a node, called L,
+cache the index of the last occurence of P starting on or before index L+1.
+
+Ask your children, what's your last occurence, and since your L+1 is strictly greater than my L+1, I'll filter out the invalid answers and still have the correct last occurence before L+1.
 
 
 
