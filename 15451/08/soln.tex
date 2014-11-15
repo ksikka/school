@@ -58,6 +58,8 @@ Now factor out $(\frac{(1-\varepsilon)}{2})^{k+1}$
 = & (\frac{(1-\varepsilon)}{2})^{k+1} * (\binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{0} (\frac{(1+\varepsilon)}{2})^{k} + \binom{2k+1}{k+2} (\frac{(1-\varepsilon)}{2})^{1} (\frac{(1+\varepsilon)}{2})^{k-1} + ... + \binom{2k+1}{2k+1} (\frac{(1-\varepsilon)}{2})^{k} (\frac{(1+\varepsilon)}{2})^{0})\\
 \end{align*}
 
+NOTE the rest is shady and I don't really know what's going on because my teammates did it and I didn't have time to fully sync up with them.
+
 Now notice that in the sum of terms, the first term is the largest. This is because $\varepsilon > 1$ in order for $p$ to be within the range [0,1].
 We find an upper bound by replacing all the terms with the first term.
 
@@ -66,16 +68,27 @@ We find an upper bound by replacing all the terms with the first term.
 \leq & (\frac{(1-\varepsilon)}{2})^{k+1} * k * \binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{0} (\frac{(1+\varepsilon)}{2})^{k}\\
 \end{align*}
 
+... unknown ...
+
 \begin{align*}
 \leq & \frac{1}{\varepsilon^2} ((1-\varepsilon)(1+\varepsilon))^{k+1}\\
 = & \frac{1}{\varepsilon^2} (1-\varepsilon^2)^{k+1}
 \end{align*}
 
-
 \part{b}
+
+\begin{align*}
+Probability of majority heads is less than:
+  & \frac{1}{\varepsilon} e^{-\varepsilon^2 k}
+= & \frac{1}{\varepsilon} e^{-\varepsilon^2 \frac{1}{\varepsilon^2} ln \frac{2}{\varepsilon^2 \delta}}
+= & \frac{1}{\varepsilon} e^{ln (\frac{2}{\varepsilon^2 \delta})^{-\varepsilon^2 \frac{1}{\varepsilon^2} }}
+= & \frac{1}{\varepsilon} (\frac{2}{\varepsilon^2 \delta})^{-\varepsilon^2 \frac{1}{\varepsilon^2} })
+\end{align*}
 
 
 \part{c}
+NOOP
+
 
 \part{d}
 To start off, allocate memory for an array of size $l$.
