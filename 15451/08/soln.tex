@@ -49,13 +49,13 @@ The probability of getting majority heads is:
   & Pr(heads >= k+1) \\
 = & Pr(heads = k+1) + Pr(heads = k+2) + ... + Pr(heads = 2k+1) \\
 = & \binom{2k+1}{k+1} p^{k+1} (1-p)^{k} + \binom{2k+1}{k+2} p^{k+2} (1-p)^{k-1} + ... + \binom{2k+1}{2k+1} p^{2k+1} (1-p)^{0} \\
-= & \binom{2k+1}{k+1} \frac{(1-\varepsilon)}{2}^{k+1} \frac{(1+\varepsilon)}{2}^{k} + \binom{2k+1}{k+2} \frac{(1-\varepsilon)}{2}^{k+2} \frac{(1+\varepsilon)}{2}^{k-1} + ... + \binom{2k+1}{2k+1} \frac{(1-\varepsilon)}{2}^{2k+1} \frac{(1+\varepsilon)}{2}^{0} \\
+= & \binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{k+1} (\frac{(1+\varepsilon)}{2})^{k} + \binom{2k+1}{k+2} (\frac{(1-\varepsilon)}{2})^{k+2} (\frac{(1+\varepsilon)}{2})^{k-1} + ... + \binom{2k+1}{2k+1} (\frac{(1-\varepsilon)}{2})^{2k+1} (\frac{(1+\varepsilon)}{2})^{0} \\
 \end{align*}
 
-Now factor out $\frac{(1-\varepsilon)}{2}^{k+1}$
+Now factor out $(\frac{(1-\varepsilon)}{2})^{k+1}$
 
 \begin{align*}
-= & \frac{(1-\varepsilon)}{2}^{k+1} * (\binom{2k+1}{k+1} \frac{(1-\varepsilon)}{2}^{0} \frac{(1+\varepsilon)}{2}^{k} + \binom{2k+1}{k+2} \frac{(1-\varepsilon)}{2}^{1} \frac{(1+\varepsilon)}{2}^{k-1} + ... + \binom{2k+1}{2k+1} \frac{(1-\varepsilon)}{2}^{k} \frac{(1+\varepsilon)}{2}^{0})\\
+= & (\frac{(1-\varepsilon)}{2})^{k+1} * (\binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{0} (\frac{(1+\varepsilon)}{2})^{k} + \binom{2k+1}{k+2} (\frac{(1-\varepsilon)}{2})^{1} (\frac{(1+\varepsilon)}{2})^{k-1} + ... + \binom{2k+1}{2k+1} (\frac{(1-\varepsilon)}{2})^{k} (\frac{(1+\varepsilon)}{2})^{0})\\
 \end{align*}
 
 
