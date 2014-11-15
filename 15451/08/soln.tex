@@ -56,9 +56,19 @@ Now factor out $(\frac{(1-\varepsilon)}{2})^{k+1}$
 
 \begin{align*}
 = & (\frac{(1-\varepsilon)}{2})^{k+1} * (\binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{0} (\frac{(1+\varepsilon)}{2})^{k} + \binom{2k+1}{k+2} (\frac{(1-\varepsilon)}{2})^{1} (\frac{(1+\varepsilon)}{2})^{k-1} + ... + \binom{2k+1}{2k+1} (\frac{(1-\varepsilon)}{2})^{k} (\frac{(1+\varepsilon)}{2})^{0})\\
+\end{align*}
+
+Now notice that in the sum of terms, the first term is the largest. This is because $\varepsilon > 1$ in order for $p$ to be within the range [0,1].
+We find an upper bound by replacing all the terms with the first term.
+
+
+\begin{align*}
 \leq & (\frac{(1-\varepsilon)}{2})^{k+1} * k * \binom{2k+1}{k+1} (\frac{(1-\varepsilon)}{2})^{0} (\frac{(1+\varepsilon)}{2})^{k}\\
+\end{align*}
+
+\begin{align*}
 \leq & \frac{1}{\varepsilon^2} ((1-\varepsilon)(1+\varepsilon))^{k+1}\\
-\leq & \frac{1}{\varepsilon^2} (1-\varepsilon^2)^{k+1}
+= & \frac{1}{\varepsilon^2} (1-\varepsilon^2)^{k+1}
 \end{align*}
 
 
