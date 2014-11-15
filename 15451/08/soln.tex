@@ -45,10 +45,12 @@ Recitation: A \\
 
 The probability of getting majority heads is:
 
-$Pr(heads >= k+1) =$\\
-$Pr(heads = k+1) + Pr(heads = k+2) + ... + Pr(heads = 2k+1) =$\\
-$\binom{2k+1}{k+1} p^{k+1} (1-p)^{k} + \binom{2k+1}{k+2} p^{k+2} (1-p)^{k-1} + ... + \binom{2k+1}{2k+1} p^{2k+1} (1-p)^{0} $\\
-$\sum_{i = k+1}^{2k+1} \binom{2k+1}{i} (\frac{1}{2}(1 - e))^{i} (\frac{1}{2}(1 + e))^{2k+1-i} =$\\
+$$
+Pr(heads >= k+1) =\\
+Pr(heads = k+1) + Pr(heads = k+2) + ... + Pr(heads = 2k+1) =\\
+\binom{2k+1}{k+1} p^{k+1} (1-p)^{k} + \binom{2k+1}{k+2} p^{k+2} (1-p)^{k-1} + ... + \binom{2k+1}{2k+1} p^{2k+1} (1-p)^{0} \\
+\sum_{i = k+1}^{2k+1} \binom{2k+1}{i} (\frac{1}{2}(1 - e))^{i} (\frac{1}{2}(1 + e))^{2k+1-i} =\\
+$$
 
 
 
