@@ -98,12 +98,16 @@ $$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\fra
 
 
 
-
 \part{b}
-TODO GAUSSIAN\^2 LIKELIHOOD
+Say there are $m$ biomarkers. Let $\vec{\theta}$ be an $2m+1$ dimensional vector of parameters.
+
+Let $\mu =  \theta_{2m+1} + \sum_{i=1}^{m} \theta_i x_i^2 + \sum_{i=m+1}^{2m} \theta_i x_i $ in the following
+
+$$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}$$
+
 
 \part{c}
-Do both and take the one with the smaller error?
+Performance, over/underfitting.
 
 \part{d}
 Metropolis
