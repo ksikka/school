@@ -90,9 +90,14 @@ $$Pr(B=B, b=b | p=p) = $$
 \question{2}
 
 \part{a}
-Let TTR be time to resistance.
+Say there are $m$ biomarkers. Let $\vec{\theta}$ be an $m+1$ dimensional vector of parameters.
 
-TODO GAUSSIAN LIKELIHOOD
+Let $\mu = \vec{\theta} \cdot \vec{x} + \theta_{m+1}$.
+
+$$\cal{L}(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} e^\frac{-\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}$$
+
+
+
 
 \part{b}
 TODO GAUSSIAN\^2 LIKELIHOOD
@@ -138,10 +143,10 @@ TODO interp formula + some deriv stuff.
 \question{4}
 \part{a}
 
-If $b_i$ is 0, there are no boojum on island $i$. Based on this observation, we note the following:\\
-$Pr(b_i = 0| f) = (1-f)^{s_i}$\\
-$Pr(b_i = 1| f) = 1 - Pr(b_i = 0 | f) = 1 - (1-f)^{s_i}$
+If $b_i$ is 0, there are no boojum on island $i$. Based on this observation, we note the following:
 
+$$Pr(b_i = 0| f) = (1-f)^{s_i}$$
+$$Pr(b_i = 1| f) = 1 - Pr(b_i = 0 | f) = 1 - (1-f)^{s_i}$$
 $$Pr(b | f) = \prod_{i=1}^n Pr(b_i = b_i)$$
 
 \part{b}
@@ -150,7 +155,7 @@ $$\hat{f} = \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n s_i} $$
 
 \part{c}
 
-$E[y_i] = b_i * \hat{f} * s_i$
+$$E[y_i] = b_i * \hat{f} * s_i$$
 
 \part{d}
 
