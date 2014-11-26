@@ -92,7 +92,7 @@ $$Pr(B=B, b=b | p=p) = $$
 \part{a}
 Say there are $m$ biomarkers. Let $\vec{\theta}$ be an $m+1$ dimensional vector of parameters.
 
-Let $\mu = \vec{\theta} \cdot \vec{x} + \theta_{m+1}$.
+Let $\mu =  \theta_{m+1} + \sum_{i=1}^{m} \theta_i x_i $ in the following
 
 $$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}$$
 
