@@ -167,7 +167,8 @@ Additional constraint:
 $\frac{dS_{1,2}}{dt}(0) = 0$
 
 
-Now we have 12 parameters and 12 constraints, we represent it as a linear system and solve using a gaussian elimination.
+Now we have 12 parameters and 12 constraints, we represent it as a linear system and solve using a gaussian elimination.\\
+(Let $(t_1, x_1) = (0,0), (t_2, x_2) = (2,5), ... , (t_5,x_5) = (10,20) $)
 
 \[ \left[ \begin{array}{cccccccccccc}
 1 & t_1 & t_1^2 \\
@@ -210,7 +211,22 @@ x_5\\
 0
 \end{array} \right]\]
 
+This solves to:
 
+\[ \vec{c} = \left[ \begin{array}{c}
+0\\
+0\\
+5/4 \\
+-40/3 \\
+31/3 \\
+-4/3 \\
+160/3 \\
+-49/3 \\
+4/3 \\
+-160 \\
+37 \\
+-2
+\end{array} \right] \]
 
 \question{4}
 \part{a}
