@@ -135,7 +135,47 @@ $$x = \sum_{i=1}^{5} \frac{\prod_{j \in [5] : j \neq i} (t - t_j)}{\prod_{j \in 
 
 
 \part{c}
-TODO interp formula + some deriv stuff.
+We have 4 quadratic equations of the form
+
+$$S_{i,i+1}(t) = c_{i,0} + c_{i,1} t + c_{i,2} t^2$$
+
+for i = 1 to i = 4. The derivative of each equation is of the form
+
+$$\frac{dS_{i,i+1}}{dt} = c_{i,1} + 2c_{i,2} t$$.
+
+Given the constraints of the problem, we can solve for all $3 * 4 = 12$ parameters by expressing the constraints as equations:
+
+$S_{1,2}(0) = 0$\\
+$S_{1,2}(2) = 5$
+
+$S_{2,3}(2) = 5$\\
+$S_{2,3}(5) = 6$
+
+$S_{3,4}(5) = 6$\\
+$S_{3,4}(8) = 10$
+
+$S_{4,5}(8) = 10$\\
+$S_{4,5}(10) = 20$
+
+Constraints for the derivative continuity:
+
+$\frac{dS_{1,2}}{dt}(2) = \frac{dS_{2,3}}{dt}(2)$
+$\frac{dS_{2,3}}{dt}(5) = \frac{dS_{3,4}}{dt}(8)$
+$\frac{dS_{3,4}}{dt}(8) = \frac{dS_{4,5}}{dt}(10)$
+
+Additional constraint:
+
+$\frac{dS_{1,2}}{dt}(0) = 0$
+
+
+Now we have 12 parameters and 12 constraints, we represent it as a linear system and solve using a gaussian elimination.
+
+\[ \left( \begin{array}{ccc}
+a & b & c \\
+d & e & f \\
+g & h & i \end{array} \right)\] 
+
+
 
 \question{4}
 \part{a}
