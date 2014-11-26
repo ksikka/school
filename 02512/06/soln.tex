@@ -101,10 +101,7 @@ $$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\fra
 \part{b}
 Say there are $m$ biomarkers. Let $\vec{\theta}$ be an $2m+1$ dimensional vector of parameters.
 
-Let $\mu =  \theta_{2m+1} + \sum_{i=1}^{m} \theta_i x_i^2 + \sum_{i=m+1}^{2m} \theta_i x_i $ in the following
-
-$$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}$$
-
+Let $\mu =  \theta_{2m+1} + \sum_{i=1}^{m} \theta_i x_i^2 + \sum_{i=m+1}^{2m} \theta_i x_i $ in the same likelihood function from part a.
 
 \part{c}
 Performance, over/underfitting.
@@ -116,27 +113,16 @@ Metropolis
 Sampling vs solving
 
 \question{3}
-Given two points, the eqn of a line is derived as follows:
+Given two points $(t1,x1),(t2,x2)$, the eqn of a line for general $t,x$ is as follows:
 
-(Points given as
-    t2 x2 t1 x1)
+$$t - t2 = (x2 - x2)/(t2 - t1) * (x - x2)$$
 
-t = (x2 - x2)/(t2 - t1) x + b
+The the following is the piecewise linear function interpolation:
 
-    t1 - (x2 - x2)/(t2 - t1) x1 = b
-
-    or 
-
-    t2 - (x2 - x2)/(t2 - t1) x2 = b
-
-t - t2 = (x2 - x2)/(t2 - t1) * (x - x2)
-
-
-
-if $0 \leq t < 2$, t - 2 = (5/2)(x - 5)\\
-if $2 \leq t < 5$, t - 5 = ((6-5)/(5-2))(x-6)\\
-if $5 \leq t < 8$, t - 8 = ((10-6)/(8-5))(x-10)\\
-if $8 \leq t \leq 10$, t - 10 = ((20-10)/(8-10))(x-20)
+If $0 \leq t < 2$, $t - 2 = (5/2)(x - 5)$\\
+If $2 \leq t < 5$, $t - 5 = ((6-5)/(5-2))(x-6)$\\
+If $5 \leq t < 8$, $t - 8 = ((10-6)/(8-5))(x-10)$\\
+If $8 \leq t \leq 10$, $t - 10 = ((20-10)/(8-10))(x-20)$
 
 \part{b}
 TODO interp formula
