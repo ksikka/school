@@ -44,7 +44,7 @@
 \question{1}
 \part{a}
 The variables we are trying to find are 
-the rate of infection $\lambda_1$
+the rate of infection, $\lambda_1$
 and the rate of recovery, $\lambda_2$.
 
 We can run the CTMM as a simulation
@@ -54,7 +54,7 @@ where each state will be $(S_t,I_t,R_t)$.
 
 Let $(Sr_t, Ir_t, Rr_t)$ be the real data.
 One possible objective function to minimize is 
-$$ \sum (S_t - Sr_t)^2 + (I_t - Ir_t)^2 + (R_t - Rr_t)^2 $$
+$$ L(\lambda_1, \lambda_2) = \sum_{real data points} (S_t - Sr_t)^2 + (I_t - Ir_t)^2 + (R_t - Rr_t)^2 $$
 
 TODO Algorithm
 
@@ -84,7 +84,7 @@ bb - blue
  brown = BB + Bb
  blue = bb
 
-\part{2}
+\question{2}
 
 \part{a}
 Let TTR be time to resistance.
@@ -103,7 +103,7 @@ Metropolis
 \part{e}
 Sampling vs solving
 
-\part{3}
+\question{3}
 Given two points, the eqn of a line is derived as follows:
 
 (Points given as
@@ -132,7 +132,7 @@ TODO interp formula
 \part{c}
 TODO interp formula + some deriv stuff.
 
-\part{4}
+\question{4}
 \part{a}
 
 If $b_i$ is 0, there are no boojum on island $i$. Based on this observation, we note the following:\\
