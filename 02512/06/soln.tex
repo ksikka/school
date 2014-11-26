@@ -1,0 +1,151 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{graphicx}
+
+
+\oddsidemargin0cm
+\topmargin-2cm
+\textwidth16.5cm
+\textheight23.5cm
+
+\newcommand{\question}[1] {\vspace{.25in} \hrule\vspace{0.5em}
+\noindent{\bf #1} \vspace{0.5em}
+\hrule \vspace{.10in}}
+\renewcommand{\part}[1] {\vspace{.10in} {\bf (#1)}}
+
+\newcommand{\myname}{Karan Sikka}
+\newcommand{\myandrew}{ksikka@cmu.edu}
+\newcommand{\myhwnum}{06}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\textbf{PS\myhwnum}}}
+\rhead{\fancyplain{}{\myname\\ \myandrew}}
+\chead{\fancyplain{}{02-512}}
+
+\begin{document}
+
+\medskip
+
+\thispagestyle{plain}
+\begin{center}                  % Center the following lines
+{\Large 02-512 Assignment \myhwnum} \\
+\myname \\
+\myandrew \\
+\today
+\end{center}
+
+\question{1}
+\part{a}
+The variables we are trying to find are 
+the rate of infection $\lambda_1$
+and the rate of recovery, $\lambda_2$.
+
+We can run the CTMM as a simulation
+and compare it with real data.
+The output of the simulation will be sequence of states over time
+where each state will be $(S_t,I_t,R_t)$.
+
+Let $(Sr_t, Ir_t, Rr_t)$ be the real data.
+One possible objective function to minimize is 
+$$ \sum (S_t - Sr_t)^2 + (I_t - Ir_t)^2 + (R_t - Rr_t)^2 $$
+
+TODO Algorithm
+
+\part{b}
+Let $G$ be the growth rate,
+$x_1$ be the conc of nutrient 1
+$x_2$ be the conc of nutrient 2.
+
+$$G = \alpha x_1 + \beta x_2 + c$$
+
+Where $\alpha, \beta, c$ are the parameters we're trying to estimate.
+
+Let $Gr(x_1,x_2)$ be the experimenally determined growth rate.
+
+One possible objective function to minimize is
+
+$$ \sum (Gr(x_1, x_2) - G(x_1, x_2))^2 $$
+
+We can find the parameters which minimize this using
+steepest descent.
+
+\part{c}
+BB - brown
+Bb - brown
+bb - blue
+
+# brown = BB + Bb
+# blue = bb
+
+TODO
+
+\problem{2}
+\part{a}
+Let TTR be time to resistance.
+
+TODO GAUSSIAN LIKELIHOOD
+
+\part{b}
+TODO GAUSSIAN\^2 LIKELIHOOD
+
+\part{c}
+Do both and take the one with the smaller error?
+
+\part{d}
+Metropolis
+
+\part{e}
+Sampling vs solving
+
+\problem{3}
+Given two points, the eqn of a line is derived as follows:
+
+(Points given as
+    t2 x2 t1 x1)
+
+t = (x2 - x2)/(t2 - t1) x + b
+
+    t1 - (x2 - x2)/(t2 - t1) x1 = b
+
+    or 
+
+    t2 - (x2 - x2)/(t2 - t1) x2 = b
+
+t - t2 = (x2 - x2)/(t2 - t1) * (x - x2)
+
+
+
+if $0 \leq t < 2$, t - 2 = (5/2)(x - 5)\\
+if $2 \leq t < 5$, t - 5 = ((6-5)/(5-2))(x-6)\\
+if $5 \leq t < 8$, t - 8 = ((10-6)/(8-5))(x-10)\\
+if $8 \leq t \leq 10$, t - 10 = ((20-10)/(8-10))(x-20)
+
+\part{b}
+TODO interp formula
+
+\part{c}
+TODO interp formula + some deriv stuff.
+
+\problem{4}
+\part{a}
+
+If $b_i$ is 0, there are no boojum on island $i$. Based on this observation, we note the following:\\
+$Pr(b_i = 0| f) = (1-f)^{s_i}$\\
+$Pr(b_i = 1| f) = 1 - (1-f)^{s_i}$
+
+$$P(b | \theta) = \Pi_{i=1}^n Pr(b_i = b_i)$$
+
+\part{b}
+
+
+
+
+
+\end{document}
