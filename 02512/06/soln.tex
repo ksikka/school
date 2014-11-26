@@ -96,8 +96,6 @@ Let $\mu =  \theta_{m+1} + \sum_{i=1}^{m} \theta_i x_i $ in the following
 
 $$L(\mu, \sigma^2; \theta) = \frac{1}{2\pi\sigma^2} \bigg(\frac{1}{e}\bigg)^\frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}$$
 
-
-
 \part{b}
 Say there are $m$ biomarkers. Let $\vec{\theta}$ be an $2m+1$ dimensional vector of parameters.
 
@@ -133,7 +131,6 @@ Then:
 
 $$x = \sum_{i=1}^{5} \frac{\prod_{j \in [5] : j \neq i} (t - t_j)}{\prod_{j \in [5] : j \neq i} (t_i - t_j)} x_i$$
 
-
 \part{c}
 We have 4 quadratic equations of the form
 
@@ -160,7 +157,9 @@ $S_{4,5}(10) = 20$
 Constraints for the derivative continuity:
 
 $\frac{dS_{1,2}}{dt}(2) = \frac{dS_{2,3}}{dt}(2)$
+
 $\frac{dS_{2,3}}{dt}(5) = \frac{dS_{3,4}}{dt}(8)$
+
 $\frac{dS_{3,4}}{dt}(8) = \frac{dS_{4,5}}{dt}(10)$
 
 Additional constraint:
@@ -170,10 +169,20 @@ $\frac{dS_{1,2}}{dt}(0) = 0$
 
 Now we have 12 parameters and 12 constraints, we represent it as a linear system and solve using a gaussian elimination.
 
-\[ \left( \begin{array}{ccc}
-a & b & c \\
-d & e & f \\
-g & h & i \end{array} \right)\] 
+\[ \left[ \begin{array}{cccccccccccc}
+1 & x_1 & x_1^2 \\
+1 & x_2 & x_2^2 \\
+0 &   1 &  2x_2 & 0 & -1 & -2x_2 \\
+  &     &       & 1 & x_2 & x_2^2 \\
+  &     &       & 1 & x_3 & x_3^2 \\
+  &     &       & 0 &   1 &  2x_3 & 0 & -1 & -2x_3 \\
+  &     &       &   &     &       & 1 & x_3 & x_3^2 \\
+  &     &       &   &     &       & 1 & x_4 & x_4^2 \\
+  &     &       &   &     &       & 0 &   1 &  2x_4 & 0 & -1 & -2x_4 \\
+  &     &       &   &     &       &   &     &       & 1 & x_4 & x_4^2 \\
+  &     &       &   &     &       &   &     &       & 1 & x_5 & x_5^2 \\
+0 &   1 &  2x_1 &   &     &       \\
+\end{array} \right]\]
 
 
 
