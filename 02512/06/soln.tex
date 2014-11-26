@@ -56,33 +56,36 @@ Let $(Sr_t, Ir_t, Rr_t)$ be the real data.
 One possible objective function to minimize is 
 $$ L(\lambda_1, \lambda_2) = \sum_{real data points} (S_t - Sr_t)^2 + (I_t - Ir_t)^2 + (R_t - Rr_t)^2 $$
 
-TODO Algorithm
+You can use steepest/gradient descent, Newton-Raphson's method, or a similar algorithm to find parameters yielding a local minimum.
+Rather than analytically computing the gradient, you'd have to approximate it using finite difference methods.
+Performance may be a concern, depending on how long the simulation has to run for.
 
 \part{b}
 Let $G$ be the growth rate,
 $x_1$ be the conc of nutrient 1
 $x_2$ be the conc of nutrient 2.
 
-$$G = \alpha x_1 + \beta x_2 + c$$
+$$G = \theta_1 x_1^2 + \theta_2 x_1 + \theta_3 x_2^2 + \theta_4 x_2 + \theta_5$$
 
-Where $\alpha, \beta, c$ are the parameters we're trying to estimate.
+Where $\vec{\theta}$ are the parameters we're trying to estimate.
 
 Let $Gr(x_1,x_2)$ be the experimenally determined growth rate.
 
 One possible objective function to minimize is
 
-$$ \sum (Gr(x_1, x_2) - G(x_1, x_2))^2 $$
+$$L(x_1, x_2) = \sum (Gr(x_1, x_2) - G(x_1, x_2))^2 $$
 
-We can find the parameters which minimize this using
-steepest descent.
+You can use steepest descent once again, like in part a.
 
 \part{c}
-BB - brown
-Bb - brown
-bb - blue
+Call parameters we are estimating, $f_B$ and $f_b$, which are the frequencies of the B allele and b allele respectively.
 
- brown = BB + Bb
- blue = bb
+Let $B$ be the number of people observed with brown eyes,
+and $b$ be the number of people observed with blue eyes.
+
+The likelihood function is as follows:
+
+$$Pr(B=B, b=b | p=p) = $$
 
 \question{2}
 
@@ -137,11 +140,19 @@ TODO interp formula + some deriv stuff.
 
 If $b_i$ is 0, there are no boojum on island $i$. Based on this observation, we note the following:\\
 $Pr(b_i = 0| f) = (1-f)^{s_i}$\\
-$Pr(b_i = 1| f) = 1 - (1-f)^{s_i}$
+$Pr(b_i = 1| f) = 1 - Pr(b_i = 0 | f) = 1 - (1-f)^{s_i}$
 
-$$P(b | \theta) = \Pi_{i=1}^n Pr(b_i = b_i)$$
+$$P(b | f) = \Pi_{i=1}^n Pr(b_i = b_i)$$
 
 \part{b}
+
+$$f \approx \frac{1}{n} sum_{i=1}^n \frac{y_i}{s_i} $$
+
+\part{c}
+
+expected number of people on island i
+
+$y_i = b_i * f * s_i$
 
 
 
