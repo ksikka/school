@@ -114,11 +114,7 @@ the number of parameters other states.
 
 First note that given any two adjacent states $q_i$, $q_j$,
 
-$$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{Pr(data | q_i)}$$
-
-When you take the ratio of two likelihoods from part a, you get
-
-$$\bigg(\frac{1}{e}\bigg)^{\frac{\sum_{i=1}^{n} (x_i-\mu(q_j))^2 - \sum_{i=1}^{n} (x_i-\mu(q_i))^2}{2\sigma^2}}$$
+$$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{Pr(data | q_i)} = \bigg(\frac{1}{e}\bigg)^{\frac{\sum_{i=1}^{n} (x_i-\mu(q_j))^2 - \sum_{i=1}^{n} (x_i-\mu(q_i))^2}{2\sigma^2}}$$
 
 Where $\mu(q_i)$ is the $\mu$ calculated as described in part a, for the parameters represented by $q_i$.
 
