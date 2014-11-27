@@ -118,9 +118,11 @@ $$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{Pr(data | q_i)}$$
 
 When you take the ratio of two likelihoods from part a, you get
 
-$$\bigg(\frac{1}{e}\bigg)^{\frac{\sum_{i=1}^{n} (x_i-\mu)^2 - \sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}}$$
+$$\bigg(\frac{1}{e}\bigg)^{\frac{\sum_{i=1}^{n} (x_i-\mu(q_j))^2 - \sum_{i=1}^{n} (x_i-\mu(q_i))^2}{2\sigma^2}}$$
 
-One iteration is as follows (starting at some state $q_i$)
+Where $\mu(q_i)$ is the $\mu$ calculated as described in part a, for the parameters represented by $q_i$.
+
+Then one iteration is as follows (starting at some state $q_i$)
 
 \begin{enumerate}
 \item Pick a random neighbor state $q_j$,
