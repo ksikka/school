@@ -105,7 +105,19 @@ Let $\mu =  \theta_{2m+1} + \sum_{i=1}^{m} \theta_i x_i^2 + \sum_{i=m+1}^{2m} \t
 Performance, over/underfitting.
 
 \part{d}
-Metropolis
+
+First note that given any two adjacent states $q_i$, $q_j$,
+
+$$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{\text{Pr(data | q_i)}}$$
+
+One iteration is as follows (starting at some state $q_i$)
+
+\begin{enumerate}
+\item Pick a random neighbor state $q_j$,
+\item If $\frac{\pi_j}{\pi_i} \geq 1$ then move to $q_j$.
+\item If $\frac{\pi_j}{\pi_i} < 1$ then with probability move to $q_j$ with that probability, else stay in $q_i$.
+\end{enumerate}
+
 
 \part{e}
 Sampling vs solving
@@ -158,9 +170,9 @@ Constraints for the derivative continuity:
 
 $\frac{dS_{1,2}}{dt}(2) = \frac{dS_{2,3}}{dt}(2)$
 
-$\frac{dS_{2,3}}{dt}(5) = \frac{dS_{3,4}}{dt}(8)$
+$\frac{dS_{2,3}}{dt}(5) = \frac{dS_{3,4}}{dt}(5)$
 
-$\frac{dS_{3,4}}{dt}(8) = \frac{dS_{4,5}}{dt}(10)$
+$\frac{dS_{3,4}}{dt}(8) = \frac{dS_{4,5}}{dt}(8)$
 
 Additional constraint:
 
