@@ -134,14 +134,14 @@ There may be cases where it's not so easy to solve. Then Sampling makes more sen
 \question{3}
 Given two points $(t1,x1),(t2,x2)$, the eqn of a line for general $t,x$ is as follows:
 
-$$t - t2 = (x2 - x1)/(t2 - t1) * (x - x2)$$
+$$x - x2 = (x2 - x1)/(t2 - t1) * (t - t2)$$
 
 The the following is the piecewise linear function interpolation, found by plugging in values from the table into the above equation:
 
-If $0 \leq t < 2$, $t - 2 = (5/2)(x - 5)$\\
-If $2 \leq t < 5$, $t - 5 = ((6-5)/(5-2))(x-6)$\\
-If $5 \leq t < 8$, $t - 8 = ((10-6)/(8-5))(x-10)$\\
-If $8 \leq t \leq 10$, $t - 10 = ((20-10)/(8-10))(x-20)$
+If $0 \leq t < 2$, $x - 5 = (5/2)(t - 2)$\\
+If $2 \leq t < 5$, $x-6 = ((6-5)/(5-2))(t - 5)$\\
+If $5 \leq t < 8$, $x-10 = ((10-6)/(8-5))(t - 8)$\\
+If $8 \leq t \leq 10$, $x-20 = ((20-10)/(8-10))(t - 10)$
 
 \part{b}
 Let $(t_1, x_1) = (0,0), (t_2, x_2) = (2,5), ... , (t_5,x_5) = (10,20) $
