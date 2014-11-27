@@ -271,7 +271,10 @@ $$\hat{f} = \frac{\sum_{i=1}^n y_i}{\sum_{i=1}^n s_i} $$
 
 \part{c}
 
-$$E[y_i] = b_i * \hat{f} * s_i$$
+$$E[y_i] = max(b_i * \hat{f} * s_i, b_i)$$
+
+The max exists to correct the case where $b_i = 1$ but the value computed without the max is less than 1. The max brings it up to 1. This is needed since if $b_i$ is 1, we expect there to be at least 1 boojum.
+The other cases are unaffected by the max.
 
 \part{d}
 
@@ -279,7 +282,7 @@ Submitted online
 
 \part{e}
 
-TODO
+0.166666666667 $\approx \frac{1}{6}$
 
 
 
