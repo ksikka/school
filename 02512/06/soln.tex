@@ -106,9 +106,19 @@ Performance, over/underfitting.
 
 \part{d}
 
+Each state in the markov model represents a parameter configuration.
+For some state, each neighbor represents
+the same configuration, either plus or minus $\UpDelta$ in one parameter (for all parameters).
+Thus the graph is a complete graph where any state connects to two times
+the number of parameters other states.
+
 First note that given any two adjacent states $q_i$, $q_j$,
 
-$$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{\text{Pr(data | q_i)}}$$
+$$\frac{\pi_j}{\pi_i} = \frac{Pr(data | q_j)}{Pr(data | q_i)}$$
+
+When you take the ratio of two likelihoods from part a, you get
+
+$$\bigg(\frac{1}{e}\bigg)^{\frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2} - \frac{\sum_{i=1}^{n} (x_i-\mu)^2}{2\sigma^2}}$$
 
 One iteration is as follows (starting at some state $q_i$)
 
