@@ -69,13 +69,14 @@ $$G = \theta_1 x_1^2 + \theta_2 x_1 + \theta_3 x_2^2 + \theta_4 x_2 + \theta_5$$
 
 Where $\vec{\theta}$ are the parameters we're trying to estimate.
 
-Let $Gr(x_1,x_2)$ be the experimenally determined growth rate.
+Let $G_r(x_1,x_2)$ be the experimenally determined growth rate.
 
 One possible objective function to minimize is
 
-$$L(x_1, x_2) = \sum (Gr(x_1, x_2) - G(x_1, x_2))^2 $$
+$$L(x_1, x_2) = \sqrt{ \sum (G_r(x_1, x_2) - G(x_1, x_2))^2 }$$
 
-You can use steepest descent once again, like in part a.
+This is the L2 norm of $A\vec{\theta} - \vec{b}$ where A is a matrix of nutrient concentrations and $\vec{b}$ is a vector of experimentally determined growth rates.
+You can minimize this by linear algebra and then solving a linear system.
 
 \part{c}
 Call parameters we are estimating, $f_B$ and $f_b$, which are the frequencies of the B allele and b allele respectively.
@@ -91,7 +92,7 @@ The likelihood function is as follows:
 
 $$Pr(B,b | f_B, f_p) = \binom{B+b}{B}(f_Bf_B + 2f_Bf_b)^B(f_bf_b)^b$$
 
-You can find $f_B, f_p$ maximizing the likelihood using EM,
+You can find $f_B, f_p$ maximizing the likelihood using MLE, or alternatively using EM,
 where the number of people with BB, Bb, and bb are latent variables.
 
 \question{2}
