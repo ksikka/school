@@ -1,0 +1,173 @@
+Problem 1
+---------
+
+sweep a line
+
+for each enter:
+    ask is the new rectangle overlapping any active overlapping regions?
+    if so:
+        add to overlapping region
+for each exit:
+    remove rectangle from active overlapping regions.
+
+stamp the max size of over overlapping reginos
+
+finally take the max of maxes.
+TODO find data structure to implement the above efficiently.
+
+Problem 2
+---------
+
+A furniture may be hit by Lp, Lp-1, Lp-2, ... 0 depending
+on the other pieces of furniture before it.
+
+k pieces, n lasers
+
+
+
+
+Problem 3
+---------
+
+a.
+assume box is in room 1
+OPT(start index, where the box is)
+
+OPT(i, 1) = 1 if s[i] = 2 else 0 + min(OPT(i+1, 1), p + OPT(i+1, 2))
+OPT(i, 2) = 1 if s[i] = 1 else 0 + min(OPT(i+1, 2), p + OPT(i+1, 1))
+
+now the actual cost is similarly defined as follows:
+
+ACT(i, 1) = 1 + p + ACT(i+1, 2) if s[i] = 2 else 0 + ACT(i+1, 1)
+ACT(i, 2) = 1 + p + ACT(i+1, 1) if s[i] = 1 else 0 + ACT(i+1, 2)
+
+now consider the ratio and find an upper bound?
+
+ACT(i, 1) = 1 + p + ACT(i+1, 2) if s[i] = 2 else 0 + ACT(i+1, 1)
+OPT(i, 1) = 1 if s[i] = 2 else 0 + min(OPT(i+1, 1), p + OPT(i+1, 2))
+
+Break it down casewise
+
+Assuming we start at s[i] = 1:
+
+case s[i] = 1:
+    ACT(i, 1) = ACT(i+1, 1)
+    OPT(i, 1) = min(OPT(i+1, 1), p + OPT(i+1, 2))
+
+case s[i] = 2:
+    ACT(i, 1) = 1 + p + ACT(i+1, 2)
+    OPT(i, 1) = 1 + min(OPT(i+1, 1), p + OPT(i+1, 2))
+
+The worse case is an alternating sequence (by looking at the recurrence).
+The optimal strategy, is to never move the box.
+
+Worst case cost: (1 + p)n
+Opt cost: n/2
+
+Competitive ratio is 2n(1+p)
+
+b.
+If you see more than p requests on the other side,
+move it to the other side with cost p.
+
+Optimally you could move the safe to the other side p requests earlier.
+
+p=7
+111111p0...0
+p0.........0
+
+See proof of rent or buy
+
+
+
+Say your count reaches p, and you move the safe.
+
+What would the optimal solution be?
+
+move the safe on or before p or after.
+
+The earlier the safe is moved, the better it would have been to move the safe earlier
+If safe is moved at same time, you made good decision.
+If safe is moved after, you could have waited.
+
+
+But how to prove that any way, you're constant-competitive with optimal?
+
+Amortized is upperbounded by constant time actual cost...
+
+For one step:
+
+amortized cost =
+    actual cost + delta I <= k * optimal cost
+
+
+A high actual cost would be 
+
+    1 + p
+
+Potential function requirements:
+--------------------------------
+
+Say person 1 wants to access the safe.
+
+The cost of the optimal algorithm (call it B) is 0 or p when the safe is in room 1.
+It would be p if the optimal algorithm moved the safe to the other room because it expects a reduction in total cost.
+
+The cost of the online algorithm (call it A) is greater than 0 in the following cases:
+    1. the safe is in room 2
+    2. move the safe from room 2 to 1.
+    3. move the safe from room 1 to 2
+
+In all of these cases the change in potential must be negative to satisfy:
+ACA=CA+ΔΦ≤kCB=0
+
+However, in the first case, c increases whereas in the 2nd and 3rd case, c decreases. (c is the counter of cost-1-accesses and is reset after moving the safe.)
+
+This suggests that there should be two potential functions where the sign of c term differs between them.
+
+
+
+
+Cost_B: 0, 1, or p
+Note, the cost_b will never be p+1 because the optimal algorithm would have known and done p one stp before.
+
+Note that cost_a will never be p because we move on the pth cost-1 access, making the cost p+1.
+
+Safe on other side, phi lower for higher c. Negative c.
+I = p-c
+
+Then we look at how the potential changes based on whether the safe moved.
+
+Cost_B = 0 => The safe is at the same place as the person making the request.
+    Cost_A = 0 => The safe is at the same place. \Delta \Phi is 0.
+    Cost_A = 1 => The safe is in the other place. \Delta \Phi is -1
+    Cost_A = p+1 => The safe is it the other place and we move it. \Delta \Phi is -(p+1)
+
+2 * Cost_B = 2 => The safe is in the other place.
+    Cost_A = 0 => The safe is at the same place.
+    Cost_A = 1 => The safe is at the other place. We can increase potential by a constant.
+    Cost_A = p+1 => The safe is at the other place and we move it. \Delta \Phi is -(p+1) or -p
+
+Cost_B = p => The safe is at the same place and opt moves it (for future requests).
+    Cost_A = 0 => The safe is at the same place. Bad
+    Cost_A = 1 => The safe is at the other place. Kinda good.
+    Cost_A = p+1 => The safe is at the other place and we move it. \Delta \Phi is -1
+
+NOTE OPT is not going to move it again until at least p accesses, because otherwise it would have been more efficient not to move it.
+
+Delta phi tends to be negative when we move the safe. 
+Delta phi is negative 1 for a cost-1 access.
+If we move it at the same time as opt, it's not so bad.
+
+big positive delta phi when opt moves the safe.
+
+
+
+After OPT moves, OPT will not move again for at least p steps.
+
+
+
+
+
+
+

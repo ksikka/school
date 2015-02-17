@@ -1,0 +1,20 @@
+#!/bin/bash
+
+REMOTE_SCHOOL_ROOT='~/private'
+ASSIGNMENT_PATH=15451/05
+
+git add soln.tex
+git commit soln.tex -m "tex changes"
+rm soln.pdf
+git pull
+git push
+ssh cmu "mkdir -p $REMOTE_SCHOOL_ROOT/$ASSIGNMENT_PATH && \
+    cd $REMOTE_SCHOOL_ROOT/$ASSIGNMENT_PATH && \
+    rm -f soln.pdf && \
+    git pull && \
+    pdflatex soln.tex && \
+    git add soln.pdf && \
+    git commit soln.pdf -m \"pdf\" && \
+    git push"
+git pull
+open soln.pdf

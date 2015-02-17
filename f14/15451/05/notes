@@ -1,0 +1,33 @@
+Is there one edge that partitions it k and n - k?
+
+
+make a table
+
+
+Look at the k = 2 case.
+
+For each node, put it in A and look at children.
+  
+
+
+   X
+ /  \   
+X    X  
+
+
+For each node, for each k, you have a set A and B representing the (k, subn - k) partitioning
+which minimizes number of split edges in that subtree.
+
+To compute T[n][k] minimizing split edges:
+  if k is 0:
+      return ({all nodes}, {})
+  if n has left:
+      Al, Bl = T[n->left][k-1]
+  if n has right:
+      Ar, Br = T[n->right][k-1]
+  A = n + Al + Ar
+  
+  if k is 1, A = A and return the rest as B
+  if k is 2, take X as A, then either take left or right as B. (creates one split edge but subtree split edges
+      are minimized.
+  if k is 3, take X as A, then take left and right as A. 

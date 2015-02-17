@@ -1,0 +1,260 @@
+15-451 Algorithms
+Fall 2014
+D. Sleator
+
+Closest Pairs                                November 17, 2014
+
+------------------------------------------------------------------
+
+We'll give two algorithms for the following proglem:
+
+Given n points in the plane, find the pair of points that is the
+closest together.
+
+The first algorithm is deterministic and runs in O(n log n).  The
+second one is randomized and runs in expected time O(n).
+
+Preliminaries.
+==============
+
+We assume the points are presented as real number pairs (x,y).
+We assume arithmetic on reals is accurate and runs in O(n) time.
+We will assume that we can take the floor function of a real.
+We also assume that hashing is O(1) time.
+
+These assumptions (in this context) are resonable, because the
+algorithms will not abuse this power.
+
+O(n log n) Algorithm
+====================
+
+First we present the algorithm.  Then we prove that it works.
+Then we analyze its running time.
+
+  Initiation: sort the points by x, and also separately by y.
+
+  Closest_Pair (p1, p2, ... pn):
+      if n <= 3 then solve and return the answer.
+
+      let m=floor(n/2)
+
+      let delta = min (Closest_Pair (p1...pm), Closest Pair (pm+1...pn))
+
+      form a list of the points (sorted by increasing y) that are
+      within delta of the x coordinate of pm.  Call these points q1, q2... qk
+
+      Let d = the min over i=2 to k of
+         min distance from qi to q{i-7}, q{i-6}...q{i-1}.
+
+      Return min (d,delta)
+
+The divide and conquer approach is obvious.  The closest pair is
+either within the left half, within the right half, or it has one
+endpoint in the left half and one in the right half.
+
+The only tricky part of proving that this works is the 2nd to last
+part where we look at the 7 points below qi.  Why is this sufficient?
+See figure 5.7 of Kleinberg and Tardos.
+
+Note that each box of size delta/2 can contain at most one point.
+Assume WLOG that qi is in the left side.  Then there are at most 3
+points on the left that are within delta of qi, and at most 4 on the
+right that are within delta of qi.  Since we're only looking for a
+point that is closer than delta to qi, we only have to look at those
+seven points.  This establishes the correctness of the algorithm.
+
+As for running time, the initiation phase sorts by x and also by y.
+This is O(n log n).  Subsequent phases just filter these sorted lists,
+and no further sorting is done.
+
+The algorithm partitions the points (O(n)), does two recursive calls
+of n/2 in size, scans the points again to form the list q (O(n)),
+then scans the list q looking for the closest side crossing pair
+(O(n)).
+
+So we get the classic divide and conquer recurrence:
+
+      T(n) = 2 T(n/2) + n
+
+which solves to O(n log n).
+
+Sariel Har-Peled's Randomized O(n) Algorithm for closest pair
+=============================================================
+
+For any set of points P, let CP(P) be the closest pair
+distance in P.
+
+We're going to define a "grid" data structure, and an API for it.  The
+grid (denoted G) stores a set of points, (we'll call P) and also
+stores the closest pair distance r for those points.  The number r is
+called "the grid size of G".  Here's the API:
+
+    MakeGrid(p,q):  Make and return a new grid using r=dist(p,q)
+                    as the initial grid size.
+
+    Lookup(G,p):    p is a point, G is a grid.  This returns
+                    two types of answers.  Let r' be the closest
+                    distance from p to a point in P.  If r' < r
+                    then return r'.  If r'>r return "Not Closest".
+                    Note that lookup() does not need to compute
+                    r' if r' >= r.
+
+    Insert(G,p):    G is a grid.  p is a new point not in the
+                    grid.  This inserts p into the grid.  It returns
+                    the current grid size.
+
+Here's how we implement these.  First define a function 
+Boxify(x,y,r).  This returns the integer point ((floor(x/r),floor(y/r)).
+
+The data structure maintains a hash table whose keys are integer
+pairs.  The values in the hash table are lists of points from P.  So
+the key (i,j) (also called a box) in the hash table stores all the
+points of P whose Boxify() value is (i,j).  Also, it is inductively
+maintained that the grid size r is always equal to CP(P), the
+closest pair distance for the set of points being stored.
+
+MakeGrid(p,q) is trivial.  Just insert p and q into a new table
+with r = dist(p,q).
+
+Lookup(G,p) computes Boxify(p,r).  It then looks in that box, and the
+8 surrounding ones, and computes the distance between p and the
+closest one of these.  Call this number r'.  If r'<r, then we return
+r'.  If r'>r then return "Not Closest".  This works because we know
+that if there is a point closer to p than r, it must be in one of the
+9 boxes that are searched by this function.  Also note that the
+running time of this is O(1) because it does 9 lookups in the hash
+table, and the total number of points it has to consider is at most
+36.  (A box contains at most 4 points.)
+
+Insert(G,p) works as follows.  It first does a Lookup(p,G).  If the
+result is "Not Closest" it just inserts p into the data structure
+into box Boxify(p).  This is O(1) time.  On the other hand if the
+Lookup() returns r'<r, then the algorithm rehashes every point into
+a new hash table based on the grid size being r'.  This takes O(i)
+time if there are i points now being stored in the data structure.
+
+The algorithm is clearly correct, simply by virtue of the fact that
+at any point in time the grid size r is equal to the CP(P) where
+P is the set of points in the data structure.  This is preserved
+by all the operations.
+
+We can now complete the description of the algorithm.
+
+  Randomized_CP(P):
+    Randomly permute the points. Call the new ordering p1, p2, ... pn.
+    G=Makegrid(p1,p2)
+    for i=3 to n do
+        r = Insert(G,p_i)
+    done
+    return r
+
+Claim: This algorithm computes CP(P).
+
+Proof: Follows from the definition of the API.  QED.
+
+Claim: The algorithm runs in expected O(n) time.
+
+Proof: Recall the time to do Insert() is O(1) if the grid size does
+not change, and O(i) (i=the number of points in the grid) if the grid
+size does change.
+
+Consider running the algorithm backwards.  Here we are deleting points
+in order p_n, p_{n-1} ... p3.  When deleting point i, the operation is
+O(1) if the closest pair distance does not change, and O(i) if it
+does.  In general if you remove a random point from a set of i points,
+the probability that the closest pair distance changes is at most 2/i.
+(Because if there is just one pair with that closest distance, then 
+deleting one of them is the only way to increase the closest pair
+distance.  In other configurations, the probability is lower.)
+
+So the removal is costly (i.e. O(i)) with probability 2/i, and cheap
+O(1) with the remaining probability.  Therefore the expected cost of a
+step is O(1).  Thus the expected cost of the entire algorithm is O(n).
+QED.
+
+
+Below is code implementing this algorithm in Ocaml.
+
+(*  Sariel Har-Peled's linear time algorithm for closest pairs.
+    Danny Sleator, Nov 2014
+*)
+
+let sq x = x *. x
+
+(* The function below takes an array of points (float*float), and returns
+   the distance between the closest pair of points.  *)
+let closest_pair p =
+  let n = Array.length p in
+
+  let dist i j =
+    let (xi,yi) = p.(i) in
+    let (xj,yj) = p.(j) in
+    sqrt ((sq (xi -. xj)) +. (sq (yi -. yj)))
+  in
+
+  let truncate x r = int_of_float (floor (x /. r)) in
+  let boxify (x,y) r = (truncate x r, truncate y r) in
+
+  let getbox h box = try Hashtbl.find h box with Not_found -> [] in
+
+  let add_to_h h i box = 
+    Hashtbl.replace h box (i::(getbox h box))
+  in
+
+  let make_grid i r =
+    (* put points p.(0) ... p.(i) into a new grid of size r.
+       it has already been established that the closest pair
+       in that point set has distance r *)
+    let h = Hashtbl.create 10 in
+
+    for j=0 to i do
+      add_to_h h j (boxify p.(j) r)
+    done;
+    h
+  in
+
+  Random.self_init ();
+
+  let swap i j = 
+    let (pi,pj) = (p.(i),p.(j)) in
+    p.(i) <- pj;
+    p.(j) <- pi
+  in
+
+  for i=0 to n-2 do
+    let r = Random.int (n-i) in
+    swap i (i+r)
+  done;
+
+  let rec loop h i r =
+    (* already built the table for points 0...i, and they have dist r *)
+
+    if i=n-1 then r else 
+      let i = i+1 in
+      let (ix,iy) = boxify p.(i) r in
+      let li = ref [] in
+      for x = ix-1 to ix+1 do
+	for y = iy-1 to iy+1 do
+	  li := (getbox h (x,y)) @ !li
+	done
+      done;
+
+      let r' = List.fold_left (
+	fun ac j -> min (dist i j) ac
+      ) max_float !li in
+      
+      if r' < r then (
+	loop (make_grid i r') i r'
+      ) else (
+	add_to_h h i (ix,iy);
+	loop h i r
+      )
+  in
+
+  let r0 = dist 0 1 in
+  loop (make_grid 1 r0) 1 r0
+
+let () = 
+  let p = [|(0.0,0.0); (3.0,4.0); (20.0,15.0); (15.0,20.0)|] in
+  let answer = closest_pair p in
+  Printf.printf "%f\n" answer;

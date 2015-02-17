@@ -1,0 +1,249 @@
+15-451  Algorithms
+Fall 2014
+November 10, 2014
+Danny Sleator
+
+Competitive analysis of Online Algorithms
+  - rent or buy?
+  - competitive algorithms
+  - the list update problem
+
+==========================================================================
+
+On-line algorithms
+==================
+
+Any situation in which you have to make a decision on the fly without
+knowing the future.  Examples include:
+
+      controlling an elevator
+      data structures (search list, self-adjusting trees)
+      scheduling problems (processor scheduling)
+      caching
+
+"Competitive Analysis" is an approach to analyzing these problems.
+(Define more precisely later, first a simple example)
+
+Rent-or-buy?
+============
+Simple online problem called the rent-or-buy problem, aka the
+tuxedo-rental problem.  Say you get invited to some formal event and
+need to wear a tuxedo.  Can either rent for $50 or buy for $300. So,
+you decide to rent.  Then get invited to one again.  Pretty soon, if
+you get invited to more than 6, you're wishing you had bought right at
+the start.  Optimal strategy is: if you know you will be invited to
+more than 6 before the styles or your waistline changes then you
+should buy.  Otherwise you should rent.  But, what if you don't know?
+
+To talk about goodness of an online algorithm, we're going to look at the
+Competitive Ratio measure.  
+
+        Competitive ratio (CR) is worst case (maximum) over sequences
+        of events of the ratio: (our cost)/OPT, where OPT = optimal
+        cost in hindsight.
+
+        "cost" means total cost over all time.
+
+In this case, what is CR of algorithm that says "buy right away"?
+        Worst case is: only go once.  Ratio is 300/50 = 6.
+
+What about algorithm that says "Rent forever"?
+        Worst case is: keep getting invited. Ratio is infinite.
+
+Here's an algorithm with a competitive ratio of (2 - r/p),
+where r = rent cost and p = purchase cost (and r <= p):
+
+   "Rent so long as total spent is less than purchase cost, then buy".
+   (e.g., here it is "rent 5 times then buy")  
+
+   [Could be called the "better late than never" strategy.]
+
+If you needed a tux 5 or fewer times you were optimal.  
+If you needed it 6 times, you spent $250 + $300 = $550, but optimal was $300.
+If you needed it > 6 times, you spent $550 but optimal was $300.
+We pay either OPT (when OPT < p) or 2*OPT-r (when OPT = p), so
+our ratio is (2 - r/p).
+
+Claim: Can't beat ratio of (2 - r/p) with a deterministic alg.
+
+Proof: what if the time you buy is the last time you ever use it.  Say
+you rented k times.  You paid k*rent + purchase.  In hindsight,
+OPT = min(purchase, (k+1)*rent).  So, 
+
+        ratio = [kr + p]/[min(p, (k+1)r)] = [(k+1)r + p - r]/[min(p, (k+1)r)]
+
+        case 1: p <= (k+1)r.  Then,
+                ratio >= [2p-r]/p = (2 - r/p).
+
+        case 2: (k+1)r <= p.  Then,
+                ratio >= 1 + (p-r)/[(k+1)r] >= 1 + (p-r)/p = 2 - r/p.
+
+
+Competitive algorithms
+======================
+
+An algorithm A is c-competitive if there exists a number a such that
+for any B and sigma:
+
+    C_A(sigma) <= c C_B(sigma) + a.
+
+Where sigma is a sequence of requests, and C_A(sigma) is the cost of
+algorithm A on sequence sigma.
+
+Eventually we'll make use of the extension of this definition to
+handle randomized on-line algorithms.  In this case C_A(sigma) is the
+expected cost of algorithm A on sequence sigma, and the expectation is
+taken over all of A's random choices.
+
+Competitive analysis has been used to design and analyze many
+important algorithms in data structures, computer systems, and
+networks.
+
+
+The List Update Problem
+=======================
+
+Groundrules for the problem:
+
+   There's a list of n items.  (For simplicity we fix n).  The
+   positions in the list are numbered 1, 2, ... n.  Position 1 is the
+   front of the list.
+
+   An item x can be accessed.  The operation is called Access(x).
+   The cost of the operation is the position i of x in the list.
+
+   After doing an access, the algorithm is allowed to rearrange the
+   list by doing swaps of adjacent elements.  The cost of a swap is 1.
+
+So an on-line algorithm is specified by describing which swaps are
+done after an element is accessed.  (Without loss of generality we can
+give off-line optimum algorithm the power to do its sawps any time it
+wants, and not associate them with any particular access.)
+
+The goal is to devise and analyze an on-line algorithm for
+doing Access() with a small competitive factor.
+
+Here are several algorithms to consider.
+
+   Single Exhchange:  After accessing x, if x is not at the front of
+   the list, swap it with its neighbor toward the front.
+
+   Frequency Count:  Maintain a frequency of access for each item.
+   Keep the list ordered by non-increasing frequency from front to
+   back.
+
+   Move To Front (MTF): After an access to an element x, do a series of
+   swaps to move x to the front of the list.
+
+It's easy to construct sample sequences to show that Single Exchange
+and Frequency Count have competitive factors that are Omega(n).
+
+Theorem: MTF is a 4-competitive algorithm for the list-update problem.
+
+Proof: We'll use the potential function method.  There will be a
+potential function that depends on the state of the MTF algorithm and
+the state of the "opponent" algorithm B, which can be any algorithm,
+even one which can see the future.  Using this potential, we'll show
+that the amortized cost to MTF of an access is at most 4 times the
+cost of that access to B.
+
+Here are the two lists:
+           _ _ _ _ _ _ _ _     _ 
+   B      |_|_|_|_|_|_|_|_|...|_|
+
+           _ _ _ _ _ _ _ _     _
+  MTF     |_|_|_|_|_|_|_|_|...|_|
+
+Phi = 2*(The number of inversions between B's list and MTF's list)
+
+Recall that an inversion is a pair of distinct elements (x,y) that
+appear in one order in B's list and in a different order in MTF's
+list.  It's a measure of the similarity of the lists.
+
+Using this potential, we'll analyze the amortized cost to MTF of
+Access(x), and the amortized cost to MTF that is incurred when B does
+a swap.  (Note that in this case MTF incurrs zero cost, but it will
+have a non-zero amortized cost.  To be complete the analysis must take
+this into account.).  In each case we'll show that the amortized cost
+to MTF is at most 4 times the cost to B.  That is, we'll show:
+
+    AC    <= 4C
+      MTF      B
+
+We can then sum the amortized costs, and add in the initial potential
+minus the final potential to bound the actual cost of the entire
+sequence of accesses to MTF.
+
+Analysis of Access(x)
+---------------------
+           _____________
+   B      |_____x_______|
+
+           _____________
+  MTF     |_________x___|
+
+Define sets
+
+       S = {y | y is before x in MTF and y is before x in B}
+
+       T = {y | y is before x in MTF and y is after x in B}
+
+What is the cost of the access to MTF in terms of these sets?
+
+    C    = 1 + |S| + |T|    +     |S| + |T|    =  1+2(|S|+|T|)
+     MTF   \___________/         \_________/
+             find cost            swap cost 
+
+
+    C    >= |S| + 1      Because all of S is before x in B.
+     B
+
+
+What happens to the potential as a result of this operation?  Well,
+here's MTF after the operation:
+         _____________
+  MTF   |x____________|
+
+The only changes in the inversions involve element x, because all
+other pairs stay in the same relative order.  We can write the change
+in Phi precisely:
+
+     Delta(Phi) = 2 (|S| - |T|)
+
+Because for every element of S the the number of inversions increases
+by 1 and for every element of T the number of inversions decreases by
+1.  Using this we can evaluate the amortized cost of the access to MTF.
+
+   AC     =  2 (|S| - |T|) 1+2(|S|+|T|) = 1+4|S| <= 4(1+|S|) <= 4 C
+     MTF                                                           B
+
+This completes the amortized analysis of Access(x).
+
+
+Analysis of B swapping
+----------------------
+
+   C  = 0            C  = 1
+    MTF               B
+
+   Delta(Phi) <= 2
+
+   AC     <= 2 C   <= 4 C
+     MTF        B        B
+    
+
+Putting the parts together
+--------------------------
+
+Summing the amortized costs we get:
+
+  Total Cost to MTF <= 4*(Total Cost to B) + Phi(init) - Phi(final)
+
+Phi(init) - Phi(final) <= n choose 2 = n(n-1)/2
+
+  Total Cost to MTF <= 4*(Total Cost to B) + (n choose 2)
+
+And the (n choose 2) term is actually 0 if MTF's list and B's list
+start out the same.
+
+QED.

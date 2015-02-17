@@ -1,0 +1,49 @@
+1: Go over the Set Cover section 3 of these lecture notes:
+http://www.cs.cmu.edu/~15451/lectures/lec18.pdf
+This was not covered in lecture.
+
+Suffix tree lecture: http://www.cs.cmu.edu/~15451/lectures/lec19/suffix-trees.pdf
+
+2: You're given a string S of length n.  The goal is to find the
+longest string that occurs at least twice in S in non-overlapping
+fashion.  And you want to do this in O(n) time.
+
+For example if the string S is "abcdeabcdeabcde" then the answer is
+"abcde". It occurs at positions 0, 5, and 10.  And these these
+occurrences are all non-overlapping.  Note that "abcdea"
+occurs twice, but the two occurrences of it are overlapping.
+
+Here's how to do this.  Build a suffix-tree for the string S in O(n)
+time.  (Note that in lecture I did not give this algorithm, only
+stated that it can be done.  You may have to do some review of suffix
+trees.  I'm not sure everybody got it.) 
+
+Each leaf of the tree has in it the start of the suffix that that leaf
+represents.  We use a DFS of the suffix tree to compute for each node
+in the tree the first and last suffix that leads to this node.
+
+Now we do another DFS traversal, this time keeping track of the length
+of the string P that leads from the root to the current node.  Call
+this length L, and let I and F be the indices of the beginning of the
+first and last occurrences of P in S.  (This is what we computed in
+the previous paragraph.)  If L+I <= F then P represents a solution to
+our problem.  If L+I > F then we have to truncate P at its end to
+avoid overlapping with the last occurrence of it.  We truncate it to
+length L'=F-I.  This is the option represented by this node.  This
+options length can be susinctly stated as min(L, F-I).
+
+So the algorihthm simply computes this quantity over all nodes in the
+tree and takes the maximum value of it.  This is our answer.
+
+The proof that this is correct follows by simply noting that any
+solution to the problem must manifest itself in the suffix tree in
+a way that will be found by the above search.  I.e. Let the pattern
+that is the solution be P.  If we walk down the tree following P
+we will end at a node, or in the middle of an edge.  Let n be the
+node we end on, or the node below the edge we end on.  Now when
+the above algorithm is processing node n, it will find P.
+
+3: Consider a 3-CNF formula, in which each
+clause has 3 literals, and each of these literals involves a different
+variable.  Prove that there exists an assignment of the variables that
+guarantees that at least 7/8 of the clauses are true.

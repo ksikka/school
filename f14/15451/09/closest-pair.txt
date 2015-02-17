@@ -1,0 +1,265 @@
+                       PRELIMINARY VERSION TO BE REPLACED
+
+15-451 Algorithms
+Fall 2014
+D. Sleator
+
+Closest Pairs                                November 17, 2014
+
+------------------------------------------------------------------
+
+We'll give two algorithms for the following proglem:
+
+Given n points in the plane, find the pair of points that is the
+closest together.
+
+The first algorithm is deterministic and runs in O(n log n).  The
+second one is randomized and runs in expected time O(n).
+
+Preliminaries.
+==============
+
+We assume the points are presented as real number pairs (x,y).
+We assume arithmetic on reals is accurate and runs in O(n) time.
+We will assume that we can take the floor function of a real.
+We also assume that hashing is O(1) time.
+
+These assumptions (in this context) are resonable, because the
+algorithms will not abuse this power.
+
+O(n log n) Algorithm
+====================
+
+First we present the algorithm.  Then we prove that it works.
+Then we analyze its running time.
+
+  Initiation: sort the points by x, and also separately by y.
+
+  Closest_Pair (p1, p2, ... pn):
+      if n <= 3 then solve and return the answer.
+
+      let m=floor(n/2)
+
+      let delta = min (Closest_Pair (p1...pm), Closest Pair (pm+1...pn))
+
+      form a list of the points (sorted by increasing y) that are
+      within delta of the x coordinate of pm.  Call these points q1, q2... qk
+
+      Let d = the min over i=2 to k of
+         min distance from qi to q{i-7}, q{i-6}...q{i-1}.
+
+      Return min (d,delta)
+
+The divide and conquer approach is obvious.  The closest pair is
+either within the left half, within the right half, or it has one
+endpoint in the left half and one in the right half.
+
+The only tricky part of proving that this works is the 2nd to last
+part where we look at the 7 points below qi.  Why is this sufficient?
+See figure 5.7 of Kleinberg and Tardos.
+
+Note that each box of size delta/2 can contain at most one point.
+Assume WLOG that qi is in the left side.  Then there are at most 3
+points on the left that are within delta of qi, and at most 4 on the
+right that are within delta of qi.  Since we're only looking for a
+point that is closer than delta to qi, we only have to look at those
+seven points.  This establishes the correctness of the algorithm.
+
+As for running time, the initiation phase sorts by x and also by y.
+This is O(n log n).  Subsequent phases just filter these sorted lists,
+and no further sorting is done.
+
+The algorithm partitions the points (O(n)), does two recursive calls
+of n/2 in size, scans the points again to form the list q (O(n)),
+then scans the list q looking for the closest side crossing pair
+(O(n)).
+
+So we get the classic divide and conquer recurrence:
+
+      T(n) = 2 T(n/2) + n
+
+which solves to O(n log n).
+
+Randomized O(n) Algorithm
+=========================
+
+Let P be a set of points.  Let CP(P) be the closest pair
+distance in P.
+
+Given a paramenter alpha, we partition the plane into squares of side
+length alpha.  Each square is identified by a pair of integral indices
+(i,j).  A point (x,y) is mapped into square (floor(x/alpha),
+floor(y/alpha).
+
+Lemma 1: let alpha = CP(P) for a point set.  Then a grid square
+defined by alpha contains at most 4 points.
+
+Proof: Each of the four alpha/2 size squares can contain at most one
+of the points.  QED.
+
+The following algorithm takes as input a set of points P and a
+parameter alpha, and determines if CP(P) is <, = or > alpha.
+
+  Bound_CP(P, alpha):
+
+    Define the grid of size alpha.
+    Define a hash table for the squares of that grid.
+    Hash the points one by one into that hash table.
+
+    Each time we insert a point p into a square s, 
+    we check it against all the other points in s,
+    and all eight neighbor squares of s.
+    If any are closer than alpha, return "<".
+
+    Meanwhile we're taking the global minimum found among all of these
+    distance computations.  If at the end its' equal to alpha, return
+    "=" else return ">".
+
+Claim: This algorithm is correct and runs in linear time.
+
+Proof: First we prove that no square ever gets more than four points
+in it.  Up until the algorithm returns "<" we know that all the
+distances tested when it's putting points into squres are >= alpha.
+Therefore no box has more than four points in it by lemma 1.
+
+If the algorithm returns "<" then it found a pair that are that close
+together, so it must be correct.  Barring this, then the following
+invariant always holds:
+
+   Among the points processed their CP() is >= alpha.
+
+This follows by induction.  When we process a new point, we
+look in the squares that contain all the points that could possibly
+be <= alpha from it.  If none of them are < alpha, then all of them
+are >= alpha from it.
+
+Finally, the running time is linear because no square ever gets more
+than four points in it.  And the neighborhood of a square contains
+at most 36=4*9 points in it.  So the insertion of each point only
+takes O(1) time.
+
+QED.
+
+Now we can turn this into a linear time algorithm for computing CP(P).
+First we'll trivially modify the above Bound_CP() algorithm so that
+when it finds "<", it returns the distance that it found.
+
+  Randomized_CP(P):
+    Randomly permute the points.  call the new ordering p1, p2, ... pn.
+
+    function loop(alpha) =
+        let alpha' = Bound_CP(P, alpha)
+        if alpha' < alpha then loop (alpha')
+        else return alpha
+
+    Let alpha = |p1-p2| 
+    return loop (alpha)
+
+Claim: This algorithm computes CP(P).
+
+Proof: The value of alpha is always equal to an actual distance
+between a pair.  When it returns it's because the Bound_CP() function
+proved that alpha is >= CP(P).  Thus the final value of alpha is 
+CP(P).
+
+Claim: The algorithm runs in expected O(n) time
+
+Proof:
+
+% Notice that Bound_CP(P,alpha) halts after looking at an initial
+% sequence of points p1, p2, ... pi such that alpha = CP(p1...pi).
+
+Notice that each time we call Bound_CP() we start over again and look
+at the points anew with a different value of alpha.  
+Define alpha(i) be the closest pair distance among p1, p2, ... pi.
+(This is the randomly permuted order.)  Notice that this is also
+the value of alpha which arises when a call Bound_CP(P,alpha(i-1)).
+
+(Page 4 of Har-peled)
+
+
+Below is code implementing this algorithm in Ocaml.
+
+(*  Sariel's linear time algorithm for closest pairs.  http://sarielhp.org/blog/?p=51
+    Danny Sleator, Nov 2014
+*)
+
+let sq x = x *. x
+
+(* The function below takes an array of points (float*float), and returns
+   the distance between the closest pair of points.  *)
+let closest_pair p =
+  let n = Array.length p in
+
+  let dist i j =
+    let (xi,yi) = p.(i) in
+    let (xj,yj) = p.(j) in
+    sqrt ((sq (xi -. xj)) +. (sq (yi -. yj)))
+  in
+
+  let truncate x r = int_of_float (floor (x /. r)) in
+  let boxify (x,y) r = (truncate x r, truncate y r) in
+
+  let getbox h box = try Hashtbl.find h box with Not_found -> [] in
+
+  let add_to_h h i box = 
+    Hashtbl.replace h box (i::(getbox h box))
+  in
+
+  let make_grid i r =
+    (* put points p.(0) ... p.(i) into a new grid of size r.
+       it has already been established that the closest pair
+       in that point set has distance r *)
+    let h = Hashtbl.create 10 in
+
+    for j=0 to i do
+      add_to_h h j (boxify p.(j) r)
+    done;
+    h
+  in
+
+  Random.self_init ();
+
+  let swap i j = 
+    let (pi,pj) = (p.(i),p.(j)) in
+    p.(i) <- pj;
+    p.(j) <- pi
+  in
+
+  for i=0 to n-2 do
+    let r = Random.int (n-i) in
+    swap i (i+r)
+  done;
+
+  let rec loop h i r =
+    (* already built the table for points 0...i, and they have dist r *)
+
+    if i=n-1 then r else 
+      let i = i+1 in
+      let (ix,iy) = boxify p.(i) r in
+      let li = ref [] in
+      for x = ix-1 to ix+1 do
+	for y = iy-1 to iy+1 do
+	  li := (getbox h (x,y)) @ !li
+	done
+      done;
+
+      let r' = List.fold_left (
+	fun ac j -> min (dist i j) ac
+      ) max_float !li in
+      
+      if r' < r then (
+	loop (make_grid i r') i r'
+      ) else (
+	add_to_h h i (ix,iy);
+	loop h i r
+      )
+  in
+
+  let r0 = dist 0 1 in
+  loop (make_grid 1 r0) 1 r0
+
+let () = 
+  let p = [|(0.0,0.0); (3.0,4.0); (20.0,15.0); (15.0,20.0)|] in
+  let answer = closest_pair p in
+  Printf.printf "%f\n" answer;
